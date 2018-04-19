@@ -166,9 +166,7 @@
 * [从URL开始，定位世界](https://insights.thoughtworks.cn/url-locates-the-world/)
 * [初探CSS Grid布局](https://www.liayal.com/article/5a96599bca0de01ec9713c43)
 * [送给 ES6 开发者的7个 hack](https://mp.weixin.qq.com/s?__biz=MzI3MjA3MTY3Mw==&mid=2247483689&idx=1&sn=aa928bb4af14118c784bb5da63639844&chksm=eb396fbfdc4ee6a939dbc20bf52538d07ca98bec211535f0a07e3f3229f4164f602c811bbb16#rd)
-* [Promise 使用技巧九则](https://qianduan.group/posts/5a9be8980cf6b624d2239cbd)
 * [浅谈Web编程中的异步调用的发展演变](https://mp.weixin.qq.com/s/HoTmRrsCSbLAAben2VeAFg)
-* [我眼中的 async/await](https://qianduan.group/posts/5a92ca710cf6b624d2239cab)
 * [经验分享 | JavaScript反调试技巧](http://www.freebuf.com/articles/system/163579.html)
 * [第三方 CSS 并不安全](https://zcfy.cc/article/third-party-css-is-not-safe)
 * [网站渐进式增强体验(PWA)改造：Service Worker 应用详解](https://lzw.me/a/pwa-service-worker.html)
@@ -179,7 +177,6 @@
 * [推荐新文章JavaScript中this的运行机制及爬坑指南](https://zcfy.cc/article/javascript-s-this-how-it-works-where-it-can-trip-you-up)
 * [阅文前端技术选型](https://mp.weixin.qq.com/s?__biz=MzIyNjU5OTg0Ng==&mid=2247484203&idx=1&sn=357605cdac00b34e6837cd881bbeff44&chksm=e86cb5e2df1b3cf41eb57ab26f186e26593cac31825bb16d20a93ea3cf9ddec5f9f983565ae6&mpshare=1&scene=1&srcid=031440hkmt6gkwwmITdOwdmm&rd2werd=1#wechat_r)
 * [今天带你了解es7的神器decorator](https://mp.weixin.qq.com/s/gxdxGUcnE5VkZw_rsrE0DQ)
-* [用Promise实现并发](https://mp.weixin.qq.com/s/KdVBsgMDYM7LRdnMcbzQYQ)
 * [JavaScript EventEmitter](https://zhuanlan.zhihu.com/p/34914945)
 * [自动化生成 H5 骨架页面](https://zhuanlan.zhihu.com/p/34702561)
 * [Websocket 使用指南](https://qiutc.me/post/websocket-guide.html)
@@ -191,11 +188,8 @@
 * [CSS-in-JS，向Web组件化再迈一大步](https://insights.thoughtworks.cn/css-in-js/)
 * [前端错误监控与收集探究](http://hpoenixf.com/%E5%89%8D%E7%AB%AF%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E4%B8%8E%E6%94%B6%E9%9B%86%E6%8E%A2%E7%A9%B6.html)
 * [Js面试算法](https://www.liayal.com/article/5ac46c20a6cf4e67bc05c9f4)
-* [更优雅的方式： JavaScript 中顺序执行异步函数](http://blog.givebest.cn/javascript/2018/04/05/javascript-sync.html)
 * [闭包，是真的美](https://github.com/prettyEcho/deep-js/issues/4)
-* [从零开始写一个 Promise 库](https://zhuanlan.zhihu.com/p/35697919)
 * [前端适配](https://segmentfault.com/a/1190000014309664)
-* [如何避免async/await地狱](https://www.zcfy.cc/article/how-to-escape-async-await-hell)
 
 ### GraphQL
 计划系统了解一下
