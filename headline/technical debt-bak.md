@@ -83,7 +83,6 @@
 
 ## 其他
 在这里列举文章列表，另起博客详细总结
-* [JavaScript系列——探索history源码之hashHistory的实现](https://segmentfault.com/a/1190000012656017)
 * [Tree-Shaking性能优化实践 - 原理篇](https://zhuanlan.zhihu.com/p/32554436)
 * [Android JS与Native交互实践](https://mp.weixin.qq.com/s/fKIyFhZC6F5ZjjnFnca_pA)
 * [初探 Electron - 理论篇](http://jartto.wang/2018/01/03/first-exploration-electron/)
@@ -100,8 +99,6 @@
 * [Web 前端中的增强现实（AR）开发技术](https://qianduan.group/posts/5a5f89cb0cf6b624d2239c65)
 * [使用 CSS 追踪用户](https://segmentfault.com/a/1190000012901505)
 * [玩转图片流](http://jartto.wang/2018/01/19/play-image-stream/)
-* [前端工程师的未来在哪里？](https://mp.weixin.qq.com/s/H_f0lGA8niQ8gBxTUYQLUw)
-* [JavaScript 2018: 你需要和不需要深入的 - The New Stack](https://zcfy.cc/article/javascript-2018-things-you-need-to-know-and-a-few-you-can-skip-the-new-stack)
 * [如何做一个听话的 “输入框”](https://mp.weixin.qq.com/s/CARRB4jWpiKFHfjBdnr8fQ)
 * [使用 Rust 加速前端监控](https://qianduan.group/posts/5a6c51410cf6b624d2239c80)
 * [(a ==1 && a== 2 && a==3) 有可能是 true 吗？](http://elevenbeans.github.io/2018/01/23/nothing-is-impossible-for-javascript/)
@@ -120,44 +117,6 @@
 * [10 种最常见的 Javascript 错误](http://elevenbeans.github.io/2018/02/05/top-10-javascript-errors/)
 * [前端页面热更新实现方案](https://refined-x.com/2018/02/07/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E7%83%AD%E6%9B%B4%E6%96%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/)
 * [适当地引入防卫性编程](http://harttle.land/2018/02/07/defensive-programming.html)
-* [web 前端性能优化](https://mp.weixin.qq.com/s/-Bd48G1bQ1G3MLuqNXolkQ)
-  * 减少请求量
-    1.  合并压缩打包
-    2.  CDN
-    3.  静态 CDN 域名最好使用 2-4 个, 原因是浏览器对 max connections 有限制
-    4.  静态类文件设置缓存
-    5.  lazyload
-    6.  合理的使用异步请求
-  * 代码编写
-    1.  减少重绘。改动的 DOM 元素越深则影响越小，所以尽量深入节点改动；对某些 DOM 样式有多重变动尽量合并到一起修改。
-    2.  避免节点深层级嵌套
-    3.  页面 HEAD 中设置缓存
-    4.  HTML+CSS3+js 尽量用各自自特有的属性来完成效果
-    5.  避免使用 Iframe
-    6.  避免空链接属性
-    7.  显式设置图片的宽高
-    8.  渐进式增强设计：首先写一段满足所有浏览器的基本样式，再在后面针对不同高级浏览器编写更漂亮的样式
-  * CSS 具体应用注意点
-    1.  使用 CSS3 编写动画效果时，开启 GPU 硬件加速提升网站动画渲染性能-webkit-transform:transition3d 和-webkit-transform:translateZ 其实是为了渲染 3D 样式，但我们设置值为 0 后，并没有真正使用 3D 效果，但浏览器却因此开启了 GPU 硬件加速模式。这种 GPU 硬件加速在当今 PC 机及移动设备上都已普及，在移动端的性能提升是相当显著
-    2.  css 减少查询层级及范围
-    3.  避免 TAG 标签与 CLASS 或 ID 并存，如 a.top、button#submit；
-  * Javscript 具体应用注意点
-    1.  尽量少用全局变量；
-    2.  使用事件代理绑定事件
-    3.  避免频繁操作 DOM 节点
-    4.  不使用 eval；eval 函数效率特别低
-    5.  减少对象查找
-    6.  类型转换
-    7.  对字符串进行循环操作，譬如替换、查找，应使用正则表达式；
-  * 避免脚本阻塞加载
-    1.  CSS 文件引入要放在头部，因为这是 HTML 渲染必备元素。
-    2.  为了避免阻塞加载，应把脚本放到文档的末尾
-  * HTTP/2 对比 HTTP/1 的优势
-    1.  头部压缩；
-    2.  请求/响应管线化；
-    3.  多路复用请求；
-    4.  对请求划分优先级；
-    5.  服务器推送流（即 Server Push 技术）；
 * [[前端工坊]完美CSS文档的8个最佳实践](https://mp.weixin.qq.com/s/JNm6OVlbbxXICyKJ4RvY_g)
 * [现代CSS进化史](https://segmentfault.com/a/1190000013191860)
 * [axios的秘密](https://mp.weixin.qq.com/s/Kfh4VAS4Svd0wZhErGyP6g)
@@ -188,7 +147,6 @@
 * [CSS-in-JS，向Web组件化再迈一大步](https://insights.thoughtworks.cn/css-in-js/)
 * [前端错误监控与收集探究](http://hpoenixf.com/%E5%89%8D%E7%AB%AF%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E4%B8%8E%E6%94%B6%E9%9B%86%E6%8E%A2%E7%A9%B6.html)
 * [Js面试算法](https://www.liayal.com/article/5ac46c20a6cf4e67bc05c9f4)
-* [闭包，是真的美](https://github.com/prettyEcho/deep-js/issues/4)
 * [前端适配](https://segmentfault.com/a/1190000014309664)
 
 ### GraphQL
