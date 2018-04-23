@@ -1,3 +1,5 @@
+vue part wait for collation into blog
+
 前端价值
 1. 搭建前端工程
   * 已经不是所见即所得了（ES6，sass）
@@ -15,7 +17,7 @@ cross-env
 
 webpack.DefinePlugin很重要
 * 方便自己代码进行环境判断
-* 第三方库，比如vue和react，会根据不同环境进行区分打包
+* 第三方库，比如 vue 和 react，会根据不同环境进行区分打包
 
 开启热更新
 * 设置 hot 为 true
@@ -29,7 +31,7 @@ config.devtool
 vue2
 * 数据绑定 MVVM模式
 * vue单文件开发方式
-  * 对jsx支持不好，自创vue方式
+  * 起初jsx支持不好，自创vue方式
 * render 方法
   * vue2采用虚拟dom
   * 数据变动，自动调用render
@@ -52,5 +54,5 @@ webpack优化
   * 做浏览器缓存
   * 还是希望通过head头部加载style资源
 
-  区分打包类库代码
+区分打包类库代码
   * 类库代码比较稳定，业务经常迭代，优化浏览器缓存

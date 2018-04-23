@@ -57,14 +57,6 @@
 * [你不知道的Vuejs - Vuejs 插件开发](https://yugasun.com/post/you-dont-know-vuejs-10.html)
 * [vue中需要注意的问题总结(上)](http://wangyaxing.top/2018/04/15/2018-04-15-vue%E4%B8%AD%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93(%E4%B8%80)/)
 
-## webpack
-* [webpack 持久化缓存实践](https://github.com/happylindz/blog/issues/7)
-* [看清楚真正的 Webpack 插件](https://zoumiaojiang.com/article/what-is-real-webpack-plugin/)
-* [webpack 中文网](https://doc.webpack-china.org/concepts/)
-* [Webpack 4 不完全迁移指北](https://github.com/dwqs/blog/issues/60)
-* [Webpack 4进阶--从前的日色变得慢 ，一下午只够打一次包](https://zhuanlan.zhihu.com/p/35407642)
-* [Webpack 源码解析](https://github.com/lihongxun945/diving-into-webpack)
-
 ## webRTC
 浏览器通讯新标准——WebRTC
 * What is WebRTC：WebRTC 是 Web Real-Time Communication 的简称，它是谷歌的一个开源项目，其目的是通过一系列的协议和规范来让浏览器提供支持实时通讯功能的 API 接口，这样在浏览器中通过简单的接口调用即可实现本地音频、视频等资源的实时共享。
@@ -112,7 +104,6 @@
   * 域名拆分（在 Chrome 浏览器，对于同一个域名，最多支持 6 个请求的并发，其他的请求将会推入到队列中等待或者停滞不前，直到六个请求之一完成后，队列中新的请求才会发出。）首屏图片优先加载，等* 首屏图片加载完全后再去加载非首屏图片。
   * 减少图片体积（在保证清晰度的前提下尽量使用体积较小的图片。而一张图片的体积由两个因素决定，该图片总的像素数目和编码单位像素所需的字节数。因此一张图片的文件大小就等于图片总像素数目乘以编码单位像素所需字节数）
   * 按设备尺寸裁剪
-* [2018 Web 开发者路线图](https://qianduan.group/posts/5a66f36e0cf6b624d2239c74)
 * [一个函数的自白](https://mp.weixin.qq.com/s/1VtITPEufTMcI42WFEhoEw)
 * [10 种最常见的 Javascript 错误](http://elevenbeans.github.io/2018/02/05/top-10-javascript-errors/)
 * [前端页面热更新实现方案](https://refined-x.com/2018/02/07/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E7%83%AD%E6%9B%B4%E6%96%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/)

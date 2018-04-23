@@ -29,7 +29,6 @@ webpack是什么
 * css-loader：支持将css作为模块
 * style-loader：将css内容插入到对应页面，使之生效
 
-
 loader的使用方式
 * 直接引用的时候处理，比如require的时候，import的时候，eg：css-loader!./style.css，注意感叹号很重要
 * 每次引用写的时候太麻烦了，可以使用命令行工具，也顺便了解其他命令参数，参数可以写进npm脚本中
@@ -70,7 +69,7 @@ new htmlWebpackPlugin({
   * 其他字段，比如title，date，favicon等。
   * minify：实现压缩html，值是对象，可以配置压缩哪些内容，比如删除空格，删除注释等
 * 在模板文件中使用，通过htmlWebpackPlugin引用
-  * 比如<%= htmlWebpackPlugin.options.title>读取
+  * 比如<%= htmlWebpackPlugin.options.title %>读取
   * 主要有两个属性：options和files
   * options 配置信息
   * files 文件信息，可以实现类似于，一部分js在head引入，一部分在body引入的功能，但是需要关闭自动inject，设置inject为false即可
@@ -146,9 +145,11 @@ npm install --save-dev babel-preset-latest
 * 注意路径比如是正则表达式，绝对路径，函数或绝对路径数组，绝对路径可以使用path
 ```js
 var path = require('path');
-
-exclude:path.resolve(__dirname,'node_modules/'),
-include:path.resolve(__dirname,'src/'),
+// ...
+{
+    exclude:path.resolve(__dirname,'node_modules/'),
+    include:path.resolve(__dirname,'src/'),
+}
 ```
 
 loader处理css
