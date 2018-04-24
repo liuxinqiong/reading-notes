@@ -188,11 +188,6 @@ List
 * [AR / MR / VR / XR有什么区别](https://zcfy.cc/article/what-really-is-the-difference-between-ar-mr-vr-xr)
 * [浅谈推进有赞全站 HTTPS 项目-工程篇](https://mp.weixin.qq.com/s/19KtHQAZ7fPYz6IyeenCUg)
 
-## 区块链
-* [一文透彻了解区块链是如何工作的！](https://mp.weixin.qq.com/s/8tmcKd3ErCb4jVQwMetw7w)
-* [区块链系列二：区块链涉及到的密码学知识之Hash](https://mp.weixin.qq.com/s/4s_M7lmfLRC-ZInWQENARQ)
-* [区块链系列三：区块链涉及到的密码学知识之加密、签名与认证](https://mp.weixin.qq.com/s/nCK8ggZo3jJz1PF0b6iW8g)
-
 ## 前后端分离
 [前后端分离实践](https://mp.weixin.qq.com/s/nKvjsU2frT5NDU4DLWqvYg)
 * 前后端分离场景与好处
