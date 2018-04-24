@@ -1,4 +1,4 @@
-vue part wait for collation into blog
+**vue part wait for collation into blog**
 
 前端价值
 1. 搭建前端工程
