@@ -5,13 +5,6 @@
 怎么总结呢，决定分几个方向，主要有React、Vue、后端、架构、其他和杂谈
 
 # 前端
-2018 年 WEB 发展趋势预测
-* PWA
-* 智能聊天机器人
-* 静态网页
-* 单页应用
-* 网页消息推送
-* 从 Flash 到 HTML
 
 ## React
 * [React 16 之 error boundary](https://zhuanlan.zhihu.com/p/32848336)
@@ -57,21 +50,11 @@
 * [你不知道的Vuejs - Vuejs 插件开发](https://yugasun.com/post/you-dont-know-vuejs-10.html)
 * [vue中需要注意的问题总结(上)](http://wangyaxing.top/2018/04/15/2018-04-15-vue%E4%B8%AD%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93(%E4%B8%80)/)
 
-## webRTC
-浏览器通讯新标准——WebRTC
-* What is WebRTC：WebRTC 是 Web Real-Time Communication 的简称，它是谷歌的一个开源项目，其目的是通过一系列的协议和规范来让浏览器提供支持实时通讯功能的 API 接口，这样在浏览器中通过简单的接口调用即可实现本地音频、视频等资源的实时共享。
-* Why WebRTC ?
-  * Flash
-  * Plug-in
-* Why ASSESS ?
-  * 浏览器支持程度
-  * 必须使用 HTTPS 协议
-
 ## 指南系列
 * [从 2.4 万篇文章中挑出的最棒的 JavaScript 学习指南（2018 版）](https://zhuanlan.zhihu.com/p/33298555)
 * [从 1.8 万篇文章中脱颖而出 45 个最棒的 React.js 学习指南（2018 版）](https://zhuanlan.zhihu.com/p/33207643)
-* [从1.6万篇文章中挑出的最棒的 Web 开发学习指南（2018版）](https://zhuanlan.zhihu.com/p/33476872)
-* [从1万篇文章中挑出的40篇最棒的 Vue 学习指南（2018版）](https://zhuanlan.zhihu.com/p/33642051)
+* [从 1.6 万篇文章中挑出的最棒的 Web 开发学习指南（2018 版）](https://zhuanlan.zhihu.com/p/33476872)
+* [从 1 万篇文章中挑出的40篇最棒的 Vue 学习指南（2018 版）](https://zhuanlan.zhihu.com/p/33642051)
 
 ## 其他
 在这里列举文章列表，另起博客详细总结
@@ -99,11 +82,7 @@
 * [由重构进阶前端开发入门 (四) 面向对象](http://blog.krimeshu.com/2018/01/31/basic-knowledge-points-for-beginner-3/)
 * [ES6 开发者的 7 个技巧](https://zhuanlan.zhihu.com/p/33462610)
 * [Web 打印开发总结](https://mp.weixin.qq.com/s/0H2Oa7lZbaKc38YIlJHfCw)
-* [web实时长图实践](https://mp.weixin.qq.com/s/FDtptkCaAUs_mv402lvRCA)
-* [网页图片加载优化方案](https://zhuanlan.zhihu.com/p/33370207)
-  * 域名拆分（在 Chrome 浏览器，对于同一个域名，最多支持 6 个请求的并发，其他的请求将会推入到队列中等待或者停滞不前，直到六个请求之一完成后，队列中新的请求才会发出。）首屏图片优先加载，等* 首屏图片加载完全后再去加载非首屏图片。
-  * 减少图片体积（在保证清晰度的前提下尽量使用体积较小的图片。而一张图片的体积由两个因素决定，该图片总的像素数目和编码单位像素所需的字节数。因此一张图片的文件大小就等于图片总像素数目乘以编码单位像素所需字节数）
-  * 按设备尺寸裁剪
+* [web 实时长图实践](https://mp.weixin.qq.com/s/FDtptkCaAUs_mv402lvRCA)
 * [一个函数的自白](https://mp.weixin.qq.com/s/1VtITPEufTMcI42WFEhoEw)
 * [10 种最常见的 Javascript 错误](http://elevenbeans.github.io/2018/02/05/top-10-javascript-errors/)
 * [前端页面热更新实现方案](https://refined-x.com/2018/02/07/%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E7%83%AD%E6%9B%B4%E6%96%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/)
@@ -136,22 +115,7 @@
 * [DOM操作成本到底高在哪儿？](http://palmer.arkstack.cn/2018/03/DOM%E6%93%8D%E4%BD%9C%E6%88%90%E6%9C%AC%E5%88%B0%E5%BA%95%E9%AB%98%E5%9C%A8%E5%93%AA%E5%84%BF/)
 * [2018 前端性能检查表](https://mp.weixin.qq.com/s/MDRfdRnhJJ53611cG_Zb6g)
 * [CSS-in-JS，向Web组件化再迈一大步](https://insights.thoughtworks.cn/css-in-js/)
-* [前端错误监控与收集探究](http://hpoenixf.com/%E5%89%8D%E7%AB%AF%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7%E4%B8%8E%E6%94%B6%E9%9B%86%E6%8E%A2%E7%A9%B6.html)
-* [Js面试算法](https://www.liayal.com/article/5ac46c20a6cf4e67bc05c9f4)
 * [前端适配](https://segmentfault.com/a/1190000014309664)
-
-### GraphQL
-计划系统了解一下
-* [阻碍你使用 GraphQL 的十个问题](http://jerryzou.com/posts/10-questions-about-graphql/)
-
-# 后端
-List
-* [关于TCP/IP，必知必会的十个问题](https://mp.weixin.qq.com/s/qn5fw8yHvjBou6Ps2Xo9Lw)
-* [一些容错方面的思考](https://fanchao01.github.io/blog/2018/01/15/fault-tolerant/)
-
-## 工具
-* [Web API 文档生成工具 apidoc](http://blog.720ui.com/2018/apidoc_use/)
-* [使用Swagger2Markup实现API文档的静态部署（一）：AsciiDoc](http://blog.didispace.com/swagger2markup-asciidoc/)
 
 ## node
 * [node，setImmeidate, setTimeout, nextTick你真的了解么？](https://zhuanlan.zhihu.com/p/32848336)
@@ -163,112 +127,3 @@ List
 * [eggjs工程与分析](https://mp.weixin.qq.com/s/9T_ouZuhGeDAxLwzd_jRrw)
 * [从头实现一个koa框架](https://segmentfault.com/a/1190000014044408)
 * [NODE.JS进阶：CLUSTER模块深入剖析](https://www.chyingp.com/nodejs-cluster-implementation-detail/)
-
-# 架构
-业务量大常见的升级办法
-* 机器升级
-* 系统拆分
-* 技术升级
-* 分布式
-
-分布式最主要的问题：一致性问题
-
-常见的分布式集群的架构
-* 纯负载均衡形式——硬件层面的 F5、软件层面的 nginx
-* 领导选举型——ElasticSearch、zookeeper
-* 区块链型——Bit Coin、Hyperledger
-* master-slaver 型—— Hadoop 集群、HBase 集群、Redis 集群
-* 规则型一致性 Hash
-
-更多
-* [前台与后台分离的架构实践](https://mp.weixin.qq.com/s/d65cXGXp_jcEeELyDZxGVA)
-* [一家创业公司的5年架构变迁史](https://mp.weixin.qq.com/s/rVfoSk3HCEEHvdlKz7A2xA)
-
-# 其他
-* [AR / MR / VR / XR有什么区别](https://zcfy.cc/article/what-really-is-the-difference-between-ar-mr-vr-xr)
-* [浅谈推进有赞全站 HTTPS 项目-工程篇](https://mp.weixin.qq.com/s/19KtHQAZ7fPYz6IyeenCUg)
-
-## 前后端分离
-[前后端分离实践](https://mp.weixin.qq.com/s/nKvjsU2frT5NDU4DLWqvYg)
-* 前后端分离场景与好处
-  * 前端实现与后端技术无关性，数据和页面剥离开来
-  * 前后职责分离
-  * 前后技术分离
-  * 前后分离带来了用户用户体验和业务处理解耦
-  * 前后分离，可以分别归约两端的设计
-* 那么带来了哪些矛盾呢
-  * 前后端思维不同
-  * 安全性策略不同(Cookie/Session --> Token)
-* 接口设计(解决前后端矛盾)
-  * 接口分后端服务实现和前端调用两个部分
-  * 重要的是在输入参数和输出结果上，最好一开始就有相对固定的定义，这往往取决于前端架构或采用的 UI 框架。
-* 用户认证
-  * 基于 Cookie/Session 的认证方案
-  * 基于 OAuth 的认证方案
-  * 基于 Token/JWT 的认证方案
-* 前后分离的测试
-  * 前端的测试将以用户体验测试和集成测试为主
-  * 后端主要是进行单元测试和 Web API 接口测试
-  * 不管是否前后端分离，Web 开发中都有一个共识：永远不要相信前端！
-
-List
-* [前后端分离实践有感](http://blog.51cto.com/jamesfancy/2058830)
-
-# 杂谈
-这部分内容就与技术无关啦
-* [盘点2017年最热门的10个增长黑客策略](https://mp.weixin.qq.com/s/HuW16LqvG1QGaHPiFeC_Bg)
-* [天天写业务代码，怎么破](https://www.jianshu.com/p/56acbd66d525)
-* [程序员简历上的那些坑](https://mp.weixin.qq.com/s/kjMhLUEiuEjva0vpy7Z4WQ)
-* [初入职场者面试中的问题](https://mp.weixin.qq.com/s/YWS_vryCSr08UnlHOlJ4zA)
-* [程序员的核心能力 - 构建快速反馈](https://www.yejianye.com/2018/01/10/feedback-loop/)
-* [做一个有批判性思维的程序员](http://bridgeforyou.cn/2018/01/22/Be-a-Critical-Thinking-Programmer/)
-* [过完年跳槽，要考虑哪些要素？](https://mp.weixin.qq.com/s/VhSdFnNeOb-xjoN0l5sjaw)
-* [躁动的季节里非典型跳槽指南，01篇 | 先聊聊跳槽动机这件事](https://mp.weixin.qq.com/s/zHwIn8ygXNwAakSE_WL4Bw)
-* [那些会阻碍程序员成长的细节[3]](https://mp.weixin.qq.com/s/4jj26NPCIVfMsAY_M7WH_A)
-* [学习别跟我谈兴趣](https://mp.weixin.qq.com/s/6zVBuQQTepLSXjkLA5qEqA)
-* [躁动的季节里非典型跳槽指南，02篇 | 技术面试三要素](https://mp.weixin.qq.com/s/4b3KO0zTvrDfWVCVNiuqmQ)
-* [躁动的季节里非典型跳槽指南，03篇 | 容易被忽视的简历问题](https://mp.weixin.qq.com/s/-QEt928fhgnV2I2AVcHmKg)
-* [躁动的季节里非典型跳槽指南，04篇 | 关于求职职场素养](https://mp.weixin.qq.com/s/0flphRak4WvCfTqPPZC1jg)
-* [那些会阻碍程序员成长的细节[4]](https://mp.weixin.qq.com/s?__biz=MzIwMjE3MDIwMA==&mid=2247484580&idx=1&sn=f5d109d80860c026593a94f35370aee4&chksm=96e38e93a1940785a52f88e025bc4723e5705d90e3dcf6b4f30a5f4034a88272cfb292bd6977#rd)
-* [那些会阻碍程序员成长的细节[6]](https://mp.weixin.qq.com/s/--sD1nrO6A4xcXlRuwgnnA)
-* [如何快速成长为技术大牛？阿里资深技术专家的总结亮了](https://mp.weixin.qq.com/s/t1P0mw9Hf4y27EiZB2biXw)
-* [找工作时不要降低自己的标准](https://mp.weixin.qq.com/s/IoujwgX2den6xtrUNf7wJA)
-* [给跳槽的人 7 点建议](https://mp.weixin.qq.com/s/4pmOUgHqCGqLa3bWjXcRRw)
-* [如何学习新技术](http://www.rowkey.me/blog/2018/04/13/how-to-study-tech/)
-* [做到三角，再也不担心我的懒癌症了](http://liujinkai.com/2018/04/14/done-triangle/)
-* [构建团队的研发哲学](https://mp.weixin.qq.com/s?__biz=MzI3OTUwMjM4MA==&mid=2247484155&idx=1&sn=86a659b436e15a65c12233c710caf8c5&chksm=eb4789b8dc3000ae4522564458eee4e37d2a464ba2cf46180637c8ddf87992b09e6d5f43bcc9#rd)
-* [什么样的领导不能跟](https://mp.weixin.qq.com/s/6RBGoJxTXbq9s45ba2tEFQ)
-* [帮助马云的决定成为最正确的决定](https://mp.weixin.qq.com/s?__biz=MzI5OTM3MjMyNA==&mid=2247484906&idx=1&sn=e97154463ca3abf541a2d4d736fc838b&chksm=ec96dfa1dbe156b78b4140ea47871a414bd0b7d060093256e9bb6ea7530f92cc02eb75e4f6cb&scene=21#wechat_redirect)
-
-[程序员的好日子什么时候才到头？](https://zhuanlan.zhihu.com/p/30771677)
-* 社会和经济的变迁
-  * 马爸爸说，员工离职，只有两个真实原因：钱没给到位；心受委屈了。反过来，想请君入瓮，先把钱给到位了。
-  * 市场一直对程序员的需求强劲，可靠的供给却严重不足
-  * 软件公司，尤其是互联网公司，有着无法企及的优势：它的融资成本太低了，太流氓了，流氓到美联储都自叹不如。
-  * 大公司出于对未来的恐惧，为维持其统治地位，从战略层面进行无休止的人才争夺。甚至，有时候延揽人才的目的是「走自己的路，让别人无路可走」
-  * 和绝大多数行业不同的是，软件行业的农民起义来的太容易了些，几颗有想法能行动的脑袋就可以向巨头发起挑战。这让巨头永远保持着一种「离破产只有 18 个月」的恐惧。
-  * 总结一下，强劲的需求，人神共愤的超低融资成本，巨头对未来的恐惧，三个因素，大大催高了软件人才的价格。
-  * 新一波浪潮，最抢眼的几个潮头是：AI，Big Data，Cryptocurrency（加密货币） 和 IoT（物联网）。
-* 个人如何提升自己的价值
-  * 你绝对不要把自己的职业生涯和某个语言，某个产品，某种系统挂钩，绝对不要！
-  * 围绕某个技术方向来定位职业生涯
-  * 要带着脑子工作，多琢磨事情怎么能做得更好。
-* 不可忽视的风险
-  * 被科技浪潮无情淘汰。
-  * 马太效应过于明显，有时候稍低的起点就意味着经年累月数倍于别人的奋斗。
-  * talk is cheap. Show me your code 是行业的共识。
-  * 诱惑太多，容易毁了自己的职业生涯
-
-时间的回报
-* 马太效应：凡有的，还要加给他，叫他多余；没有的，连他所有的，也要夺过来。
-* 技术债：烂代码和强耦合
-* 技术债的产生源自人的能力不足或者因为资源有限赶进度而牺牲代码质量，技术债并非完全不好。这跟公司或者个人负债是一样的，可以通过承担负债获取短期收益。然而不幸的是，因为低估甚至不理解技术债所产生的代价，人们往往会选择即使在有资源的情况下仍然忽视技术债、并且不偿还。
-* 烂代码之所以叫技术债，是因为会随着时间会产生额外的代价。
-* 不理解或忽视技术债的人不是因为不懂技术，而是因为不敬畏时间的代价。
-* 一万小时天才定律
-
-开发过程中沟通的禁忌
-* 请不要对技术人员说“这个需求很容易实现”
-* 请不要对非技术人员说“这个需求技术上无法实现”
-
-> 我就是容易犯这种错误，前期积累了一堆垃圾 如今我抓着这些垃圾不愿放手 用来折磨自己，先易后难，逐个击破
