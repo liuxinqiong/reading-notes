@@ -52,21 +52,8 @@
 
 ## 其他
 在这里列举文章列表，另起博客详细总结
-* [让你的 Web 站点轻松做到离线可访问](https://zoumiaojiang.com/article/amazing-workbox-3/)
-* [重新思考单元测试](https://blog.fundebug.com/2017/12/20/rethinking-unit-test/)
-* [玩转图片流](http://jartto.wang/2018/01/19/play-image-stream/)
-* [如何做一个听话的 “输入框”](https://mp.weixin.qq.com/s/CARRB4jWpiKFHfjBdnr8fQ)
-* [(a ==1 && a== 2 && a==3) 有可能是 true 吗？](http://elevenbeans.github.io/2018/01/23/nothing-is-impossible-for-javascript/)
 * [由重构进阶前端开发入门 (四) 面向对象](http://blog.krimeshu.com/2018/01/31/basic-knowledge-points-for-beginner-3/)
-* [一个函数的自白](https://mp.weixin.qq.com/s/1VtITPEufTMcI42WFEhoEw)
-* [10 种最常见的 Javascript 错误](http://elevenbeans.github.io/2018/02/05/top-10-javascript-errors/)
-* [适当地引入防卫性编程](http://harttle.land/2018/02/07/defensive-programming.html)
-* [axios的秘密](https://mp.weixin.qq.com/s/Kfh4VAS4Svd0wZhErGyP6g)
-* [大话来自一个程序员的反思](https://blog.thankbabe.com/2018/02/22/dh-cxy/)
 * [用Canvas画一只会跟着鼠标走的小狗](https://zhuanlan.zhihu.com/p/34139676)
-* [从URL开始，定位世界](https://insights.thoughtworks.cn/url-locates-the-world/)
-* [经验分享 | JavaScript反调试技巧](http://www.freebuf.com/articles/system/163579.html)
-* [函数式编程的一点实战](http://yanhaijing.com/javascript/2018/03/01/functional-programming-practice/)
 * [10 个技巧，让你更专业地使用 console 进行 JS 调试](https://elevenbeans.github.io/2018/03/10/10-Tips-for-JS-Debugging-with-Console/)
 * [简单聊一聊那些svg的沿路径运动](https://mp.weixin.qq.com/s/ESVIui-79sd555LVxiQRYA)
 * [推荐新文章JavaScript中this的运行机制及爬坑指南](https://zcfy.cc/article/javascript-s-this-how-it-works-where-it-can-trip-you-up)
