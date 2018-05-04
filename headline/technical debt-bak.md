@@ -50,17 +50,6 @@
 * [你不知道的Vuejs - Vuejs 插件开发](https://yugasun.com/post/you-dont-know-vuejs-10.html)
 * [vue中需要注意的问题总结(上)](http://wangyaxing.top/2018/04/15/2018-04-15-vue%E4%B8%AD%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93(%E4%B8%80)/)
 
-## 其他
-在这里列举文章列表，另起博客详细总结
-* [由重构进阶前端开发入门 (四) 面向对象](http://blog.krimeshu.com/2018/01/31/basic-knowledge-points-for-beginner-3/)
-* [用Canvas画一只会跟着鼠标走的小狗](https://zhuanlan.zhihu.com/p/34139676)
-* [10 个技巧，让你更专业地使用 console 进行 JS 调试](https://elevenbeans.github.io/2018/03/10/10-Tips-for-JS-Debugging-with-Console/)
-* [简单聊一聊那些svg的沿路径运动](https://mp.weixin.qq.com/s/ESVIui-79sd555LVxiQRYA)
-* [推荐新文章JavaScript中this的运行机制及爬坑指南](https://zcfy.cc/article/javascript-s-this-how-it-works-where-it-can-trip-you-up)
-* [JavaScript EventEmitter](https://zhuanlan.zhihu.com/p/34914945)
-* [自动化生成 H5 骨架页面](https://zhuanlan.zhihu.com/p/34702561)
-* [Websocket 使用指南](https://qiutc.me/post/websocket-guide.html)
-
 ## node
 * [node，setImmeidate, setTimeout, nextTick你真的了解么？](https://zhuanlan.zhihu.com/p/32848336)
 * [nodejs学习备忘录系列之Stream(一)](https://zhuanlan.zhihu.com/p/33488104)
