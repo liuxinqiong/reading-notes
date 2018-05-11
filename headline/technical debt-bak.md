@@ -38,25 +38,3 @@
 * [基于 React 的高质量坦克大战复刻版](https://qianduan.group/posts/5ace13b39fd64d5a7458a8c7)
 * [从零开始实现一个React（三）：diff算法](https://github.com/hujiulong/blog/issues/6)
 * [从零开始实现一个React（四）：异步的setState](https://github.com/hujiulong/blog/issues/7)
-
-## Vue
-* [从 Nuxt.js 学习到了什么？](https://zoumiaojiang.com/article/learn-from-nuxt-js/)
-* [2018 我所了解的 Vue 知识大全 （二）](https://qianduan.group/posts/5a56f8df0cf6b624d2239c3c)
-* [Weex + Ui - Weex Conf 2018](https://zhuanlan.zhihu.com/p/33153760)
-* [你不知道的Vuejs - 组件式开发](https://yugasun.com/post/you-dont-know-vuejs-4.html)
-* [你不知道的Vuejs - 工欲善其事必先利其器](https://yugasun.com/post/you-dont-know-vuejs-5.html)
-* [漫谈Vue组件库开发](http://jdc.jd.com/archives/212167)
-* [Vue拖拽组件开发实例](https://mp.weixin.qq.com/s?__biz=MzUxMDYxNTgwMA==&mid=2247483880&idx=1&sn=45c3eea3d581ff9b39ae6a04f90708f0&chksm=f901087fce7681692418fad396b8e9cafb3fedbc6921fc2f1d10356f4cd3d23db316db00f651#rd)
-* [你不知道的Vuejs - Vuejs 插件开发](https://yugasun.com/post/you-dont-know-vuejs-10.html)
-* [vue中需要注意的问题总结(上)](http://wangyaxing.top/2018/04/15/2018-04-15-vue%E4%B8%AD%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93(%E4%B8%80)/)
-
-## node
-* [node，setImmeidate, setTimeout, nextTick你真的了解么？](https://zhuanlan.zhihu.com/p/32848336)
-* [nodejs学习备忘录系列之Stream(一)](https://zhuanlan.zhihu.com/p/33488104)
-* [Node.js 安全清单](https://zcfy.cc/article/node-js-security-checklist-risingstack)
-* [Node.js 最佳实践 —— 在2018年如何成为更优秀的Node.js开发者](https://zcfy.cc/article/node-js-best-practices-how-to-become-a-better-node-js-developer-in-2018)
-* [Pandora.js 专业的 Node.js 应用监控管理器，阿里开源](https://github.com/midwayjs/pandora/wiki/Pandora.js---%E4%B8%93%E4%B8%9A%E7%9A%84-Node.js-%E5%BA%94%E7%94%A8%E7%9B%91%E6%8E%A7%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%8C%E9%98%BF%E9%87%8C%E5%BC%80%E6%BA%90)
-* [Egg 最新的静态资源方案](https://zhuanlan.zhihu.com/p/34874264)
-* [eggjs工程与分析](https://mp.weixin.qq.com/s/9T_ouZuhGeDAxLwzd_jRrw)
-* [从头实现一个koa框架](https://segmentfault.com/a/1190000014044408)
-* [NODE.JS进阶：CLUSTER模块深入剖析](https://www.chyingp.com/nodejs-cluster-implementation-detail/)
