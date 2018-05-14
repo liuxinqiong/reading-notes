@@ -1,5 +1,3 @@
-**vue part wait for collation into blog**
-
 前端价值
 1. 搭建前端工程
   * 已经不是所见即所得了（ES6，sass）
@@ -29,13 +27,13 @@ config.devtool
 * config.devtool = '#cheap-module-eval-source-map'
 
 vue2
-* 数据绑定 MVVM模式
-* vue单文件开发方式
-  * 起初jsx支持不好，自创vue方式
+* 数据绑定 MVVM 模式
+* vue 单文件开发方式
+  * 起初 jsx 支持不好，自创 vue 方式
 * render 方法
-  * vue2采用虚拟dom
-  * 数据变动，自动调用render
-  * 会逐层遍历template结构，渲染数据
+  * vue2 采用虚拟 dom
+  * 数据变动，自动调用 render
+  * 会逐层遍历 template 结构，渲染数据
 
 API重点
 * 生命周期方法
@@ -44,9 +42,9 @@ API重点
   * 缓存功能
   * 不用调用，直接写函数名即可
 
-vue使用jsx与使用vue文件
+vue使用 jsx 与使用 vue 文件
 * jsx操作能力更强，因为你可以使用js的所有能力，而不是通过v-if等指令，vue2开始支持
-* vue结构更清晰，使用更方便
+* vue 结构更清晰，使用更方便
 
 webpack优化
 * 安装extract-text-webpack-plugin
