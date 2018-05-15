@@ -1,6 +1,6 @@
-**wait for collation into blog**
+React新特性与周边
 
-## 新旧Context API
+## 新Context API
 新旧 Context 想解决的问题依旧是相同的："prop drilling"，为跨层级的组件搭建一座桥梁。
 
 旧 Conetxt API 存在的问题
@@ -75,3 +75,51 @@ componentDidCatch() 方法就好像针对组件的 catch {} 代码块；不过 J
 错误边界的粒度取决于您。您可以包装顶层路由组件来向用户显示“出错”消息，就像服务器端框架经常处理崩溃一样。您还可以将单个小组件封装在错误边界中，以保护它们不致破坏应用程序的其余部分。
 
 ## React fiber 算法
+
+## Time Slice 和 Suspense
+
+## Mobox
+目的对比Redux和Mobox，Mobox有哪些不同与改进呢，末尾有资料
+
+## immer
+JS 里面的变量类型可以大致分为基本类型和引用类型。在使用过程中，引用类型经常会产生一些无法意识到的副作用，所以在现代 JS 开发过程中，大家都有意识的写下断开引用的不可变数据类型。
+```js
+var a = [{ val: 1 }]
+var b = a.map(item => item.val = 2)
+console.log(a[0].val) // 2
+```
+
+上面的代码就很危险，我们本意是通过a创造新数组b，却无意中将a的值进行了修改。如果接下来我们需要用到a，很容易发生一些我们难以预料并且难以 debug 的 bug。
+
+一般来说当需要传递一个对象进一个函数时，我们可以使用 Object.assign 或者 ... 对对象进行解构，成功断掉一层的引用。但这里必须有一个清晰的认识，**无论是 Object.assign 还是 ... 的解构操作，断掉的引用也只是一层**，如果对象嵌套超过一层，这样做还是有一定的风险。
+
+可怜的程序员吃了亏之后，多数情况下我们会考虑 深拷贝 这样的操作来完全避免上面遇到的所有问题。深拷贝，顾名思义就是在遍历过程中，如果遇到了可能出现引用的数据类型，就会递归的完全创建一个新的类型。
+
+如果自己书写`deepClone`函数往往只能满足简单的应用场景，但是真正在生产工作中，我们需要考虑非常多的因素。因为有太多不确定因素，推荐使用大型开源项目里面的工具函数，比较常用的为大家所熟知的就是 `lodash.cloneDeep`，无论是安全性还是效果都有所保障。
+
+这样的概念我们常称作 immutable ，意为不可变的数据，每当我们创建一个被 deepClone 过的数据，新的数据进行有副作用 (side effect) 的操作都不会影响到之前的数据，这也就是 immutable 的精髓和本质。
+
+然而 deepClone 这种函数虽然断绝了引用关系实现了 immutable，但是开销实在太大。所以在 2014 年，facebook 的 immutable-js 横空出世，即保证了 immutable ，又兼顾了性能。
+
+这里谈谈 immutable 实现的 immer 库。immer 的作者同时也是 mobx 的作者。
+
+与 immutable-js 最大的不同，immer 是使用原生数据结构的 API 而不是内置的 API。
+
+原理：Proxy，更多介绍看末尾资料。
+
+## 动画
+所有动画的本质都是连续修改 DOM 元素的一个或者多个属性，使其产生连贯的变化效果，从而形成动画。在 React 中实现动画本质上与传统 web 动画一样，仍然是两种方式： 通过 css3 动画实现和通过 js 修改元素属性。只不过在具体实现时，要更为符合 React 的框架特性，可以概括为几类：
+* 基于定时器或 requestAnimationFrame(RAF) 的间隔动画；
+* 基于 css3 的简单动画；
+* React 动画插件 CssTransitionGroup；
+* 结合 hook 实现复杂动画；
+* 其他第三方动画库。
+
+更多直接看末尾资料，介绍的很棒。
+
+## 资料
+* 感受一下牛人的定义：[基于 React 的高质量坦克大战复刻版](https://qianduan.group/posts/5ace13b39fd64d5a7458a8c7)
+* [React 中常见的动画实现方式](https://tech.youzan.com/react-animations/)
+* [从新的 Context API 看 React 应用设计模式](https://zhuanlan.zhihu.com/p/33925435)
+* [你需要Mobx还是Redux？](http://blog.codingplayboy.com/2018/02/11/mobx-vs-redux/)
+* [下一代状态管理工具 immer 简介及源码解析](https://zhangzhao.name/2018/02/01/immer%20-%20immutable/)
