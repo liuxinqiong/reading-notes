@@ -57,3 +57,45 @@ git log 常用参数，注意：参数通常可以搭配使用
 > 参数一个中划线还是两个中划线规律：单字母一个中划线，否则两个中划线
 
 git branch -v 查看分支信息
+
+图形化查看版本演进：通过 gitk 命令打开图形界面
+
+.git 目录常用文件或目录有
+* HEAD 文件：内容是 refs/heads/current_branch_name
+* config 文件：存放本地相关的配置信息
+* refs 文件夹（本质内容是 hash 值的存储）
+  * heads：分支信息
+  * remotes：远程信息
+  * tags：标签信息
+* objects
+  * 双字符松散文件：文件夹名称 + 内部文件名构成 hash 值
+  * pack 打包文件
+* log：操作日志
+
+git cat-file -t hash 查看类型（commit、tag、tree、blob）
+
+git cat-file -p hash 查看内容
+
+commit、tree、blob 关系
+* 一个 commit 对应一个 tree（tree 表示当时这个 commit 下项目文件目录和文件的快照）
+* tree 里面可以包含 tree（因为目录也是树）
+* blob 只和文件内容相关，和文件名无关
+
+分离头指针（detached HEAD）：直接 git checkout commitID，就会提示你处在分离头指针的状态，因为没有和任何分支进行关联，仅仅是基于某个 commit。此时你可以做一些尝试性的修改，如果觉得可行，可以提交他们。你也可以通过另一个 checkout 从而丢弃在这种状态下做的所有提交。
+
+> git 很聪明，当你在分离头指针的状态下做了提交，此时切换到其他分支，会给你个友情提示，会提示有提交没有关联到任何分支，如果你觉得是有用的，你可以通过创建一个分支保留他们，命令为：git branch new-branch-name commitID；否则过段时间，会被 git 清理。
+
+创建新分支：git checkout -b branch-name。默认值基于当前分支的最近一次提交，或者你可以指定具体哪个分支，也可以是哪次提交。
+
+HEAD 正常都是指向某分支的最近一个 commit，在分离头指针的情况下，直接指向某个 commit。
+
+通过 HEAD 可以帮助我们实现简写。比如我们要 diff 两次提交。git diff commitIDA commitIDB。但是 commitID 通常需要自己额外去找，此时我们就可以使用 HEAD。如下：
+```shell
+git diff HEAD HEAD^ # HEAD 的父亲
+git diff HEAD HEAD^^ # 父亲的父亲
+git diff HEAD HEAD~1 # 往前第一次提交
+```
+
+如果修改最新 commit 的 message：git commit --amend。本质上不只是修改 message，而是会创建一个将暂存区的内容生成一个 commit，再将当前最新的 commit 替换成新生成的那一个。
+
+如何修改老旧 commit 的 message：git rebase -i commitID（很关键，这是被修改的 commit 的父 id）
