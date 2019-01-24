@@ -91,6 +91,7 @@ HEAD 正常都是指向某分支的最近一个 commit，在分离头指针的�
 
 通过 HEAD 可以帮助我们实现简写。比如我们要 diff 两次提交。git diff commitIDA commitIDB。但是 commitID 通常需要自己额外去找，此时我们就可以使用 HEAD。如下：
 ```shell
+
 git diff HEAD HEAD^ # HEAD 的父亲
 git diff HEAD HEAD^^ # 父亲的父亲
 git diff HEAD HEAD~1 # 往前第一次提交
@@ -163,6 +164,81 @@ GitHub 配置公私钥（mac）
 
 通常我们建立远程仓库的时候，可能预先就有文件了，比如readme.md、.gitignore 或 LICENCE，此时本地和远程同步，往往会遇到问题，因为本地和远程是没有上下游关系的，是互相独立的版本树，直接 git merge 会报错。我们可以先通过 git fetch，然后再单独执行 git merge 操作查看哪个步骤报错（git pull 等同于 git fetch + git merge），此时可以通过 git merge --allow-unrelated-histories origin/master 来达到合并目的。
 
+解锁 git fetch 和 git pull 更多用法
+```shell
+git fetch <远程主机名> # 这个命令将某个远程主机的更新全部取回本地
+git fetch <远程主机名> <分支名> # 取回特定分支的更新
+git pull <远程主机名> <远程分支名>:<本地分支名> # 将远程主机的某个分支的更新取回，并与本地指定的分支合并
+git pull <远程主机名> <远程分支名> # 远程分支是与当前分支合并，则冒号后面的部分可以省略
+```
+
 git clone remote_url：默认使用远程项目名作为本地文件夹名称，如果需要自行指定名称，直接在后面加上即可。
 
-如果远程有新的分支，默认本地是没有的，因此需要基于远程分支建立本地分支，这个基于很关键，不然就等同于在本地建议一个分支。命令：git checkout -b local-branch-name remote-branch-name
+如果远程有新的分支，默认本地是没有的，因此需要基于远程分支建立本地分支，这个基于很关键，不然就等同于在本地建立一个分支。命令：git checkout -b local-branch-name remote-branch-name
+
+通常，合并分支时，如果可能，Git 会用 Fast-forward 模式，但这种模式下，删除分支后，会丢掉分支信息。因为 Fast-forward 表示快进模式合并，即直接将当前分支指针指向要合并的分支，此时不会生成新的 commit，因此一旦删除分支或者分支指针往前走，很难体现该出提交是合并自某个分支的。如果禁用掉 Fast-forward，就可以生成新的 commit 从而反映这件事。
+```shell
+git merge --no-ff -m "commit描述" <分支名>
+```
+
+如果不能采用 Fast-forward 模式，此时会触发 auto-merge，如果自动合并没有冲突，则会提示用户输入描述信息，从而创建一个新的 commit。如果自动合并失败，则需要手动解决冲突后，自行创建一个 commit 提交更改。
+
+禁止向集成分支执行 push -f 操作。
+
+禁止向集成分支执行变更历史的操作。如果公共的 commit 做了改变，会给协同开发带来麻烦。
+
+GitHub 核心功能
+* 代码审查
+* 项目管理
+* 项目集成
+* 团队管理
+* 社交编程
+* 文档（pages，wikis）
+* 代码托管
+
+如何高效在 GitHub 搜索项目
+* 直接搜索框回车，然后选择 advanced search，可进行高级搜索
+* 输入框关键词空格隔开，默认匹配项目标题和项目描述，十分局限
+* 方便起见，可以直接在输入框使用关键字
+  * in:readme
+  * stars:>1000
+  * language:JavaScript
+  * …… 和 advanced search 是对应的
+
+组织类型帐号
+* 创建：settings - Organizations - New organization
+* 组织帐号可以有仓库，有成员，有小组
+* 小组可以管理仓库，管理成员（读写权限），子小组
+* 拥有团队后，在新建 repo 时就可以 Owner 选择对应组织
+* 建完团队项目后，就可以在项目下设置下的 Collaborators & teams 选择归属小组与对应的权限了
+
+选择工作流，需考虑的因素
+* 团队人员的组成
+* 研发设计能力
+* 输出产品特征
+* 项目难易程度
+
+常见工作流
+* 主干开发
+* 特性分支开发（Git Flow）
+* GitHub Flow（简化版 Git Flow）
+* GitLab Flow（带生产分支|环境分支|发布分支）
+
+> 参考就好，莫太迷信
+
+挑选合适的分支集成策略
+* Allow merge commits：只要 Git 能自行处理，就会自行 merge，在 base 上创建一个新的 commit，被合并分支和新的 commit 建立关联。
+* Allow squash merging：不改变被合分支指向，把分支的多个提交，合成一个 base 上新的 commit。可用来形成线性分支树。
+* Allow rebase merging：不改变被合分支指向，在 base 创建多个新的 commit 一一对应分支上的提交。可用来形成线性分支树。
+
+为规范 issue，GitHub 支持为 issue 定制模版，具体的模版文件是存在 repo 中的，这样他们 new issue 时，就可以选择模版了。
+
+使用 Project 管理 issue ？
+* 可以自己定义，也支持各种各样的模版，比如 Bug 管理，进度管理等，简直就是个任务管理器
+* 支持手动添加，或者 issue & PR 设置 Project
+
+如何实施内部 code review ？通过添加保护分支规则，settings - branches
+* 必须通过内部 PR
+* 状态检查
+* 签名提交
+* 仅管理员等
