@@ -227,7 +227,7 @@ GitHub 核心功能
 > 参考就好，莫太迷信
 
 挑选合适的分支集成策略
-* Allow merge commits：只要 Git 能自行处理，就会自行 merge，在 base 上创建一个新的 commit，被合并分支和新的 commit 建立关联。
+* Allow merge commits：只要 Git 能自行处理，就会自行 merge，在 base 上创建一个新的 commit，被合并分支和新的 commit 建立关联（叫做 merge commit）。
 * Allow squash merging：不改变被合分支指向，把分支的多个提交，合成一个 base 上新的 commit。可用来形成线性分支树。
 * Allow rebase merging：不改变被合分支指向，在 base 创建多个新的 commit 一一对应分支上的提交。可用来形成线性分支树。
 
@@ -242,3 +242,7 @@ GitHub 核心功能
 * 状态检查
 * 签名提交
 * 仅管理员等
+
+基于某分支做变基：git rebase branch-name
+
+怎么保证集成的质量：Marketplace 选择需要的工具实现自动化检查与发布
