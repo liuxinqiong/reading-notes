@@ -77,7 +77,7 @@ BFC（或 IFC）
   * overflow 不为 visible
 * BFC 使用场景
 
-### DOM 事件类
+#### DOM 事件类
 基本概念：DOM 事件级别
 * DOM0：onclick
 * DOM2：addEventListener
@@ -265,7 +265,127 @@ Child.prototype = Object.create(Parent.prototype) // 隔离
 Child.prototype.constructor = Child
 ```
 
+#### 通信类
+什么是同源策略及限制
+* 源：协议、域名、端口
+* 同源策略限制从一个源加载的文档或者脚本如何与来自另一个源的资源进行交互，用于隔离潜在恶意文件的关键的安全机制
+* 主要限制内容
+  * Cookie、LocalStorage 和 IndexDB 无法获取
+  * DOM 无法获得
+  * AJAX 请求不能发送
+
+前后端如何通信
+* AJAX
+* WebSocket
+* CORS
+
+如何创建Ajax
+* XMLHttpRequest对象的工作流程
+* 兼容性处理
+* 事件的触发条件
+* 事件的触发顺序
+
+跨域通信的几种方式
+* JSONP：利用 script 标签的异步加载实现的。
+* Hash：利用 Hash 的改变不会触发页面刷新，可以通过 onhashchange 事件监听到变化，通过 window.location.hash 得到数据，应用场景：嵌 iframe 的多窗口不同源通信。
+* postMessage：H5标准，主要利用 postMessage Api + message 事件。
+* WebSocket：onopen、onmessage、onclose
+* CORS
+
+#### 前端安全
+CSRF
+* 基本概念和缩写：跨站请求伪造
+* 攻击原理：已登录验证下发cookie，网站接口本身存在漏洞
+* 防御措施：token 验证、Referer 验证、隐藏令牌
+
+XSS
+* 跨域脚本工具
+* 攻击原理：不需要登录，注入JS脚本
+* 防御措施：使得脚本不可执行
+
+#### 算法
+排序
+* 快速排序（https://segmentfault.com/a/1190000009426421）
+* 选择排序（https://segmentfault.com/a/1190000009366805）
+* 希尔排序（https://segmentfault.com/a/1190000009461832）
+* 冒泡排序
+
+堆栈、队列、链表（https://juejin.im/entry/58759e79128fe1006b48cdfd）
+
+递归（https://segmentfault.com/a/1190000009857470）
+
+波兰式和逆波兰式
+
+原则
+1. 先准备理解题目意思
+2. 伪代码，分解问题
+3. 如果实在写不出，但是似曾相似，也可以将基本思路说出来
+
 ## 知识梳理
+
+#### 渲染机制
+什么是DOCTYPE及作用：DTD（文档类型定义）是一系列语法规则，用来定义XML或（X）HTML的文件类型，浏览器使用它来判断文档类型，决定使用何种协议来解析，以及切换浏览器模式。
+
+DOCTYPE 是用来声明文档类型和 DTD 规范的，一个主要的用途便是文件的合法性规则。如果文件代码不合法，那么浏览器解析时便会出一些差错。HTML 4.0 声明非常复杂，有一个严格模式和传统模式，HTML5就比较简单了，直接在 html 元素上添加`!DOCTYPE`。
+
+浏览器渲染过程
+1. HTML 解析成 DOM Tree
+2. CSS 解析成 Style Tree
+3. HTML Tree 和 Style Tree 整合成 Render Tree（Layout 计算位置）
+4. Painting
+
+重排Reflow：DOM结构中各个元素都有自己的盒模型，这些都需要浏览器根据各种样式来计算结果将元素放到它该出现的位置，这个过程称为 reflow。
+
+触发 reflow
+* 增加、删除、修改 DOM 节点时，会导致 reflow 或 repaint
+* 移动 DOM 的位置或动画
+* 修改某些 CSS 样式
+* Resize 窗口的时候或者滚动的时候
+* 修改网页默认字体
+
+重绘Repaint：当各种盒子的位置、大小以及其他属性，例如颜色、字体大小等确定下来后，浏览器于是便把这些元素都按照各自的特性绘制了一遍，于是内容就出现了，这个过程称为repaint。
+
+触发 repaint
+* DOM 改动
+* CSS 改动
+
+如果尽可能降低 repaint 频率：HTML 碎片
+
+布局Layout
+
+#### JS 运行机制
+理解 JS 单线程机制
+
+什么是任务队列
+
+什么是 Event Loop
+
+理解哪些语句会放入异步任务队列中，和放入异步任务队列的时机
+
+#### 页面性能
+提升页面性能的方法有哪些
+1. 资源压缩合并，减少 HTTP 请求，开启 gzip 压缩
+2. 非核心代码异步加载 -> 异步加载的方式 -> 异步加载的区别
+3. 利用浏览器缓存 -> 缓存分类 -> 缓存原理
+4. 使用 CDN
+5. 预解析 DNS
+```html
+<meta http-equiv="x-dns-prefetch-control" content="on"> // 一般而言，A 标签的链接，在高级浏览器中默认打开 dns 预解析，但如果使用 HTTPS 协议，很多浏览器默认关闭，通过这个强制开启
+<link ref="dns-prefetch" href="">
+```
+
+异步加载
+1. 动态脚本加载
+2. defer：HTML 解析完之后才会执行，如果是多个，按照加载的顺序依次执行
+3. async：加载完之后立即执行，如果是多个，执行顺序和加载顺序无关
+
+浏览器缓存
+* 强缓存：Expires（绝对时间）、Cache-Control（相对时间，优先级比 Expires 搞）
+* 协商缓存：Last-Modified，If-Modified-Since，Etag，If-None-Match
+  * Last-Modified 和 Etag 是服务器下发的
+  * If-Modified-Since 和 If-None-Match 请求头携带上述服务器下发的值，去服务端对比
+
+#### 错误监控
 
 ## 复习指导
 注意事项、复习指南
