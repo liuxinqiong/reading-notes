@@ -386,9 +386,102 @@ DOCTYPE 是用来声明文档类型和 DTD 规范的，一个主要的用途便�
   * If-Modified-Since 和 If-None-Match 请求头携带上述服务器下发的值，去服务端对比
 
 #### 错误监控
+前端错误的分类和错误的捕获方式
+* 即时运行错误
+  * try-catch
+  * window.onerror
+* 资源加载错误（不冒泡，因此 window.onerror 无法捕获）
+  * object.onerror
+  * performance.getEntries() 资源加载时长
+  * Error 事件捕获阶段
+
+跨域的 js 运行错误可以捕获吗？错误提示是什么，应该如何处理
+* 可以捕获，但是错误信息均为 Script error，行号和列号均无法拿到
+* 客户端工作：给 script 标签添加 crossorigin 属性，服务端设置 js 资源响应头 Access-Control-Allow-Origin:*
+
+上报错误的基本原理
+* 采用 Ajax 通信方式（非常不推荐）
+* 利用 Image 对象上报
+
+#### MVVM 框架
+了解 MVVM 框架吗
+* Vue/React/Angular
+* 收住优点，攒着下面说，开启引导模式
+
+谈谈你对 MVVM 框架的认识
+* 先聊 MVC，彰显知识面涉猎较多
+* 聊聊 mvvm（Model、View、ViewModel） 的定义说清楚
+* 对比 mvvm 和 mvc
+
+双向绑定是什么原理，可以写出来嘛
+* 理解 view 和 data 之间的双向关系
+* 绑定，就是自动化处理
+* Object.defineProperty（ES5）
+* Object.defineProperty 与 reflect.defineProperty（返回 bool 值） 的区别
+
+使用了什么设计模式：观察者模式（Observer，Dep，Watcher）
+* 观察者设计模式的原理要了解清楚
+* 最好能写出设计模式的伪代码
+* 如果没有问到设计模式，也要找时机表现出来
+
+生命周期是什么（Vue）
+* beforeCreate created
+* beforeMount mounted（才可以访问 DOM 节点）
+* beforeUpdate updated
+* beforeDestroy destroy
+
+有看过源码嘛
+* 如果看过直接给面试官将
+* 没看过，统统回到 vue.js 的源码上来
+
+![Observer.png](img/Observer.png)
 
 ## 复习指导
 注意事项、复习指南
+
+准备要充分：项目背后原理和技术难点
+
+描述要演练，把握好重点和难点，控制好时间
+
+引导找时机，优势要发挥
+
+考察点
+* 业务能力
+  * 什么业务
+  * 什么业绩
+  * 什么技术方案
+  * 什么技术难点
+  * 什么问题
+  * 最大的收获
+* 团队协作能力
+* 事务推动能力
+* 带人能力
+* 其他能力
+
+业务能力这一块总是不知道怎么说，看看别人怎么说的吧
+* 独立负责 360 数据彩票走势图开发
+* 历时3周完成所有彩种开发，用户量上涨15%
+* 区别常规canvas方案，使用vml+svg方案
+* 解决了走势图高级绘图板的开发
+* 橡皮擦问题，动态连线问题
+* 对业务的理解更加深入、对技术图标更有把控
+
+团队协作能力
+* 对彩票足彩的奖金算法有深入研究，行业第一
+* 为 H5、客户端讲解算法并协助完成开发
+* 何 PHP、PM 同学在一天的时间内快速支持足彩竞猜活动
+* 和 leader 独立负责彩票 PC 站
+
+事务推动能力
+* 对历史算法更新换代
+* 推动专题的CMS架构
+* 主导客户系统的建设
+* 完成多项专利的申请
+
+带人能力
+* 带一个社招完成数字彩的开发和维护
+* 带一个实习生完成专题活动的开发
+* 代码规范、Review
 
 ## 真题解析
 九宫格、阿里笔试题、函数和对象、算法题
