@@ -207,7 +207,40 @@ $.fn.getNodeName = function() {
 
 Promise 的基本使用和原理
 * 开放封闭原则：对扩展开放，对修改封闭。代码解耦，利于扩展，降低测试回归成本。
+* 异常捕获
+  * then 只接受一个参数，最后统一用 catch 捕获异常（对于代码抛出异常 Error 和 reject 均可捕获），如果 then 有两个参数，则 catch 不会执行
+* 多个串联，链式执行
+* Promise.all 和 Promise.race
+* Promise 标准
+  * 状态变化：pending fulfilled rejected，状态不可逆
+  * then 返回的必须是一个 Promise 实例
 
 async/await（和 Promise 的区别和联系）
+* then 只是将 callback 拆分了
+* async/await 是最直接的同步写法
+* 用法
+  * 使用 await，函数必须用 async 标识
+  * await 后面跟的是 Promise 实例
 
 总结一下当前 JS 解决异步的方案
+
+## 框架原理
+
+### 虚拟 DOM
+vdom 是 vue 和 React 的核心。
+
+vdom 是什么？为何会存在 vdom？
+* 用 JS 模拟 DOM 结构，DOM 变化的对比，放在 JS 层来做
+  * tag 表示标签，attrs 表示标签属性，children 表示子元素。（class 属性由于在 JS 中是关键字，因此替换成 className）
+* 提高重绘性能，DOM 操作是最昂贵的
+
+vdom 如何应用，核心 API 是什么？
+* snabbdom 库（vue 2.0 借用该库）
+* h 函数返回一个 vnode 节点
+  * h(tagName,attrsObj,childElements))
+  * h(tagName,attrsObj,；；))
+* patch 函数（初次渲染与 diff 渲染）
+  * patch(container, vnode)
+  * patch(vnode, newVnode)
+
+介绍一下 diff 算法？
