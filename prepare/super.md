@@ -237,10 +237,143 @@ vdom 是什么？为何会存在 vdom？
 vdom 如何应用，核心 API 是什么？
 * snabbdom 库（vue 2.0 借用该库）
 * h 函数返回一个 vnode 节点
-  * h(tagName,attrsObj,childElements))
-  * h(tagName,attrsObj,；；))
+  * h(tagName, attrsObj, childElements))
+  * h(tagName, attrsObj, ''))
 * patch 函数（初次渲染与 diff 渲染）
   * patch(container, vnode)
   * patch(vnode, newVnode)
 
-介绍一下 diff 算法？
+介绍一下 diff 算法？对比异同
+
+vdom 为何用 diff 算法？
+* DOM 操作是昂贵的，因此尽量减少 DOM 操作
+* 找出本次 DOM 必须更新的节点来更新，其他的不更新
+* 如何找出的过程，就需要 diff 算法
+
+diff 算法实现流程
+```js
+// 数据样本
+var vnode = {
+    tag: 'ul',
+    attrs: {
+        id: 'list'
+    },
+    children: [
+        {
+            tag: 'li',
+            attrs: {
+                className: 'item'
+            },
+            children: ['Item 1']
+        },
+        {
+            tag: 'li',
+            attrs: {
+                className: 'item'
+            },
+            children: [{
+                tag: 'span',
+                attrs: {
+                    className: 'text'
+                },
+                children: ['text']
+            }]
+        }
+    ]
+}
+function createElement(vnode) {
+    if(typeof vnode === 'string') {
+        return document.createTextNode(vnode)
+    }
+    var tag = vnode.tag
+    var attrs = vnode.attrs || {}
+    var children = vnode.children || []
+    if(!tag) {
+        return null
+    }
+    var elem = document.createElement(tag)
+    for(var attrName in attrs) {
+        if(attrs.hasOwnProperty(attrName)) {
+            var key = attrName
+            if(attrName === 'className') {
+                key = 'class'
+            }
+            elem.setAttribute(key, attrs[attrName])
+        }
+    }
+
+    children.forEach(function(childVnode) {
+        elem.appendChild(createElement(childVnode))
+    })
+    return elem
+}
+
+// patch(vnode, newVnode) vnode 要和真实的 dom 有对应关系，这样对比之后才知道要更新那些 dom
+// 伪代码。没考虑太细节的东西
+function updateChildren(vnode, newVnode) {
+    var children = vnode.children || []
+    var newChildren = newVnode.children || []
+    children.forEach(function(childVnode, index) {
+        var newChildVnode = newChildren[index]
+        if(childVnode.tag === newChildVnode.tag) {
+            updateChildren(childVnode, newChildVnode)
+        } else {
+            replaceNode(childVnode, newChildVnode)
+        }
+    })
+}
+function replaceNode(vnode, newVnode) {
+    var ele= vnode.element
+    var newEle = createElement(newVnode)
+    // 替换
+    ele.parentNode.replaceChild(ele, newEle)
+}
+```
+
+更多细节
+* 节点新增和删除
+* 节点重新排序
+* 节点属性、样式、事件绑定
+* 如何极致压榨性能
+
+> 看源码过程中一定不要陷入细节当中，二八原则
+
+### MVVM
+使用 jQuery 和使用框架的区别
+* 数据和视图分离，解耦（开放封闭原则）
+* 以数据驱动视图（只关心数据变化，DOM 操作被封装）
+
+如何理解 MVVM
+* MVC（Model-View-Controller）
+  * 用户操作 view，view 调用 controller，controller 改变 model，model 反馈视图
+  * 直接操作 controller，controller 改变 model，model 反馈视图
+* Model-View-ViewModel，因为数据和视图是分离的，ViewModel 扮演着 Model 到 View 之间桥梁的角色
+
+MVVM 框架的三大要素
+* 响应式：如何监听到 data 每个属性变化
+* 模版引擎：模版如何被解析，指令如何处理
+* 渲染：模版如何被渲染成 html？以及渲染过程
+
+vue 中如何实现响应式：核心原理 Object.defineProperty
+
+vue 中如何实现解析模版
+* 模版是什么
+  * 本质 HTML 字符串
+  * 有逻辑 v-for v-if
+  * 嵌入 JS 变量
+  * 模版必须转换成 JS 代码，第一有逻辑，第二需要转换为 HTML 渲染页面
+* render 函数
+  * with 用法（vue render 中用）
+  * 模版中所有信息都包含在了 render 函数中
+  * vue 2.0 开始支持预编译，开发环境写模版，经过编译后，生产环境就是 JS
+* render 函数与 vdom
+  * render 返回的就是 vdom
+  * vm._update(vm._render())
+
+vue 的整个实现流程
+* 解析模版成 render 函数（词法分析）
+* 响应式开始监听
+* 首次渲染，显示页面，且绑定依赖
+* data 属性变化，触发 rerender
+
+为什么监听 get，直接监听 set 不行吗？data 中有很多属性，有些被用到，有些可能不被用到，被用到的会走 get，不被用到的不会走到 get，未走到 get 中的属性，set 的时候我们也无需关心，可以避免不必要的重复渲染
