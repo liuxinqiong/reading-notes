@@ -377,3 +377,179 @@ vue 的整个实现流程
 * data 属性变化，触发 rerender
 
 为什么监听 get，直接监听 set 不行吗？data 中有很多属性，有些被用到，有些可能不被用到，被用到的会走 get，不被用到的不会走到 get，未走到 get 中的属性，set 的时候我们也无需关心，可以避免不必要的重复渲染
+
+### 组件化
+对组件化的理解
+* 组件的封装（视图、封装、变化逻辑）
+* 组件的复用（props 传递）
+
+JSX 本质
+* JSX 语法
+  * HTML 语法
+  * {} 引入 JS 变量、表达式、逻辑代码
+  * style/className
+* JSX 解析成 JS
+  * JSX 其实是语法糖
+  * 开发环境会将 JSX 编译成 JS 代码
+* 独立标准
+  * 虽然是 React 引入，但目前不是 React 独有
+  * React 已经将它作为一个独立标准开放，其他项目也可用
+  * babel-plugin-transform-react-jsx（配置 .babelrc 中 plugins 有 transform-react-jsx 即可单独使用）
+
+思考编写组件时，我们根本没用到 React 变量，可是为何还要导入呢？这就是 JSX 转换为 JS 之后，需要使用 React（比如 React.createElement），否则找不到就会报错。
+
+React.createElement 参数说明
+* 参数一：tagName
+* 参数二：attrsObj
+* 参数三：子元素（数组、剩余参数的形式）
+
+自定义组件解析
+* div 直接渲染成 div 即可，vdom 可以做到
+* 自定义组件，比如 List，直接传入 List 构造函数，vdom 默认不认识
+* 因此自定义组件定义的时候必须声明 render 函数
+* 根据 props 初始化实例，然后执行实例的 render 函数
+* render 函数返回的还是 vnode 实例
+
+为什么需要 vdom：JSX 需要渲染成 html，数据驱动视图，vdom 扮演一个中间角色。
+
+何时 patch：ReactDOM.render 和 setState
+
+setState 为何需要异步
+* 你无法规定、限制用户如何使用 setState，可能会一次执行多次 setState
+* 没必要每次 setState 都重新渲染，考虑性能。即便是每次重新渲染，用户也看不到中间的效果，因此只需要看到最终效果即可。
+
+vue 修改属性也是异步，修改属性，被响应式的 set 监听到，set 中执行 updateComponent 是异步的，updateComponent 重新执行 vm._render()，生成的 vnode 和 prevVnode，通过 patch 进行对比。
+
+setState 的过程
+* 每个组件实例，都有 renderComponent 方法
+* 执行 renderComponent 会重新执行实例的 render
+* render 函数返回 newVnode，然后拿到 preVnode
+* 执行 patch(preVnode, newVnode)
+
+由于 setState 是异步的，因此如果想知道成功修改完成的时机，可以将回调函数作为第二个参数传入
+
+React vs vue
+* 本质区别
+  * vue 本质是 MVVM 框架，由 MVC 发展而来
+  * React 本质是前端组件化框架，由后端组件化发展而来
+* 模版和组件化区别
+  * vue 使用模版（最初由 angular 提出）
+  * React 使用 JSX，模版和 JS 混在一起，未分离
+  * React 本身就是组件化，没有组件化就不是 React
+  * vue 也支持组件化，不过是在 MVVM 上的扩展
+* 共同点
+  * 都支持组件化
+  * 数据驱动视图
+* 总结
+  * 国内首推 vue，文档更易读、易学、社区够大
+  * 如果团队水平较高，推荐使用React。组件化和 JSX
+
+## 混合开发
+hybrid 是什么？为何会用 hybrid？
+
+hybrid 即混合，即前端和客户端的混合开发
+
+hybrid 存在价值
+* 可以快速迭代更新（无需 app 审核，因为 JS 权限不够）
+* 体验流畅
+* 减少开发和沟通成本，双端公用一套代码
+
+webview 是 app 中一个组件，用于加载 h5 页面，即一个小型的浏览器内核。
+
+file 协议：加载本地文件，速度快。http(s)协议：网络加载，速度慢
+
+不是所有场景都适合使用 hybrid
+* 使用 NA：体验要求机制，变化不频繁（如首页）
+* 使用 hybrid：体验要求高，变化频繁（如详情页）
+* 使用 h5：体验无要求，不常用（如举报、反馈页）
+
+hybrid 具体实现
+* 前端做好静态页面，将文件交给客户端
+* 客户端拿到前端静态页面，以文件形式存储在 app 中
+* 客户端在一个 webview 中
+* 使用 file 协议加载静态页面
+
+app 发布后，静态文件如何更新
+* 目的：要替换每个客户端的静态文件
+* 交给客户端来做，客户端去 server 下载最新的静态文件
+* 我们维护 server 的静态文件
+* 打包上传到 server 端，客户端下载解压
+* 版本管理，避免不必要的下载
+
+hybrid 对比 h5
+* hybrid
+  * 优点：体验更好，跟 NA 体验基本一致。可快速迭代
+  * 缺点：开发成本高，联调、测试、查 bug 都比较麻烦。运维成本高
+  * 场景：产品的稳定功能，体验要求高，迭代频繁。
+* h5
+  * 场景：单次的运营活动或不常用功能
+
+JS 和客户端通讯
+* JS 访问客户端能力，传递参数和回调函数
+* 客户端通过回调函数返回内容
+
+schema 协议 -- 前端和客户端通讯的约定
+```js
+(function(window, undefined) {
+    function _invoke(action, data, callback) {
+        var schema = 'myapp://utils/' + action
+        schema += '?a=a'
+        for(var key in data) {
+            if(data.hasOwnProperty(key)) {
+                schema += '&' + key + '=' + data[key]
+            }
+        }
+        var callbackName = ''
+        if(typeof callback === 'string') {
+            callbackName = callback
+        } else {
+            callbackName = action + Date.now()
+            window[callbackName] = callback
+        }
+
+        schema += 'callback=' + callbackName
+
+        // 触发
+        var iframe = document.createElement('iframe')
+        iframe.style.display = 'none'
+        iframe.src = schema
+        document.body.appendChild(iframe)
+        setTimeout(function() {
+            document.body.removeChild(iframe)
+            iframe = null
+        })
+    }
+    window.invoke = {
+        share: function(data, callback) {
+            _invoke('share', data, callback)
+        },
+        scan: function(data, callback) {
+            _invoke('scan', data, callback)
+        },
+        login: function(data, callback) {
+            _invoke('login', data, callback)
+        }
+    }
+})(window)
+```
+
+内置上线，比如上述封装的 invoke.js 可以内置到客户端
+* 客户端每次启动 webview 都默认执行 invoke.js
+* 本地加载，免去网络加载事件，更快
+* 本地加载，没有网络请求，黑客看不到 schame 协议，更安全
+
+## 热爱编程
+看书
+* 构建知识体系最好方式
+* 自己买书，不要借书（因为你会留下自己的东西）
+
+博客 - 合格程序员的必备
+* 总结和别人交流的过程
+* 如何让更多人看？公开的博客（github、公众号、知乎）
+* 面对质疑和打击？心态放开咯
+
+开源 - github 的 star 是硬通货
+* 做什么？不小众的工具型，立刻开始写，不要思考太多
+* 写好官网和文档
+* 及时回复 issue，及时迭代发版
+* 推广：博客
