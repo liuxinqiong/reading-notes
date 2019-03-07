@@ -380,7 +380,7 @@ DOCTYPE 是用来声明文档类型和 DTD 规范的，一个主要的用途便�
 3. async：加载完之后立即执行，如果是多个，执行顺序和加载顺序无关
 
 浏览器缓存
-* 强缓存：Expires（绝对时间）、Cache-Control（相对时间，优先级比 Expires 搞）
+* 强缓存：Expires（绝对时间）、Cache-Control（相对时间，优先级比 Expires 高）
 * 协商缓存：Last-Modified，If-Modified-Since，Etag，If-None-Match
   * Last-Modified 和 Etag 是服务器下发的
   * If-Modified-Since 和 If-None-Match 请求头携带上述服务器下发的值，去服务端对比
@@ -417,12 +417,16 @@ DOCTYPE 是用来声明文档类型和 DTD 规范的，一个主要的用途便�
 * 理解 view 和 data 之间的双向关系
 * 绑定，就是自动化处理
 * Object.defineProperty（ES5）
-* Object.defineProperty 与 reflect.defineProperty（返回 bool 值） 的区别
+* Object.defineProperty 与 Reflect.defineProperty（返回 bool 值） 的区别
+  * 前者如果成功则返回一个对象，否则抛出一个 TypeError
+  * 后者返回 Boolean 值作为成功的状态
 
 使用了什么设计模式：观察者模式（Observer，Dep，Watcher）
 * 观察者设计模式的原理要了解清楚
 * 最好能写出设计模式的伪代码
 * 如果没有问到设计模式，也要找时机表现出来
+
+> Dep 全称 Dependency，收集依赖项
 
 生命周期是什么（Vue）
 * beforeCreate created
@@ -546,6 +550,21 @@ DOCTYPE 是用来声明文档类型和 DTD 规范的，一个主要的用途便�
 * ES6 语法
 * 事件委托
 * 收集点击元素，通过递归
+```js
+removeItem (target) {
+    let self = this;
+    let findParent = function (node) {
+        let parent = node.parentNode;
+        let root = self.el.find(item=>item === parent);
+        if (root) {
+            root.removeChild(node);
+        } else {
+            findParent(parent);
+        }
+    };
+    findParent(target);
+}
+```
 * DOMContentLoaded
 
 数组扁平化 - 递归，可是这个所有人都能想到哇
