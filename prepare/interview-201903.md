@@ -494,6 +494,16 @@ int factorial(int n, int result) {
 }
 ```
 
+```js
+function factorial(n ,result) {
+    if(n === 1) {
+        return result
+    } else {
+        return factorial(n - 1, result * n)
+    }
+}
+```
+
 屏蔽浏览器差异：reset.css
 
 性能优化的考虑方向：文件大小、文件数量、缓存、DNS 预解析、CDN、按需加载
