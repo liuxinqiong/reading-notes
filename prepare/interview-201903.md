@@ -211,10 +211,35 @@ Cookie 安全策略
 
 ## HTTP 相关
 HTTP 特点、常见头、HTTPS、HTTP 2.0
+
+GET 和 POST 关于长度限制问题
+* GET 可提交的数据量受到 URL 长度的限制，HTTP 协议规范没有对 URL 长度进行限制。这个限制是特定的浏览器及服务器对它的限制
+* 理论上讲，POST 是没有大小限制的，HTTP 协议规范也没有进行大小限制，出于安全考虑，服务器软件在实现时会做一定限制
+* GET 和 POST 数据内容是一模一样的，只是位置不同，一个在 URL 里，一个在 HTTP 包的包体里
+
+POST 提交数据内容类型
+* HTTP 协议中规定 POST 提交的数据必须在 body 部分中，但是协议中没有规定数据使用哪种编码方式或者数据格式。
+* 开发者完全可以自己决定消息主体的格式，同时服务端需要解析成功才有意义，服务端通常是根据请求头（headers）中的 Content-Type 字段来获知请求中的消息主体是用何种方式编码，再对主体进行解析。
+
+POST 提交的 Content-Type 有
+* application/x-www-form-urlencoded
+* multipart/form-data
+  * 生成了一个 boundary 用于分割不同的字段，为了避免与正文内容重复，boundary 很长很复杂。
+  * 每部分都是以 --boundary 开始，紧接着是内容描述信息，然后是回车，最后是字段具体内容（文本或二进制）。如果传输的是文件，还要包含文件名和文件类型信息。消息主体最后以 --boundary-- 标示结束。
+* application/json：Ajax 流行后，json 格式就变得很流行
+
+Keep-Alive：如果客户端浏览器支持 Keep-Alive ，那么就在HTTP请求头中添加一个字段 Connection: Keep-Alive，当服务器收到附带有 Connection: Keep-Alive 的请求时，它也会在响应头中添加一个同样的字段来使用 Keep-Alive 。这样一来，客户端和服务器之间的HTTP连接就会被保持，不会断开（超过 Keep-Alive 规定的时间，意外断电等情况除外），当客户端发送另外一个请求时，就使用这条已经建立的连接。在 HTTP 1.1 版本中，默认情况下所有连接都被保持，如果加入 "Connection: close" 才关闭。目前大部分浏览器都使用 HTTP 1.1 协议，也就是说默认都会发起 Keep-Alive 的连接请求了，所以是否能完成一个完整的 Keep-Alive 连接就看服务器设置情况。
+* HTTP 长连接不可能一直保持，例如 Keep-Alive: timeout=5, max=100，表示这个TCP通道可以保持5秒，max=100，表示这个长连接最多接收100次请求就断开。
+* 使用长连接之后，客户端、服务端怎么知道本次传输结束呢？两部分：1. 判断传输数据是否达到了Content-Length 指示的大小；2. 动态生成的文件没有 Content-Length ，它是分块传输（chunked），这时候就要根据 chunked 编码来判断，chunked 编码的数据在最后有一个空 chunked 块，表明本次传输数据结束
+
+Transfer-Encoding 是一个用来标示 HTTP 报文传输格式的头部值。尽管这个取值理论上可以有很多，但是当前的 HTTP 规范里实际上只定义了一种传输取值——chunked。如果一个HTTP消息（请求消息或应答消息）的 Transfer-Encoding 消息头的值为 chunked，那么，消息体由数量未定的块组成，并以最后一个大小为0的块为结束。
+
+HTTP Pipelining（HTTP 管线化）：默认情况下 HTTP 协议中每个传输层连接只能承载一个 HTTP 请求和响应，浏览器会在收到上一个请求的响应之后，再发送下一个请求。在使用持久连接的情况下，某个连接上消息的传递类似于请求1 -> 响应1 -> 请求2 -> 响应2 -> 请求3 -> 响应3。HTTP Pipelining（管线化）是将多个 HTTP 请求整批提交的技术，在传送过程中不需等待服务端的回应。使用 HTTP Pipelining 技术之后，某个连接上的消息变成了类似这样请求1 -> 请求2 -> 请求3 -> 响应1 -> 响应2 -> 响应3。
+
 ### HTTP 常见头
 请求头：Accept、Accept-Encoding、Accept-Language、Cache-Control、Connection、Host、If-Modified-Since、If-None-Match、User-Agent、Cookie
 
-响应头：Cache-Control、Content-Encoding、Content-Length、Content-Type、Date、Etag、Expires、Keep-Alive、Last-Modified、Set-Cookie
+响应头：Cache-Control、Content-Encoding、Content-Length（单位 byte）、Content-Type、Date、Etag、Expires、Keep-Alive、Last-Modified、Set-Cookie
 
 这里回顾下来 Cache-Control 基本忘记了，赶紧回忆一下
 * 可缓存性
@@ -501,9 +526,7 @@ String 函数
 Boolean函数
 * undefined、null、-0、+0，NaN，'' 为 false，其余为 true
 
-## 博客回顾
-个人博客总结的零散知识点
-### 递归优化
+## 递归优化
 递归优化原理
 * 每个栈帧代表了被调用中的一个函数，这些函数栈帧以先进后出的方式排列起来，就形成了一个栈。每个栈帧保存着：上一个栈帧的指针，输入参数，返回值，返回地址等
 * 栈容量是有限的，如果 n 值太大了，就有可能栈溢出
@@ -539,7 +562,7 @@ function factorial(n ,result) {
 }
 ```
 
-### 编译原理
+## 编译原理
 编译原理，程序中一段源代码在执行之前会经历三个步骤，统称为编译
 1. 分词/词法分析：将字符组成的字符串分解成有意义的代码块，这些代码块被称为词法单元
 2. 解析/语法分析：将词法单元流转换成一个由元素逐级嵌套所组成的代表了程序语法结构的树。这个树称为抽象语法数（AST）
@@ -549,7 +572,242 @@ function factorial(n ,result) {
 * 首先，JS引擎不会有大量的时间来进行优化，因为和其他语言不同，JS 的编译过程不是发生在构建之前
 * 大部分情况下编译发生在代码执行前的几微妙的时间内。在作用域背后，JS 引擎用尽了各种办法（比如JIT，可以延迟编译甚至实施重编译）来保证性能最佳
 
-### 杂项
+## 最大整数与字符串最大长度
+关于最大整数，首先需要明白的是，JS 中没有真正的整数，JS 中所有的数字类型，实际存储都是通过 8 字节 double 浮点型 表示的。
+
+正是因为 JS 中整数也是用浮点数表示的，因此不同于其他语言（8 字节）中一样，最大整数是：2^63 - 1，而是
+```js
+Math.pow(2, 53) - 1
+```
+
+要知道原因，就必须先知道 IEEE 754 表示规则，由三个部分组成，分别是符号位、指数和尾数，在双精度（64位）中，尾数长度52，指数长度11，同时约定小数点左边隐含有一位，通常这位数是1，因此最终尾数长度需要增加一位。
+
+在 JS 中，最大和最小安全值可以这样获得
+```js
+console.log(Number.MAX_SAFE_INTEGER); // Math.pow(2, 53) - 1
+console.log(Number.MIN_SAFE_INTEGER); // Math.pow(-2, 53) - 1
+```
+
+这里有点小奇怪，比如在 Java 中 32 位的 int 型范围为`[-2^31, 2^31 - 1]`，为什么在 JS 中最小整数却也就还是减 1 呢？
+
+在 Java 中，比如用 4 位表示 int，范围为 [-8, 7]，在这里 -0 会被当做 -8 来处理，因此负数部分能表示的个数需要加 1。我估摸着还是因为 JS 中使用浮点数表示整数的原因，因此并没有对 -0 进行处理。
+
+在 JS 中有 +0 和 -0，在加法类运算中它们没有区别，但是除法的场合则需要特别留意区分，"忘记检测除以-0，而得到负无穷大"的情况经常会导致错误，而区分 +0 和 -0 的方式，正式检测 1/x 是 Infinity 还是 -Infinity。
+
+String 理论上最大长度是 2^53 - 1，这也是 JS 中可表达的最大安全整数。这在一般开发中都是够用的，但有趣的事，这个所谓最大长度，并不完全是你理解中的字符数。因为 String 的意义并未字符串，而是字符串的 UTF-16 编码，同时我们的字符串的操作 charAt、charCodeAt、length 等方法针对的都是 UTF-16 编码。因为字符串的最大长度，实际上是受字符串编码长度影响的。
+
+## 事件模型（补充）
+DOM的事件操作（监听和触发），都定义在EventTarget接口。除了我们常用的 addEventListener 和 removeEventListener，还有一个 dispatchEvent 触发事件的函数也是需要了解滴
+
+dispatchEvent方法在当前节点上触发指定事件，从而触发监听函数的执行。该方法返回一个布尔值，只要有一个监听函数调用了Event.preventDefault()，则返回值为false，否则为true。
+```js
+para.addEventListener('click', hello, false);
+var event = new Event('click');
+para.dispatchEvent(event);
+```
+
+事件绑定监听函数的三种方式
+* HTML 标签的 on- 属性：违反了 HTML 与 JavaScript 代码相分离的原则
+* Element 节点的事件属性：同一个事件只能定义一个监听函数
+* addEventListener 方法：推荐的指定监听函数的方法
+  * 可以针对同一个事件，添加多个监听函数。
+  * 能够指定在哪个阶段（捕获阶段还是冒泡阶段）触发回监听函数。
+  * 除了 DOM 节点，还可以部署在 window、XMLHttpRequest 等对象上面，等于统一了整个 JavaScript 的监听函数接口。
+
+上面的三种方式，相比有点经验都会知道，但是监听函数中 this 指向问题，却是容易忽略的地方。实际编程中，监听函数内部的this对象，常常需要指向触发事件的那个Element节点。
+
+addEventListener 方法指定的监听函数，内部的 this 对象总是指向触发事件的那个节点。具体原理看下面代码便知
+```js
+para.onclick = hello;
+```
+
+如果将监听函数部署在 Element 节点的 on- 属性上面，this不会指向触发事件的元素节点。
+```js
+// pElement.setAttribute('onclick', 'hello()'); 类似于如下写法
+para.onclick = function () {
+  hello();
+}
+```
+
+针对上述情况的一种解决办法是：不引入函数作用域，直接在on-属性写入所要执行的代码。因为on-属性是在当前节点上执行的。
+```html
+<p id="para" onclick="console.log(this.id)">Hello</p>
+```
+
+stopPropagation 与 stopImmediatePropagation：stopPropagation 只会阻止当前监听函数的传播（并不是表示如果有多个监听函数，其他函数没有阻止冒泡，就会继续冒泡的意思），不会阻止节点上的其他同事件的监听函数。如果想要不再触发那些监听函数，可以使用 stopImmediatePropagation 方法。
+
+事件对象：IE8及以下版本，事件对象不作为参数传递，而是通过window对象的event属性读取，并且事件对象的target属性叫做srcElement属性。所以，以前获取事件信息，往往要写成下面这样。
+```js
+function myEventHandler(event) {
+  var actualEvent = event || window.event;
+  var actualTarget = actualEvent.target || actualEvent.srcElement;
+  // ...
+}
+```
+
+事件对象相关属性
+* event.bubbles：表示当前事件是否会冒泡。该属性为只读属性，只能在新建事件时改变。除非显式声明，Event构造函数生成的事件，默认是不冒泡的。
+* event.eventPhase：返回一个整数值，表示事件目前所处的节点。
+  * 0 事件未发生
+  * 1 事件捕获阶段
+  * 2 事件目标阶段
+  * 3 事件冒泡阶段
+* event.cancelable：返回一个布尔值，表示事件是否可以取消。该属性为只读属性，只能在新建事件时改变。除非显式声明，Event构造函数生成的事件，默认是不可以取消的。如果要取消某个事件，需要在这个事件上面调用preventDefault方法，这会阻止浏览器对某种事件部署的默认行为。
+* event.defaultPrevented：返回一个布尔值，表示该事件是否调用过preventDefault方法。
+* event.currentTarget：返回事件当前所在的节点，即正在执行的监听函数所绑定的那个节点。在监听函数中，currentTarget 属性实际上等同于 this 对象。
+* event.target：返回触发事件的那个节点，即事件最初发生的节点。如果监听函数不在该节点触发，那么它与currentTarget属性返回的值是不一样的。
+* event.type：返回一个字符串，表示事件类型，大小写敏感。
+* event.detail：返回一个数值，表示事件的某种信息。
+* event.timeStamp：返回一个毫秒时间戳，表示事件发生的时间。
+* event.isTrusted：返回一个布尔值，表示该事件是否为真实用户触发。
+
+event.preventDefault()
+* 取消浏览器对当前事件的默认行为，比如点击链接后，浏览器跳转到指定页面，或者按一下空格键，页面向下滚动一段距离。该方法生效的前提是，事件的cancelable属性为true，如果为false，则调用该方法没有任何效果。
+* 该方法不会阻止事件的进一步传播（stopPropagation方法可用于这个目的）。只要在事件的传播过程中（捕获阶段、目标阶段、冒泡阶段皆可），使用了preventDefault方法，该事件的默认方法就不会执行。
+  * 比如单选框点击选中，如果设置监听函数，取消默认行为，会导致无法选中单选框。
+  * 利用这个方法，可以为文本输入框设置校验条件。如果用户的输入不符合条件，就无法将字符输入文本框。
+* 如果监听函数最后返回布尔值false（即return false），浏览器也不会触发默认行为，与preventDefault方法有等同效果。
+
+自定义事件
+```js
+// 新建事件实例
+var event = new Event('build');
+// 添加监听函数
+elem.addEventListener('build', function (e) { ... }, false);
+// 触发事件
+elem.dispatchEvent(event);
+```
+
+如果自定义数据需要传递参数
+```js
+var event = new CustomEvent('build', { 'detail': 'hello' });
+function eventHandler(e) {
+  console.log(e.detail);
+}
+```
+
+## 浏览器解析与渲染
+浏览器拿到请求回来的 HTML，怎么显示在浏览器上呢
+1. 构建 DOM 树：具体流程：字符流 -> 状态机 -> 词 token -> 栈 -> DOM 树
+2. CSS 计算：流式的计算和匹配 CSS
+3. 排版：确定每个元素的位置
+4. 渲染、合成、绘制：根据样式信息和大小信息，为每个元素在内存中渲染它的图形，并且把它绘制到对应的位置
+
+> 渲染过程把元素变成位图，合成把一部分位图变成合成层，最终的绘制过程把合成层显示到屏幕上。
+
+第四步骤，有个性能优化点
+* 渲染的过程中，是不会把子元素绘制到渲染的位图上的，这样，当父子元素的相对位置发生变化时，可以保证渲染的结果能够最大程度被缓存，减少重新渲染。
+* 由于渲染过程不会把子元素渲染到位图上面，合成的过程，就是为一些元素创建一个“合成后的位图”，把一部分子元素渲染到合成的位图上面。
+
+合成的策略
+* 原则：最大限度的减少绘制参数
+* 极端例子：所有元素都进行合成，比如为根元素 html 创建一个合成后的位图，把所有子元素都进行合成，那么一旦用 JS 改变了任何一个 CSS 属性，这份合成后的位图就失效了，我们需要重新绘制所有的元素，如果所有的元素都不合成，结果就是相当于每次都必须重新绘制所有元素，这也不是性能友好的选择
+* 好的合成策略：猜测可能变化的元素，把它排除到合成之外
+
+目前主流浏览器一般根据 position、transform 等属性来决定合成策略，来猜测这些元素未来可能发生变化。但是这样的猜测准确性有限，所以新的 CSS 标准中，规定了 will-change 属性，可以由业务代码来提示浏览器的合成策略，灵活运用这样的特性，可以大大提升合成策略的效果。
+
+重排与重绘
+* 当改变影响到文本内容、结构或元素位置时，就会发生重排
+* 改变不会影响元素的位置及大小的样式时，则会触发重绘。
+
+异步 layout 和同步 layout
+* 异步 layout：浏览器为了尽可能减少 reflow 和 repaint 的操作，而将这些操作积攒起来，再统一做一次 reflow。
+* 什么时候产生同步 layout
+  * resize窗口
+  * 改变页面默认字体时，
+  * 脚本作出以下请求
+    * offsetTop/Left/Width/Height
+    * scrollTop/Left/Width/Height
+    * clientTop/Left/Width/Height
+    * getComputedStyle() 或 currentStyle（IE）那么浏览器需要立即 layout 以返回最新的值。
+
+扩展：offsetWidth/offsetHeight,clientWidth/clientHeight 与 scrollWidth/scrollHeight 的区别
+* offsetWidth/offsetHeight 返回值包含 content + padding + border，效果与 e.getBoundingClientRect() 相同
+* clientWidth/clientHeight 返回值只包含 content + padding，如果有滚动条，也不包含滚动条
+* scrollWidth/scrollHeight 返回值包含 content + padding + 溢出内容的尺寸
+
+截止今日，产生了很多不同的浏览器，各个浏览器本质大同小异，核心部分基本相似，由渲染引擎和 JS 引擎组成。最常见的渲染引擎为 webkit。
+
+## HTML5
+
+### 新增内容
+对比 HTML4
+* 文件类型声明（<!DOCTYPE>）仅有一型
+* 新的解析顺序：不再基于SGML
+* 新的元素：video、canvas、audio、语义化标签
+* input元素的新类型：date, email, url等
+* 移除元素：big、center、font、frame、frameset、noframes 等
+
+HTML5增加了更多样化的API:
+* HTML Geolocation
+* HTML Drag and Drop
+* HTML Local Storage
+* HTML Application Cache
+* HTML Web Workers
+* HTML SSE
+* HTML Canvas/WebGL
+* HTML Audio/Video
+
+### 离线存储
+
+## CSS
+link 与 @import
+
+inline-block 空格
+
+清除浮动
+
+IFC
+
+### 包含块
+其实在编写 CSS 过程中，都会有这方面的简单意识，但是这个概念还是第一次碰见，因此还是总结一下
+
+在 CSS2.1 中，很多框的定位和尺寸的计算，都取决于一个矩形的边界，这个矩形，被称作是包含块( containing block )。 一般来说，(元素)生成的框会扮演它子孙元素包含块的角色；注意：这里只是一般来说，这里还是有一系列规则的。
+
+“一个框的包含块”，指的是“该框所存在的那个包含块”，并不是它建造的包含块。
+
+每个框关于它的包含块都有一个位置，但是它不会被包含块限制；它可以溢出(包含块)。包含块上可以通过设置 'overflow' 特性达到处理溢出的子孙元素的目的。
+
+包含块的概念很重要，因为可视化格式模型中很多的理论性知识都跟这个概念有关系
+* 宽度高度自动值的计算
+* 浮动元素的定位
+* 绝对定位元素的定位
+
+元素框的定位和尺寸与其包含块有关，而元素会为它的子孙元素创建包含块。元素的包含块就是它的父元素呢？包含块的区域是不是父元素的内容区域呢？答案是否定的。大致有如下几种情况
+* 根元素：处于文档树最顶端的元素，它没有父节点。根元素存在的包含块，被叫做初始包含块 (initial containing block)。具体，跟用户端有关。
+* 静态定位元素和相对定位元素：由它最近的块级、单元格（table cell）或者行内块（inline-block）祖先元素的内容框创建（内边界）。
+* 固定定位元素：当前可视窗口
+* 绝对定位元素：离它最近的 'position' 属性为 'absolute'、'relative' 或者 'fixed' 的祖先元素创建。
+
+针对绝对定位元素，还有种特殊情况是，如果其祖先元素是行内元素，则包含块取决于其祖先元素的 'direction' 特性
+* 如果 'direction' 是 'ltr'，包含块的顶、左边是祖先元素生成的第一个框的顶、左内边距边界(padding edges) ，右、下边是祖先元素生成的最后一个框的右、下内边距边界(padding edges)
+* 如果 'direction' 是 'rtl'，包含块的顶、右边是祖先元素生成的第一个框的顶、右内边距边界 (padding edges) ，左、下边是祖先元素生成的最后一个框的左、下内边距边界 (padding edges)
+
+其他情况下，如果祖先元素不是行内元素，那么包含块的区域应该是祖先元素的内边距边界
+
+## 项目难点与解决方案
+左侧菜单自动生成（实现解耦）
+
+小程序 canvas 涂抹擦除
+
+## Vue 技术栈
+
+## webpack
+
+## 题目
+求一个字符串的字节长度，假设：一个英文字符占用一个字节，一个中文字符占用两个字节。
+```js
+function getBytes(str) {
+    var len = str.length
+    var bytes = len;
+    for(var i = 0; i < len; i++){
+        if (str.charCodeAt(i) > 255) bytes++;
+    }
+    return bytes;
+}
+```
+
+## 杂项
 屏蔽浏览器差异：reset.css
 
 性能优化的考虑方向：文件大小、文件数量、缓存、DNS 预解析、CDN、按需加载
@@ -605,59 +863,10 @@ alert(typeof valueof); // function
   * 如果 start>end ，不复制任何元素到新数组中
 * splice(index, [howmany],[element1, ..., elementX])
 
-## 最大整数与字符串最大长度
-关于最大整数，首先需要明白的是，JS 中没有真正的整数，JS 中所有的数字类型，实际存储都是通过 8 字节 double 浮点型 表示的。
-
-正是因为 JS 中整数也是用浮点数表示的，因此不同于其他语言（8 字节）中一样，最大整数是：2^63 - 1，而是
-```js
-Math.pow(2, 53) - 1
-```
-
-要知道原因，就必须先知道 IEEE 754 表示规则，由三个部分组成，分别是符号位、指数和尾数，在双精度（64位）中，尾数长度52，指数长度11，同时约定小数点左边隐含有一位，通常这位数是1，因此最终尾数长度需要增加一位。
-
-在 JS 中，最大和最小安全值可以这样获得
-```js
-console.log(Number.MAX_SAFE_INTEGER); // Math.pow(2, 53) - 1
-console.log(Number.MIN_SAFE_INTEGER); // Math.pow(-2, 53) - 1
-```
-
-这里有点小奇怪，比如在 Java 中 32 位的 int 型范围为`[-2^31, 2^31 - 1]`，为什么在 JS 中最小整数却也就还是减 1 呢？
-
-在 Java 中，比如用 4 位表示 int，范围为 [-8, 7]，在这里 -0 会被当做 -8 来处理，因此负数部分能表示的个数需要加 1。我估摸着还是因为 JS 中使用浮点数表示整数的原因，因此并没有对 -0 进行处理。
-
-在 JS 中有 +0 和 -0，在加法类运算中它们没有区别，但是除法的场合则需要特别留意区分，"忘记检测除以-0，而得到负无穷大"的情况经常会导致错误，而区分 +0 和 -0 的方式，正式检测 1/x 是 Infinity 还是 -Infinity。
-
-String 理论上最大长度是 2^53 - 1，这也是 JS 中可表达的最大安全整数。这在一般开发中都是够用的，但有趣的事，这个所谓最大长度，并不完全是你理解中的字符数。因为 String 的意义并未字符串，而是字符串的 UTF-16 编码，同时我们的字符串的操作 charAt、charCodeAt、length 等方法针对的都是 UTF-16 编码。因为字符串的最大长度，实际上是受字符串编码长度影响的。
-
-## 项目难点与解决方案
-左侧菜单自动生成（实现解耦）
-
-小程序 canvas 涂抹擦除
-
-## Vue 技术栈
-
-## webpack
-
-## 重学前端
-
-### 浏览器解析与渲染
-浏览器拿到请求回来的 HTML，怎么显示在浏览器上呢
-1. 构建 DOM 树：具体流程：字符流 -> 状态机 -> 词 token -> 栈 -> DOM 树
-2. CSS 计算：流式的计算和匹配 CSS
-3. 排版：确定每个元素的位置
-4. 渲染、合成、绘制：根据样式信息和大小信息，为每个元素在内存中渲染它的图形，并且把它绘制到对应的位置
-
-> 渲染过程把元素变成位图，合成把一部分位图变成合成层，最终的绘制过程把合成层显示到屏幕上。
-
-第四步骤，有个性能优化点
-* 渲染的过程中，是不会把子元素绘制到渲染的位图上的，这样，当父子元素的相对位置发生变化时，可以保证渲染的结果能够最大程度被缓存，减少重新渲染。
-* 由于渲染过程不会把子元素渲染到位图上面，合成的过程，就是为一些元素创建一个“合成后的位图”，把一部分子元素渲染到合成的位图上面。
-
-合成的策略
-* 原则：最大限度的减少绘制参数
-* 极端例子：所有元素都进行合成，比如为根元素 html 创建一个合成后的位图，把所有子元素都进行合成，那么一旦用 JS 改变了任何一个 CSS 属性，这份合成后的位图就失效了，我们需要重新绘制所有的元素，如果所有的元素都不合成，结果就是相当于每次都必须重新绘制所有元素，这也不是性能友好的选择
-* 好的合成策略：猜测可能变化的元素，把它排除到合成之外
-
-目前主流浏览器一般根据 position、transform 等属性来决定合成策略，来猜测这些元素未来可能发生变化。但是这样的猜测准确性有限，所以新的 CSS 标准中，规定了 will-change 属性，可以由业务代码来提示浏览器的合成策略，灵活运用这样的特性，可以大大提升合成策略的效果。
+老版本 IE 浏览器支持新标签
+* IE8/IE7/IE6 支持通过 document.createElement 方法产生的标签
+* 可以利用这一特性让这些浏览器支持 HTML5 新标签
+* 浏览器支持新标签后，还需要添加标签默认的样式
+* 当然也可以直接使用成熟的框架、比如 html5shiv
 
 ## 排序算法
