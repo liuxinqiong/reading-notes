@@ -752,8 +752,13 @@ HTML5增加了更多样化的API:
 
 ## CSS
 link 与 @import
+* link 在 HTML 中使用，@import 在 CSS 中使用
+* @import 是 CSS 提供的语法规则，只有导入样式表的作用。而 link 是 HTML 提供的标签，不仅可以加载 CSS 文件，还可以定义 RSS、rel 连接属性等。
 
-inline-block 空格
+inline-block 空格，主要原因在于大多数 inline-block 元素默认`vertical:baseline`；因此会有一个 X 字符空隙，解决办法
+* 设置 img display: block
+* 设置 img 的 vertical 为 middle|top
+* 设置 img 父元素的 font-size: 0 或者 line-height: 0
 
 清除浮动
 
@@ -791,8 +796,32 @@ IFC
 小程序 canvas 涂抹擦除
 
 ## Vue 技术栈
+vuex
 
 ## webpack
+
+## 深浅拷贝
+为什么原生不提供深拷贝方法呢？
+
+浅拷贝：slice、concat 返回一个新数组的特性来实现拷贝，object.assign/ES6 ...扩展符也可以实现浅拷贝
+
+通用深拷贝函数
+```js
+var deepCopy = function(obj) {
+    if (typeof obj !== 'object') return;
+    var newObj = obj instanceof Array ? [] : {};
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = typeof obj[key] === 'object' ? deepCopy(obj[key]) : obj[key];
+        }
+    }
+    return newObj;
+}
+```
+
+很明显，如果深拷贝只是上面简单的代码的话，那为什么 JS 不从标准层面上提供一个原生的深拷贝函数呢？主要是因为 JS 无法选择一个默认的拷贝算法
+* 循环引用如何处理？是否应该检测循环引用并终止循环（不复制深层元素）？还是应当直接报错或者是选择其他方法呢？
+* 如何复制一个函数呢？
 
 ## 题目
 求一个字符串的字节长度，假设：一个英文字符占用一个字节，一个中文字符占用两个字节。
@@ -805,6 +834,17 @@ function getBytes(str) {
     }
     return bytes;
 }
+```
+
+类型转换：这种东西真是快不知道怎么解释了
+```js
+[]+[] // ""
+
+[]+{} // [object Object]
+
+{}+[] // 0
+
+{}+{} // [object Object]
 ```
 
 ## 杂项
@@ -869,4 +909,321 @@ alert(typeof valueof); // function
 * 浏览器支持新标签后，还需要添加标签默认的样式
 * 当然也可以直接使用成熟的框架、比如 html5shiv
 
+## 实现单向链表、双向链表、循环链表
+
 ## 排序算法
+Array.sort 原理：ECMAScript 只规定了效果，没有规定实现的方式，所以不同浏览器实现的方式还不一样。
+* 以 v8 为例，v8 在处理 sort 方法时，当目标数组长度小于 10 时，使用插入排序；反之，使用快速排序和插入排序的混合排序。因此v8引擎的sort排序是插入排序和快速排序的结合。
+* 为什么v8要如此选择呢，主要是因为当数组是快要排序好的状态或者问题规模比较小的时候，插入排序效率更高。这也是为什么 v8 会在数组长度小于等于 10 的时候采用插入排序。
+
+Array.sort 基本使用
+* arrayObject.sort(sortby)；参数 sortby 可选，用于规定排序规则，必须是函数。
+* 如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序(按照字符串Unicode码点)
+
+如果想按照其他标准进行排序，就需要提供比较函数，该函数要比较两个值，然后返回一个用于说明这两个值的相对顺序的数字。比较函数应该具有两个参数 a 和 b，其返回值如下：
+* 如果返回值小于 0，则 a 在 b 前面
+* 如果返回值等于 0，则 a 和 b 的相对位置不变
+* 如果返回值大于 0，则 b 在 a 前面
+
+要比较数字而非字符串，比较函数可以简单的以 a 减 b
+```js
+function compareNumbers(a, b) {
+  return a - b;
+}
+```
+
+如果比较的是字符串，则不能以减法简写了
+```js
+function compareStrings(a, b) {
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+}
+```
+
+### 快速排序
+排序思想
+* 先从数列中取出一个数作为“基准”。
+* 分区过程：将比这个“基准”大的数全放到“基准”的右边，小于或等于“基准”的数全放到“基准”的左边。
+* 再对左右区间重复第二步，直到各区间只有一个数。
+
+排序代码
+```js
+function quickSort(arr) {
+    if(arr.length <= 1) {
+        return arr
+    }
+    var pivotIndex = Math.floor(arr.length / 2)
+    var pivot = arr.splice(pivotIndex, 1)[0]
+    var left = [], right = []
+    for(var i = 0; i < arr.length; i++) {
+        if(arr[i] < pivot) {
+            left.push(arr[i])
+        } else {
+            right.push(arr[i])
+        }
+    }
+    return quickSort(left).concat([pivot], quickSort(right))
+}
+```
+
+排序复杂度
+* 平均复杂度 O(n log n)
+* 最好情况 O(n log n)，最坏情况 O(n^2)
+* 不稳定算法
+
+> 假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，则称这种排序算法是稳定的；否则称为不稳定的。
+
+快速排序优化，聪明的你可能看到，每次递归我们都会创建左右两个数组，有没有办法可以不用浪费内存去创建多余的数组呢？
+* 默认第一个元素为基准值，用剩余的值和基准值进行比较
+* 基准值右边元素构成一个左边数组，用storeIndex记录此时左边数组的最后一个元素下标
+* 此处应该有一个比较函数，在这里使用升序的方式，因此小于时将目标元素放入左边数组操作就是与左边数组的后一个元素交换
+* 将基准值和左边数组最后一个元素交换，实现左右数组结构
+* 经过分区之后，便有了左右数组，然后递归调用，出口就是left>=right时
+
+优化后代码实现
+```js
+function quickSort(arr) {
+  // 交换元素
+  function swap(arr, a, b) {
+      var temp = arr[a];
+      arr[a] = arr[b];
+      arr[b] = temp;
+  }
+
+  function partition(arr, left, right) {
+      var pivot = arr[left];
+      var storeIndex = left;
+
+      for (var i = left + 1; i <= right; i++) {
+          if (arr[i] < pivot) {
+              swap(arr, ++storeIndex, i);
+          }
+      }
+
+      swap(arr, left, storeIndex);
+
+      return storeIndex;
+  }
+
+  function sort(arr, left, right) {
+      if (left < right) {
+          var storeIndex = partition(arr, left, right);
+          sort(arr, left, storeIndex - 1);
+          sort(arr, storeIndex + 1, right);
+      }
+  }
+
+  sort(arr, 0, arr.length - 1);
+
+  return arr;
+}
+```
+
+### 选择排序
+算法步骤
+* 在未排序序列中找到最小（大）元素，存放到排序序列的起始位置
+* 从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+* 重复第二步，直到所有元素均排序完毕。
+
+JS 实现
+```js
+function selectionSort(arr) {
+    var minIndex, len = arr.length
+    for(var i = 0; i < len - 1; i++) {
+        minIndex = i
+        for(var j = i + 1; j < len; j++) {
+            if(arr[j] < arr[minIndex]) {
+                minIndex = j
+            }
+        }
+        if(i !== minIndex) {
+            var temp = arr[i]
+            arr[i] = arr[minIndex]
+            arr[minIndex] = temp
+        }
+    }
+    return arr
+}
+```
+
+排序复杂度
+* O(n^2)
+* 不稳定算法
+
+### 插入排序
+插入排序原理在于将第一个元素视为有序序列，遍历数组，将之后的元素依次插入这个构建的有序序列中。
+
+代码实现
+```js
+function insertSort(arr) {
+    for(var i = 1; i < arr.length; i++) {
+        var element = arr[i]
+        for(var j = i - 1; j >= 0; j--) {
+            var temp = arr[j]
+            var order = comparefn(temp, element)
+            if(order > 0) {
+                arr[j + 1] = temp
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+function comparefn(a, b) {
+    return a - b;
+}
+```
+
+插入排序优化：插入排序的原理是从乱数组中选择元素插入已排序数组中，因此针对已排序数组选择插入位置的查找过程可以使用二分法。
+
+二分法元素查找：
+```js
+function binarySearch(items, value) {
+    var startIndex = 0, stopIndex = items.length
+    var middle = Math.floor((startIndex + stopValue) / 2)
+    while(startIndex > stopIndex && items[middle] != value) {
+        if(value < items[middle]) {
+            stopIndex = middle -1
+        } else {
+            startIndex = middle + 1
+        }
+        middle = Math.floor((startIndex + stopValue) / 2)
+    }
+    return (items[middle] != value) ? -1 : middle;
+}
+```
+
+我们的需求需要对二分法进行修改，得到的下标应该是我们元素的插入位置，修改如下：
+```js
+function binarySearch(arr, target) {
+    var left = 0;
+    var right = arr.length - 1;
+    while (left <= right) {
+        var middle = parseInt((left + right) / 2);
+        if (target < arr[middle]) {
+            // 说明在左半区
+            right = middle - 1;
+        } else {
+            left = middle + 1;
+        }
+    }
+    return left;
+}
+```
+
+二分法优化后的插入排序
+```js
+function binaryInsertionSort(arr) {
+    // 原数组，从1开始，默认0号位是已排序
+    for (var i = 1; i < arr.length; i++) {
+        var element = arr[i],
+            left = 0,
+            right = i - 1;
+        // 对于已排序数组，可以使用二分查找
+        while (left <= right) {
+            var middle = parseInt((left + right) / 2);
+            if (element < arr[middle]) {
+                // 说明在左半区
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+        }
+        // 实现插入
+        for (var j = i - 1; j >= left; j--) {
+            arr[j + 1] = arr[j]
+        }
+        arr[left] = element;
+        return arr;
+    }
+}
+```
+
+排序复杂度
+* 平均复杂度O(n^2)
+* 最好情况O(n) 最坏情况O(n^2)
+* 稳定算法
+
+### 冒泡排序
+算法描述
+* 比较相邻的元素。如果第一个比第二个大，就交换它们两个；
+* 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；
+* 针对所有的元素重复以上的步骤，除了最后一个；
+* 重复步骤1~3，直到排序完成。
+
+JS 实现
+```js
+function bubbleSort(arr) {
+    for(var i = 0; i < arr.length; i++) {
+        for(var j = 0; j < arr.length - 1 - i; j++) {
+            if(arr[j] > arr[j + 1]) {
+                var temp = arr[j]
+                arr[j] = arr[j + 1]
+                arr[j + 1] = temp
+            }
+        }
+    }
+    return arr
+}
+```
+
+性能优化点1：上述方案其实建立在一个假定上，就是每次冒泡后，有且仅有已冒泡次数个元素是排好序的，其实不然，有时候数组可能部分已经排好序，这时候对于已排好序的元素做遍历就是浪费了。我们可以这么做：置一标志性变量pos，用于记录每趟排序中最后一次进行交换的位置。由于pos位置之后的记录均已交换到位，故在进行下一趟排序时只要扫描到pos位置即可。
+```js
+function bubbleSort2(arr) {
+    var i = arr.length - 1;
+    while (i > 0) {
+        var pos = 0;
+        for (var j = 0; j < i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                var temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                pos = j;
+            }
+        }
+        i = pos;
+    }
+    return arr;
+}
+```
+
+优化思路二：双向冒泡
+```js
+function bubbleSort3(arr) {
+    var low = 0;
+    var high = arr.length - 1;
+    var tmp, j;
+    while (low < high) {
+        //正向冒泡,找到最大者
+        for (j = low; j < high; j++) {
+            if (arr[j] > arr[j + 1]) {
+                var temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+        high--;
+        //反向冒泡,找到最小者
+        for (j = high; j >low; j--) {
+            if (arr[j] < arr[j - 1]) {
+                var temp = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = temp;
+            }
+        }
+        low++;
+    }
+    return arr;
+}
+```
+
+### 希尔排序
+希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。但希尔排序是非稳定排序算法。
+
+TODO：https://segmentfault.com/a/1190000009461832
