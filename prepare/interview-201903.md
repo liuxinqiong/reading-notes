@@ -728,6 +728,46 @@ function eventHandler(e) {
 
 截止今日，产生了很多不同的浏览器，各个浏览器本质大同小异，核心部分基本相似，由渲染引擎和 JS 引擎组成。最常见的渲染引擎为 webkit。
 
+## service worker
+背景：JS 单线程、异步、回调、Promise、Web Worker
+
+### Web Worker
+HTML 5 标准支持的 Web Worker，我们可以为 JavaScript 创建运行在后台的额外线程，并被多个页面共享。
+
+主线程中通过 new Worker(path of task) 的方式创建工作线程，主线程和工作线程通过 postMessage 函数和 onmessage 事件传递消息和接收消息
+
+### PWA
+PWA (Progressive Web Apps) 是一种 Web App 新模型，并不是具体指某一种前沿的技术或者某一个单一的知识点，，这是一个渐进式的 Web App，是通过一系列新的 Web 特性，配合优秀的 UI 交互设计，逐步的增强 Web App 的用户体验。
+* Https 环境部署
+* 响应式设计，一次部署，可以在移动设备和 PC 设备上运行 在不同浏览器下可正常访问。
+* 浏览器离线和弱网环境可极速访问。
+* 可以把 App Icon 入口添加到桌面。
+* 点击 Icon 入口有类似 Native App 的动画效果。
+* 灵活的热更新
+
+### Service Worker
+Service Worker 基于 Web Worker 事件驱动。
+
+在PWA要求的各种能力上，关于离线环境的支持我们就需要仰赖ServiceWorker。Service workers 本质上充当Web应用程序与浏览器之间的代理服务器。由于PWA是谷歌提出，那么对 ServiceWorker，同样也提出一些能力要求：
+* 后台消息传递
+* 网络代理，转发请求，伪造响应
+* 离线缓存
+* 消息推送
+
+在目前阶段，ServiceWorker 的主要能力集中在网络代理和离线缓存上。
+
+Service Worker 事件
+* install
+* activate
+* message
+* fetch
+* sync
+* push
+
+Service Worker 全局对象
+* self 指向这个对象本身
+* caches 管理缓存
+
 ## HTML5
 
 ### 新增内容
@@ -749,6 +789,47 @@ HTML5增加了更多样化的API:
 * HTML Audio/Video
 
 ### 离线存储
+通过离线存储，我们可以通过把需要离线存储在本地的文件列在一个manifest配置文件中，这样即使在离线的情况下，用户也可以正常使用App。
+
+怎么用？
+1. html 的 manifest 属性指定`xxx.manifest`列表文件
+2. manifest 文件按照一定的书写格式
+  * CACHE:表示需要离线存储的资源列表，由于包含manifest文件的页面将被自动离线存储，所以不需要把页面自身也列出来。
+  * NETWORK:表示在它下面列出来的资源只有在在线的情况下才能访问，他们不会被离线存储，所以在离线情况下无法使用这些资源。
+  * FALLBACK:表示如果访问第一个资源失败，那么就使用第二个资源来替换他
+
+例子
+```shell
+CACHE MANIFEST
+#v0.11 更新注释行中的日期和版本号是一种使浏览器重新缓存文件的办法。
+
+CACHE:
+
+js/app.js
+css/style.css
+
+NETWORK:
+resourse/logo.png
+
+FALLBACK:
+/ /offline.html
+```
+
+在线的情况下，浏览器发现 html 头部有 manifest 属性，它会请求manifest文件，如果是第一次访问app，那么浏览器就会根据 manifest 文件的内容下载相应的资源并且进行离线存储。如果已经访问过app并且资源已经离线存储了，那么浏览器就会使用离线的资源加载页面，然后浏览器会对比新的 manifest 文件与旧的 manifest 文件，如果文件没有发生改变，就不做任何操作，如果文件改变了，那么就会重新下载文件中的资源并进行离线存储。
+
+离线的情况下，浏览器就直接使用离线存储的资源。
+
+与传统浏览器缓存的区别：离线缓存断网还可以打开页面，浏览器缓存不行。
+
+注意事项
+* 如果服务器对离线的资源进行了更新，那么必须更新manifest文件之后这些资源才能被浏览器重新下载，如果只是更新了资源而没有更新manifest文件的话，浏览器并不会重新下载资源，也就是说还是使用原来离线存储的资源。
+* 浏览器在下载manifest文件中的资源的时候，它会一次性下载所有资源，如果某个资源由于某种原因下载失败，那么这次的所有更新就算是失败的，浏览器还是会使用原来的资源。
+* 在更新了资源之后，新的资源需要到下次再打开app才会生效，如果需要资源马上就能生效，那么可以使用window.applicationCache.swapCache()方法来使之生效，出现这种现象的原因是浏览器会先使用离线资源加载页面，然后再去检查manifest是否有更新，所以需要到下次打开页面才能生效。
+
+该方案缺点
+* 更新完版本后，必须刷新一次才会启动新版本（会出现重刷一次页面的情况）
+* 无法进行灰度发布等策略
+* 无法增量更新
 
 ## CSS
 link 与 @import
@@ -796,7 +877,69 @@ IFC
 小程序 canvas 涂抹擦除
 
 ## Vue 技术栈
-vuex
+### Vue
+事件选择
+* created 获取数据，创建非响应式数据
+* mounted 获取真实 DOM 元素（如需要）
+
+动画
+* transition || transition-group 组件
+  * 特定 CSS 类型
+  * 特定钩子函数
+* JS 应用 CSS animation（create-keyframe-animation）
+* 第三方 CSS 动画库，如 Animate.css
+* 第三方 JavaScript 动画库，如 Velocity.js
+
+父子组件交互
+* 父组件通过属性传值给子组件
+* 子组件通过函数属性或事件派发与父组件交互
+
+CSS 规范
+* index.scss 包含 base.scss/reset.scss/icon.scss
+* base.scss 全局基础样式
+* reset.scss 重置浏览器样式
+* icon.scss 字体图标
+* mixin.scss 常用的 CSS 函数库，一般达到简写的目的，比如（bg-image 多倍屏、no-wrap 不换行，extend-click 扩充点击区域）
+* variable.scss 颜色规范（背景，文字、主题） + 字体大小规范
+
+### vuex
+认识 vuex
+* 是什么
+  * 状态管理模式，集中式存储应用的所有组件的状态，并以相应的规则保证状态以一种可以预测的方式发生变化
+  * 闭环：state -> components -> actions(api) -> mutations -> state
+  * 问题：不使用 vuex，我们可以直接修改组件数据，数据的变化会直接映射到DOM上，在 vuex 中，不能直接修改组件数据，必须通过 dispatch action 或 commit mutations 来修改组局，反而变得繁琐了
+* 解决什么问题
+  * 多个组件之间状态共享
+  * 路由跳转复杂数据传递
+  * 显示代码与数据代码分层
+* 和单纯的全局对象有以下两点不同：
+  * Vuex 的状态存储是响应式的，当我们变更状态时，监视状态的 Vue 组件也会自动更新。
+  * 你不能直接改变 store 中的状态。改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation
+
+有两种使用方式
+* 使用了 vuex 后，vue 组件实例拥有属性`$store`，下面有`getters/commit/dispatch/state`属性来操作 store 中的数据
+* 通过 vuex 提供的辅助函数，mapGetters/mapMutations/mapActions
+
+modules 模块化：考虑到项目的逐步增大，会对 state、mutations、actions、getters 进行模块化拆分，这里列出几个注意事项，具体的查阅文档进行操作
+* 会有内部模块状态和全局模块状态的区别，因此对于 mutations、actions、getters 的入参会有所变化
+* 可通过 namespaced 设置命名空间，同时可以通过 createNamespacedHelpers 解决书写麻烦的问题
+* 动态注册模块 registerModule 函数，主要是为了可扩展
+
+keep-alive
+* `<keep-alive>` 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。
+* 当组件在 `<keep-alive>` 内被切换，它的 activated 和 deactivated 这两个生命周期钩子函数将会被对应执行。
+* keep-alive 的缓存也是基于 VNode 节点的而不是直接存储 DOM 结构。
+
+### vue-router
+为什么需要子路由（children），难道仅仅只是为了少写几个 path 属性字符，其实非也，这里涉及到组件是否缓存的问题。
+
+父子路由的存在是为了解决实际问题的。出于性能考虑，组件通常会使用`<keep-alive>`缓存，一个典型的场景就是列表和列表项详情，具体交互通常是这样的，点击列表中某一项，跳转到一个新的路由组件，接着我们可能回到列表，点击另一个列表项查看新的详情，针对这种回退的场景，列表详情页是不需要缓存的，因为如果缓存，created 事件不会触发，浏览位置会被保存，这本身就是不合适的。
+
+如果不区分父子组件，就会在同一个`<router-view>`中渲染，这时候我们就只能选择全部缓存或全部缓存，但区分父子组件的话，我们可以使用一个新的`<router-view>`容器来渲染子组件。
+
+路由动态加载的几种方式
+* 动态 import
+* 动态 require
 
 ## webpack
 
@@ -822,6 +965,7 @@ var deepCopy = function(obj) {
 很明显，如果深拷贝只是上面简单的代码的话，那为什么 JS 不从标准层面上提供一个原生的深拷贝函数呢？主要是因为 JS 无法选择一个默认的拷贝算法
 * 循环引用如何处理？是否应该检测循环引用并终止循环（不复制深层元素）？还是应当直接报错或者是选择其他方法呢？
 * 如何复制一个函数呢？
+* 如何复制 Date、RegExp、Node 节点等是否需要考虑进去呢？
 
 ## 题目
 求一个字符串的字节长度，假设：一个英文字符占用一个字节，一个中文字符占用两个字节。
