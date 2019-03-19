@@ -153,7 +153,7 @@
                  var res;
                  if (opt.success && opt.success instanceof Function) {
                      res = xhr.responseText;
-                     if (typeof res ==== 'string') {
+                     if (typeof res === 'string') {
                          res = JSON.parse(res);
                          opt.success.call(xhr, res);
                      }
