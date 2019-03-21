@@ -1027,6 +1027,38 @@ var deepCopy = function(obj) {
 * 如何复制一个函数呢？
 * 如何复制 Date、RegExp、Node 节点等是否需要考虑进去呢？
 
+利用 Map 轻松检查是否存在环
+```js
+var a = { age: 20}
+var b = { name: 'sky', a: a}
+a.b = b
+function getCheckFunc(target) {
+    var map = new Map()
+    function checkCircle() {
+        var keys = Object.keys(target)
+        for(var i = 0; i < keys.length; i++) {
+            var value = target[keys[i]]
+            if(typeof value === 'object') {
+                if(map.get(value)) {
+                    return true
+                } else {
+                    map.set(value, 1)
+                }
+                return checkCircle(value)
+            }
+        }
+        return false
+    }
+    return checkCircle
+}
+```
+
+一直都没有思考过 Object 和 Map 的区别，因为 Object 也是键值对存储，但 ES6 既然新增了 Map、Set、Symbol 肯定是有意义的对吧，这里看看区别
+* 一个 Object 的键只能是字符串或者 Symbols，但一个 Map 的键可以是任意值，包括函数、对象、基本类型。
+* Map 中的键值是有序的，而添加到对象中的键则不是。因此，当对它进行遍历时，Map 对象是按插入的顺序返回键值。
+* 你可以通过 size 属性直接获取一个 Map 的键值对个数，而 Object 的键值对个数只能手动计算。
+* Map 可直接进行迭代，而 Object 的迭代需要先获取它的键数组，然后再进行迭代。
+
 ## 题目
 求一个字符串的字节长度，假设：一个英文字符占用一个字节，一个中文字符占用两个字节。
 ```js
