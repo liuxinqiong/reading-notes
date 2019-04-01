@@ -50,7 +50,7 @@ Symbol 的特点
 
 其他
 * Symbol.for 方法：接受一个字符串作为参数，并且创建的 Symbol 值是全局的，如果我们已经有一个 Symbol 值了，并且想重新使用，那么就可以利用这个方法来获取。
-* Symbol.keyFor 方法：返回一个已登记的 Symbol 值的key。
+* Symbol.keyFor 方法：返回一个已登记的 Symbol 值的 key。
 
 内置的 Symbol 值，ES6 提供了11个内置的 Symbol 值，它们都是对象的属性，指向语言内部使用的方法。这里主要了解一个常用的
 * Symbol.iterator
