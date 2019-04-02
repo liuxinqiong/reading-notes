@@ -190,7 +190,7 @@
              c = ((c & 1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
              table[n] = c;
          }
-         return typeof Int32Array !=== 'undefined' ? new Int32Array(table) : table;
+         return typeof Int32Array !== 'undefined' ? new Int32Array(table) : table;
      })();
      var crc32_str = function (str) {
          var C = -1;
