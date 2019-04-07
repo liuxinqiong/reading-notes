@@ -1,67 +1,62 @@
-ARTS 打卡第二周
+ARTS 打卡第三周
 
 背景就不介绍啦，可以去看第一周的文章啦，撸起柚子加油干咯
 
 <!-- more -->
 
 ## Algorithm
-本周是一道比较简单的题，名称为 Reverse Integer，给定一个数字，将数组部分反转，需要考虑到大小边界问题，假定为 32 位带符号整形，同时需要考虑到负数的问题。
+本周 leetcode 算法题，依旧是一道难度级别为 easy 的题目，名称为 palindrome number，大概意思就是说判断一个数是不是顺着读，倒着读结果是一样的。
 
-我的解法是借用数组的 reverse 方法，具体如下
+脑海里的第一个想法就是借用数组的 reverse 函数，因此代码如下
 ```js
-var reverse = function(x) {
-    var res = (x).toString().split('').reverse().join('')
-    // 判断是不是负数，特殊处理，借用 Number 函数将字符串转为数组，会自动去除开始可能存在的 0
-    if(res.charAt(res.length - 1) === '-') {
-        res = Number('-' + res.substring(0, res.length - 1))
-    }
-    // 判断是否超出范围
-    if(Math.abs(res) > 0x7FFFFFFF) {
-        return 0
-    }
-    return res
+var isPalindrome = function(x) {
+    var reverseInterge = Number((x).toString().split('').reverse().join(''))
+    return reverseInterge === x
 };
 ```
 
+洋洋洒洒写下来，一顿提交后，运行速度好像不是太理想，占用内存也比较大，难道是我借用数组的原因，于是不用数组写了如下的代码
+```js
+var isPalindrome = function(x) {
+    var xString = (x).toString()
+    var len = xString.length
+    var res = ''
+    for(var i = len - 1; i >=0; i--) {
+        res += xString[i]
+    }
+    return x === Number(res)
+}
+```
+
+代码提交后，也是没啥大问题的，可惜的是，我发现运行时间和占用内存和第一个方法差别不大。
+
 ## Review
-本周阅读的英文技术文章来自于 medium，名为 3 Ways to Set Default Value in JavaScript，三种方式设置默认值。分享的内容其实比较简单，但还是一些细节值得学习的。首先看看有哪三种写法
-* || 或运算符
-* 三元运算符
-* if/else
+本周阅读的英文技术文章来自于 medium，名为 Passing Arrays as Function Arguments，讲的是如何将数组每一项作为函数参数列表。
 
-作者重点讲了 || 的用法，因为它觉得这种写法更加简洁，代码量也更少，同时也更好理解
-
-我们通常会如此使用
+在 ES6 出来之前，我们使用的方式是 apply 函数，代码如下
 ```js
-function(name) {
-  name = name || 'no name';
-}
-
-// 注意在 ES6 中更推荐参数默认值写法
-function(name = 'no name') {
-
-}
+func.apply(null, array)
 ```
 
-|| 运算符只有左边为 false 时，右边的值才会被赋值给其他变量，那么那些值是 false 呢？
-* false
-* undefined
-* null
-* NaN
-* 0
-* empty string
-
-我们已经知道有上述 6 种可能会被转换为 false 值，但有时候我们并不想捕获所有的 false 值，此时 || 就表示无能为力了，就需要用到三元运算符啦
+ES6 de 扩展运算符带来了中更简单的方式
 ```js
-a = (a === undefined) ? a : b;
+func(...array)
 ```
+
+文章中还提到，这种将数组转换成参数列表的能力给 Math 对象函数提供了便利。比如 Math.max 用来的到参数列表中的最大值。我们日常开发中也可以用来得到数组中的最大值，用法如下
+```js
+Math.max.apply(null, array)
+```
+
+利用扩展符，写法就更加美观了
+```js
+Math.max(...array)
+```
+
+什么是参数可变的函数：可以接受无限的或者参数个数可变的的函数，比如 Math.max 就是其中之一
 
 ## Tip
-不知道你有没有思考过 HTTP 协议传输的纯文本的 HTML 字符串，是如何被浏览器解析的呢？甚至更大的话题，我们写的 JS 代码是如何被解释执行的呢？
-
-这里设计到一个状态机的概念，近期准备自己实现一下浏览器的 innerHTML 属性的功能，实现一个对应的函数，将字符串解析成 DOM 元素。
-
-如果你感兴趣的话也可以一起把弄哦。
+无
 
 ## Share
-这篇文章可以看看哦，关于 node 服务端日志分片，如何防止站点被笨笨机器人灌水，以及加深对 CSRF 攻击的理解，传送门：[站点被机器人疯狂灌水](https://blog.pig1024.me/posts/5c9b2d25b7e3fd426ac5e1fe)
+关于 HTML 字符串是如何一步步被解析成 DOM 节点的，尝试使用状态机实现了一个简单的函数，具体分享内容见：[用原生 JS 实现 innerHTML 功能](https://blog.pig1024.me/posts/5ca2d1f2b7e3fd426ac5e202)
