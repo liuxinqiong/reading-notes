@@ -183,7 +183,7 @@ CSRF 防御从原理发现特征
 * 不访问 A 网站前端
 * HTTP头中 referer 会为 B 网站
 
-因此CSRF 具体防御为
+因此 CSRF 具体防御为
 * 禁止第三方网站带 Cookies，same-site 属性，限制为同域名
 * 验证 referer，禁止第三方请求
 * 前端加入验证信息
@@ -615,14 +615,14 @@ para.dispatchEvent(event);
   * 能够指定在哪个阶段（捕获阶段还是冒泡阶段）触发回监听函数。
   * 除了 DOM 节点，还可以部署在 window、XMLHttpRequest 等对象上面，等于统一了整个 JavaScript 的监听函数接口。
 
-上面的三种方式，相比有点经验都会知道，但是监听函数中 this 指向问题，却是容易忽略的地方。实际编程中，监听函数内部的this对象，常常需要指向触发事件的那个 Element 节点。
+上面的三种方式，相比有点经验都会知道，但是监听函数中 this 指向问题，却是容易忽略的地方。实际编程中，监听函数内部的 this 对象，常常需要指向触发事件的那个 Element 节点。
 
 addEventListener 方法指定的监听函数，内部的 this 对象总是指向触发事件的那个节点。具体原理看下面代码便知
 ```js
 para.onclick = hello;
 ```
 
-如果将监听函数部署在 Element 节点的 on- 属性上面，this不会指向触发事件的元素节点。
+如果将监听函数部署在 Element 节点的 on- 属性上面，this 不会指向触发事件的元素节点。
 ```js
 // pElement.setAttribute('onclick', 'hello()'); 类似于如下写法
 para.onclick = function () {
