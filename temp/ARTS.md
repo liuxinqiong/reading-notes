@@ -1,86 +1,69 @@
-ARTS 打卡第三周
+ARTS 打卡第四周
 
-背景就不介绍啦，可以去看第一周的文章啦，撸起柚子加油干咯
+本周是新工作的第一天，可谓什么都是新的，同事是新的，项目技术栈完全是不熟悉的，加上项目本身体量也比较大，差点就自闭了，都不知道自己能不能最终稳定下来，希望自己能好好努力，技术上多学习，和同事多沟通，早点熟悉项目，能早点有生产力，本周就加上一个本周回顾吧。
 
 <!-- more -->
 
+## 本周回顾
+这周过的有点累，倒不是因为加班什么的，主要是心累，从而导致身体也有点累，总是睡不醒。加入了新的团队，很多东西都要花时间去熟悉和学习，这里列举一下新公司需要技术储备的地方，Angular 这种大方向就不说了哈。大致如下
+* Angular material UI
+* svg.js svg.draw.js
+* RxJS
+* three.js
+
 ## Algorithm
-本周继续完成 easy part，名为 Roman to Integer，将罗马数组转换成普通数组，其实非常简单，只是有几种特殊情况需要判断一下。我的答案如下
+本周继续完成 easy part，名为 Longest Common Prefix，求字符串数组中最长相同前缀
 ```js
-// map 将字符快速转数字
-var map = {
-    I: 1,
-    V: 5,
-    X: 10,
-    L: 50,
-    C: 100,
-    D: 500,
-    M: 1000
-};
-// 判断是否属于减法情况
-var isSubCase = function(prevChar, curChar) {
-    var bool = false
-    if((prevChar === 'I' && (curChar === 'V' || curChar === 'X') || 
-        prevChar === 'X' && (curChar === 'L' || curChar === 'C') ||
-        prevChar === 'C' && (curChar === 'D' || curChar === 'M'))) {
-        bool = true
-    }
-    return bool
-}
-var romanToInt = function(s) {
-    var len = s.length
-    var res = 0
-    var prevChar
-    for(var i = 0; i < len; i++) {
-        var curChar = s[i]
-        if(prevChar && isSubCase(prevChar, curChar)) {
-            res += map[curChar] - 2 * map[prevChar]
-        } else {
-            res += map[curChar]
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function(strs) {
+    // 如果一个单词都没有，直接返回空
+    if(strs.length === 0) return ''
+    // 取第一个单词
+    var firstStr = strs[0]
+    // 取第一个单词的长度
+    var firstLen = firstStr.length
+    // 用来存储结果
+    var res = ''
+    // 参考第一个单词长度循环
+    for(var i = 0; i< firstLen; i++) {
+        var count = 0;
+        // 循环每一个单词
+        for(var j = 0; j < strs.length - 1; j++) {
+            // 取各自单词的各自 i 号位置上的字母
+            var a = strs[j][i]
+            var b = strs[j + 1][i]
+            // 两两比较，如果相同，将成功次数 count + 1
+            if(compare(a, b)) {
+                count++
+            } else {
+                // 不相同，认定出现不一致的地方了，跳出循环
+                break;
+            }
         }
-        prevChar = curChar
+        // 如果成功次数等于所有单词个数减 1，认为大家该位置都相同，将字符累加到结果上
+        if(count === strs.length - 1) {
+           res += firstStr[i]
+        } else {
+            // 出现不一致结束循环
+            break;
+        }
     }
     return res
 };
+
+function compare(a, b) {
+    return a === b
+}
 ```
 
 ## Review
-本周阅读的英文技术文章来自于 medium，名为 Number Truncation in JavaScript，主要内容讲 JS 中数字的裁剪。了解到一个新 api。
-
-在 JS 中，获取整数部分，我们可能会这么写
-```js
-const number = 80.6
-// Old Way
-number < 0 ? Math.ceil(number) : Math.floor(number);
-```
-
-如今在 ES6 中，我们可以这么写
-```js
-const es6 = Math.trunc(number);
-```
-
-你可能会发现这个 api 得到的结果和 parseInt 是类似的，但还是有区别，因为 parseInt 主要用于 String 参数类型的，如果是 Number 类型，也会自动调用 toString() 函数转成字符串
-
-很多时候 parseInt 都能正常工作，但下面就会得到错误的结果
-```js
-const number = 1000000000000000000000.5;
-const result = parseInt(number);
-console.log(result);
-```
-
-主要是因为数字在转 String 时，会变成科学记数法
-```js
-const number = 1000000000000000000000.5;
-const result = number.toString();
-console.log(result); // "1e+21"
-```
+翻墙软件竟然挂了，时间也比较晚了，这周就免了吧！
 
 ## Tip
-取数字整数部分的其他方法，按位取反和按位或，这里需要好好理解下原理
-```js
-console.log(~~80.6); // 80
-console.log(80.6 | 0); // 80
-```
+翻墙软件竟然挂了，时间也比较晚了，这周就免了吧！
 
 ## Share
-重读《CSS 世界》，对 CSS 的理解又加深了，CSS 真不像看上去那么简单，深入理解后发现一切都是有原因的：[传送门](https://blog.pig1024.me/posts/5cac686bb7e3fd426ac5e205)
+翻墙软件竟然挂了，时间也比较晚了，这周就免了吧！
