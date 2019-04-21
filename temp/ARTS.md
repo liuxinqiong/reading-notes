@@ -5,58 +5,82 @@ ARTS 打卡第三周
 <!-- more -->
 
 ## Algorithm
-本周 leetcode 算法题，依旧是一道难度级别为 easy 的题目，名称为 palindrome number，大概意思就是说判断一个数是不是顺着读，倒着读结果是一样的。
-
-脑海里的第一个想法就是借用数组的 reverse 函数，因此代码如下
+本周继续完成 easy part，名为 Roman to Integer，将罗马数组转换成普通数组，其实非常简单，只是有几种特殊情况需要判断一下。我的答案如下
 ```js
-var isPalindrome = function(x) {
-    var reverseInterge = Number((x).toString().split('').reverse().join(''))
-    return reverseInterge === x
+// map 将字符快速转数字
+var map = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000
+};
+// 判断是否属于减法情况
+var isSubCase = function(prevChar, curChar) {
+    var bool = false
+    if((prevChar === 'I' && (curChar === 'V' || curChar === 'X') || 
+        prevChar === 'X' && (curChar === 'L' || curChar === 'C') ||
+        prevChar === 'C' && (curChar === 'D' || curChar === 'M'))) {
+        bool = true
+    }
+    return bool
+}
+var romanToInt = function(s) {
+    var len = s.length
+    var res = 0
+    var prevChar
+    for(var i = 0; i < len; i++) {
+        var curChar = s[i]
+        if(prevChar && isSubCase(prevChar, curChar)) {
+            res += map[curChar] - 2 * map[prevChar]
+        } else {
+            res += map[curChar]
+        }
+        prevChar = curChar
+    }
+    return res
 };
 ```
 
-洋洋洒洒写下来，一顿提交后，运行速度好像不是太理想，占用内存也比较大，难道是我借用数组的原因，于是不用数组写了如下的代码
-```js
-var isPalindrome = function(x) {
-    var xString = (x).toString()
-    var len = xString.length
-    var res = ''
-    for(var i = len - 1; i >=0; i--) {
-        res += xString[i]
-    }
-    return x === Number(res)
-}
-```
-
-代码提交后，也是没啥大问题的，可惜的是，我发现运行时间和占用内存和第一个方法差别不大。
-
 ## Review
-本周阅读的英文技术文章来自于 medium，名为 Passing Arrays as Function Arguments，讲的是如何将数组每一项作为函数参数列表。
+本周阅读的英文技术文章来自于 medium，名为 Number Truncation in JavaScript，主要内容讲 JS 中数字的裁剪。了解到一个新 api。
 
-在 ES6 出来之前，我们使用的方式是 apply 函数，代码如下
+在 JS 中，获取整数部分，我们可能会这么写
 ```js
-func.apply(null, array)
+const number = 80.6
+// Old Way
+number < 0 ? Math.ceil(number) : Math.floor(number);
 ```
 
-ES6 de 扩展运算符带来了中更简单的方式
+如今在 ES6 中，我们可以这么写
 ```js
-func(...array)
+const es6 = Math.trunc(number);
 ```
 
-文章中还提到，这种将数组转换成参数列表的能力给 Math 对象函数提供了便利。比如 Math.max 用来的到参数列表中的最大值。我们日常开发中也可以用来得到数组中的最大值，用法如下
+你可能会发现这个 api 得到的结果和 parseInt 是类似的，但还是有区别，因为 parseInt 主要用于 String 参数类型的，如果是 Number 类型，也会自动调用 toString() 函数转成字符串
+
+很多时候 parseInt 都能正常工作，但下面就会得到错误的结果
 ```js
-Math.max.apply(null, array)
+const number = 1000000000000000000000.5;
+const result = parseInt(number);
+console.log(result);
 ```
 
-利用扩展符，写法就更加美观了
+主要是因为数字在转 String 时，会变成科学记数法
 ```js
-Math.max(...array)
+const number = 1000000000000000000000.5;
+const result = number.toString();
+console.log(result); // "1e+21"
 ```
-
-什么是参数可变的函数：可以接受无限的或者参数个数可变的的函数，比如 Math.max 就是其中之一
 
 ## Tip
-无
+取数字整数部分的其他方法，按位取反和按位或，这里需要好好理解下原理
+```js
+console.log(~~80.6); // 80
+console.log(80.6 | 0); // 80
+```
 
 ## Share
-关于 HTML 字符串是如何一步步被解析成 DOM 节点的，尝试使用状态机实现了一个简单的函数，具体分享内容见：[用原生 JS 实现 innerHTML 功能](https://blog.pig1024.me/posts/5ca2d1f2b7e3fd426ac5e202)
+重读《CSS 世界》，对 CSS 的理解又加深了，CSS 真不像看上去那么简单，深入理解后发现一切都是有原因的：[传送门](https://blog.pig1024.me/posts/5cac686bb7e3fd426ac5e205)
