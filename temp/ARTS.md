@@ -1,69 +1,96 @@
-ARTS 打卡第四周
+ARTS 打卡第五周
 
-本周是新工作的第一天，可谓什么都是新的，同事是新的，项目技术栈完全是不熟悉的，加上项目本身体量也比较大，差点就自闭了，都不知道自己能不能最终稳定下来，希望自己能好好努力，技术上多学习，和同事多沟通，早点熟悉项目，能早点有生产力，本周就加上一个本周回顾吧。
+Node.js 12 发布啦，简单看了下介绍，印象最深的还是支持 ES6 Module，以后就可以不用 require 啦，想想还是很美好的啦，废话说完了，接下来开启本周的打卡吧。
 
 <!-- more -->
 
-## 本周回顾
-这周过的有点累，倒不是因为加班什么的，主要是心累，从而导致身体也有点累，总是睡不醒。加入了新的团队，很多东西都要花时间去熟悉和学习，这里列举一下新公司需要技术储备的地方，Angular 这种大方向就不说了哈。大致如下
-* Angular material UI
-* svg.js svg.draw.js
-* RxJS
-* three.js
-
 ## Algorithm
-本周继续完成 easy part，名为 Longest Common Prefix，求字符串数组中最长相同前缀
+本周继续完成 easy part，名为 Valid Parentheses，判断给定字符是否是有效的括号搭配，具体字符有'(', ')', '{', '}', '[' and ']'几种，更多描述我就不啰嗦了，看到题目描述的第一瞬间，就立刻感觉需要使用栈数据结构，我的代码如下，令人激动的是打败了 100% 的玩家，这貌似是我首次达成此成就。
 ```js
-/**
- * @param {string[]} strs
- * @return {string}
- */
-var longestCommonPrefix = function(strs) {
-    // 如果一个单词都没有，直接返回空
-    if(strs.length === 0) return ''
-    // 取第一个单词
-    var firstStr = strs[0]
-    // 取第一个单词的长度
-    var firstLen = firstStr.length
-    // 用来存储结果
-    var res = ''
-    // 参考第一个单词长度循环
-    for(var i = 0; i< firstLen; i++) {
-        var count = 0;
-        // 循环每一个单词
-        for(var j = 0; j < strs.length - 1; j++) {
-            // 取各自单词的各自 i 号位置上的字母
-            var a = strs[j][i]
-            var b = strs[j + 1][i]
-            // 两两比较，如果相同，将成功次数 count + 1
-            if(compare(a, b)) {
-                count++
-            } else {
-                // 不相同，认定出现不一致的地方了，跳出循环
-                break;
-            }
-        }
-        // 如果成功次数等于所有单词个数减 1，认为大家该位置都相同，将字符累加到结果上
-        if(count === strs.length - 1) {
-           res += firstStr[i]
+var map = {
+    ')': '(',
+    '}': '{',
+    ']': '['
+}
+var isValid = function(s) {
+    var length = s.length
+    if(length % 2 !== 0) {
+        return false
+    }
+    var stack = [], top;
+    for(var i = 0; i < length; i++) {
+        if(stack.length) {
+            top = stack[stack.length - 1]
         } else {
-            // 出现不一致结束循环
-            break;
+            stack.push(s[i])
+            continue;
+        }
+        if(map[s[i]] === top) {
+            stack.pop()
+        } else {
+            stack.push(s[i])
         }
     }
-    return res
+    return stack.length === 0
 };
-
-function compare(a, b) {
-    return a === b
-}
 ```
 
 ## Review
-翻墙软件竟然挂了，时间也比较晚了，这周就免了吧！
+本周看的文章，国外的一篇博客[7 Useful JavaScript Tricks](https://davidwalsh.name/javascript-tricks)，主要内容为 JS 的 7 个小技巧。
+
+数组去重，使用扩展符和 Set
+```js
+var j = [...new Set([1, 2, 3, 3])]
+```
+
+去除数组中的 false 值，你没有看错，直接传入 Boolean 函数名称即可，就是这么酷炫。
+```js
+myArray
+    .map(item => {
+        // ...
+    })
+    // Get rid of bad values
+    .filter(Boolean);
+```
+
+创建空对象，相比大家都知道啦，这里就强调一下啦
+```js
+// 没有原型，没有其他东西，真正干净的对象，常用作字典
+let dict = Object.create(null);
+```
+
+利用扩展符合并对象
+```js
+const summary = {...person, ...tools, ...attributes};
+```
+
+函数参数必传检查，否则报错
+```js
+const isRequired = () => { throw new Error('param is required'); };
+const hello = (name = isRequired()) => { console.log(`hello ${name}`) };
+```
+
+解构表达式设置别名
+```js
+const obj = { x: 1 };
+// Grabs obj.x as { x }
+const { x } = obj;
+// Grabs obj.x as { otherName }
+const { x: otherName } = obj;
+```
+
+得到查询字符串参数，过去我们常通过正则表达式来完成，如今我们这可以这样
+```js
+var urlParams = new URLSearchParams(window.location.search);
+console.log(urlParams.has('post')); // true
+console.log(urlParams.get('action')); // "edit"
+console.log(urlParams.getAll('action')); // ["edit"]
+console.log(urlParams.toString()); // "?post=1234&action=edit"
+console.log(urlParams.append('active', '1')); // "?post=1234&action=edit&active=1"
+```
 
 ## Tip
-翻墙软件竟然挂了，时间也比较晚了，这周就免了吧！
+很多事情可能并没有办法等你准备周全，尤其对于技术，不经历业务场景的打磨，如何积累哟，所以心态放好，加油努力，学习的过程还是很棒的。
 
 ## Share
-翻墙软件竟然挂了，时间也比较晚了，这周就免了吧！
+关于 React 如何开启热更新，这里也许有你不知道的哟，[传送门](https://blog.pig1024.me/posts/5cc5afa6b7e3fd426ac5e209)在此
