@@ -8,7 +8,7 @@
 * Router
   * BrowserRouter
   * HashRouter
-* 组件容器：Route 组件 path +  component 属性
+* 组件容器：Route 组件 path + component 属性，还支持 render props，渲染特定组件
 * 路径跳转：Link 组件 to 属性
 * 非路由组件使用路由的方法，`withRouter`高阶组件，位于`react-router-dom`
 
