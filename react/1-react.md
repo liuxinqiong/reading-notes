@@ -43,11 +43,11 @@ JSX 本质
   * 用于初始化内部状态
   * 唯一可以直接修改 state 的地方
 * getDerivedStateFromProps（取代 componentsWillReceiveProps）
-  * 当 state 需要冲 props 初始化时使用
+  * 当 state 需要从 props 初始化时使用
   * 尽量不要使用：维护两者状态一致性会增加复杂度
   * 每次 render 都会调用
   * 典型场景：表单控件获取默认值
-* componentDidMounted
+* componentDidMount
   * UI 渲染完成后调用
   * 只执行一次
   * 典型场景：获取外部资源
