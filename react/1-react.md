@@ -29,7 +29,7 @@ JSX 本质
 * 表达式作为子元素
 * 约定：自定义组件以大写字母开头
 
-![React 16.4 生命周期]('./react-lifecycle.png')
+![React 16.4 生命周期](react-lifecycle.png)
 
 生命周期
 * 具体图：http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
