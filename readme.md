@@ -4,7 +4,7 @@
 
 ## Why
 
-* summary&think&write
+* summary & think & write
 * a little supervision purpose
 
 ## Reference
