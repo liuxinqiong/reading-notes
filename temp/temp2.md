@@ -27,3 +27,7 @@ three的模型的顶点组织用米为单位来组织，然后根据经纬度来
 https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-scene-graph.html
 
 three默认的z轴方向和maptalks里是反的
+权限系统设计
+* 基于用户设计
+* 基于角色设计（RBAC）
+* 基于属性设计（ABAC）
