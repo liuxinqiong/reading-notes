@@ -44,3 +44,4 @@ git reset 支持的参数
 
 ## 参考
 * [Git笔记(一)——[commit, checkout]](http://pinkyjie.com/2014/08/02/git-notes-part-1/)
+* [Git笔记(二)——[diff, reset]](http://pinkyjie.com/2014/08/02/git-notes-part-2/)
