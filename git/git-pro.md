@@ -72,7 +72,13 @@ Git Merge 和 Git Rebase 目的相同，它们都是把不同分支的提交合�
 > 一般我们把别的分支合并到 master 时用 merge，而把 master 合并到别的分支时会用到 rebase
 
 ## HEAD^ vs HEAD~
+HEAD 指向当前分支的最近一个 commit，当我们需要通过 checkout 或 reset 找到之前某个 commit 的状态时，通常需要找到对应的 commit id，但 id 通常是 hash 值，不便于记忆，那没有快捷的方式进行索引呢，答案就是 HEAD 配合 `^` 和 `~` 使用了。
 
+首先要理解什么叫做父提交，通常一个 commit 至少有一个父提交，也就是你的上一个 commit，你需要知道的是，在 merge 的情况下，你会有多个父提交，比如 git merge br1 br2 br3，注意这里的顺序很重要，此时你会有三个父提交，一次是 br1、b2、br3 分支上最新的 commit。
+
+理解了父提交的概念，再来看两者的含义
+* `^` 代表父提交，当一个提交有多个父提交时，可以在后面跟上一个数字，表示第几个父提交，`^` 相当于 `^1`
+* `~<n>` 相当于连续的 n 个 `^`
 
 ## 参考
 * [Git笔记(一)——[commit, checkout]](http://pinkyjie.com/2014/08/02/git-notes-part-1/)
