@@ -160,6 +160,8 @@ Three.js 提供的控制器
 * FirstPersonControls 第一人称控制器：通过鼠标和键盘来控制相机的转向和位置
 * TransformControls 变换控制器：用于对场景中物体的变换，将鼠标的移动转变成对物体的平移和旋转操作
 
+添加相机控制器后，`camera.lookAt()` 会貌似失效，因为 `controls.update()` 会重置回 `controls.target` 属性
+
 ## 物体
 Objects：场景中添加的物体，比如 Mesh、Points 等，最常用的 Mesh。
 
@@ -558,7 +560,21 @@ Object3D 函数解释
 
 针对大规模的建筑群，可以将不很重要的建筑进行 merge，这样可以大大的提高渲染效率。
 
+废置对象目标：几何体（不仅仅是 Mesh）、材质（Material）、纹理（Texture）、渲染目标、Scene、其他项：(来自 example 目录类，比如控制器和后期处理过程)
+ 
+原则：如果存在 dispose 函数，就应当在清理的时候使用它
+ 
+你可能需要知道：
+1. 对于 mesh 清除，它的 geometry 和 material 并不会自动清除
+2. 非 Group 对象 children 也是可能有值的，比如调用 add/attach 函数
+3. traverse 会迭代自身以及子子孙孙，从上到下，从左到右
+4. material 可能是数组
+5. 检查 material 上是否存在 texture
+
+> 经实践，dispose 只是清除 three 中对象的引用，自身对于 geometry、material 等引用也必须切断（赋空或 delete 表达式），否则无效
+
 ## 资料
 * [Three.js入门指南](http://www.ituring.com.cn/book/miniarticle/48067)
 * [一篇文章弄懂THREE.js中的各种矩阵关系](https://juejin.im/post/5a0872d4f265da43062a4156)
 * [场景图](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-scene-graph.html)
+* [Three.js Cleanup](https://threejsfundamentals.org/threejs/lessons/threejs-cleanup.html)
