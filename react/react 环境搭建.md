@@ -78,8 +78,10 @@ Ant Design 组件已开启按需加载，如果对于资源加载要求严格，
 
 > 使用 CRA 创建的项目，自定义环境变量比如使用 `REACT_APP_` 做为前缀，否则会被忽视
 
+> 目前已使用 `REACT_APP_STAGE` 来作为不同环境的标识符
+
 ### 常用组件
-权限组件
+权限组件、页面加载组件
 
 ## 代码质量
 为保证代码质量和统一团队风格，开启代码校验，具体如下
@@ -115,7 +117,7 @@ Ant Design 组件已开启按需加载，如果对于资源加载要求严格，
 ### 懒加载
 路由懒加载
 
-组件级懒加载：react-loadable、react.lazy React.lazy() 实现懒加载，React.suspense() 在懒加载完成之前显示其他组件
+组件级懒加载：react-loadable 无须使用、react.lazy React.lazy() 实现懒加载，React.Suspense() 在懒加载完成之前显示其他组件
 
 ## 开发规范
 
