@@ -11,6 +11,8 @@ React 全家桶
 * 请求库：[axios](https://github.com/axios/axios)
 * 国际化：[react-intl](https://github.com/formatjs/react-intl)
 * 页面 title、meta 动态修改：[react-helmet](https://github.com/nfl/react-helmet)
+* immutable 选型：[immer](https://immerjs.github.io/immer/docs/introduction)
+* 热更新：[react-hot-loader](https://github.com/gaearon/react-hot-loader)
 
 单元测试
 * [Jest](https://jestjs.io/)
@@ -227,7 +229,6 @@ OOP 规约
 
 ## In Progress
 待解决的问题
-* immutable 选型：immer vs immutable.js
 * 多仓库公共代码问题
 
 后续考虑
@@ -240,3 +241,13 @@ OOP 规约
 
 ## 参考
 * 编程规约部分参考《阿里 Java 开发手册》
+
+## Special Part
+权限相关
+* 接口级别：未登录跳转登录，登录成功跳转回之前访问页
+* 权限组件：Authorize | SecurityLayoutState
+* 大概逻辑
+  * 获取当前用户信息，显示 loading 态
+  * 接口返回未登录，则跳转登录页
+  * 已登录但没有权限，显示 403 组件
+  * 有权限，正常显示
