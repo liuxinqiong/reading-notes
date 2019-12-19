@@ -228,8 +228,10 @@ OOP 规约
 非常重要！见单独文章
 
 ## In Progress
-待解决的问题
-* 多仓库公共代码问题
+多仓库公共代码问题
+* node module
+* git submodule
+* git subtree
 
 后续考虑
 * Mock Data（在我司感觉应用场景不多）
