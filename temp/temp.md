@@ -3,7 +3,7 @@ React Hook
 ## 背景
 Hooks 出现之前，如果要复用组件代码，常用的解决方式有
 * HOC：高阶组件
-  * 属性代理：函数返回一个我们自己定义的组件，然后在render中返回要包裹的组件，这样我们就可以代理所有传入的props，并且决定如何渲染
+  * 属性代理：函数返回一个我们自己定义的组件，然后在 render 中返回要包裹的组件，这样我们就可以代理所有传入的 props，并且决定如何渲染
   * 反向继承：返回一个组件，继承原组件，在 render 中调用原组件的 render。由于继承了原组件，能通过 this 访问到原组件的生命周期、props、state、render 等，相比属性代理它能操作更多的属性。
 * Render Props：属性是一个函数，这个函数接受一个对象并返回一个子组件，会将这个函数参数中的对象作为 props 传入给新生成的组件。
 
@@ -86,7 +86,7 @@ React 内置的基础 Hooks
   * 对于函数式组件，可以传递一个比较函数作为 React.memo 的第二参数
   * 需要注意深比较本身的性能问题
 
-既然 PureComponent 或 React.memo 可以较少更新，为什么不作为默认选项呢
+既然 PureComponent 或 React.memo 可以减少更新，为什么不作为默认选项呢
 * Problem with nested objects
 * Problem with function props
 
