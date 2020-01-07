@@ -72,6 +72,8 @@ React 内置的基础 Hooks
 * state 更改
 * forceUpdate
 
+> UI 响应延迟低于 100ms 对于用户而言是无感知的，当延迟 100~300ms 时用户就会有所察觉
+
 那么 render 的时候做了什么事情呢
 * diff 比较
 * DOM 卸载与挂载
@@ -101,6 +103,17 @@ React 内置的基础 Hooks
 * useCallback Hook 允许你在重新渲染之间保持对相同的回调引用以使得 shouldComponentUpdate 继续工作
 * useMemo Hook 使控制具体子节点何时更新变得更容易
 * useReducer Hook 减少了对深层传递回调的需要，通过 context 用 useReducer 往下传一个 dispatch 函数
+
+什么时候使用 memo 或 PureComponent 呢
+* Pure functional component
+* Renders often
+* Re-renders with the same props
+* Medium too big size
+
+> 一个常见的导致组件使用相同 props 重新渲染的场景就是：父组件重新渲染导致子组件重新渲染
+
+什么时候避免使用 memo 或 PureComponent 呢
+* 不经常使用相同 props 重新渲染，会导致不必要的属性比较
 
 ## Context API 使用对比
 Context API 使用例子，典型的 Render Props 应用哇
