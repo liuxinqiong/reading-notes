@@ -32,6 +32,18 @@ Render Props 有以下几个优点
 
 > useState 和 useEffect 解决了函数式组件没有状态和生命周期的问题，但是如何才能把可以复用的逻辑抽离出来，变成一个个可以随意插拔的“插销”呢。其实很简单了，将相关 useState 和 useEffect 抽离出来到一个函数中（常取名为use*），返回 stateName 即可，在组件中就可以直接引用这个函数。
 
+HOC 注意事项
+* 不要在 render 方法中使用 HOC
+  * 性能问题，导致 diff 失败，导致组件卸载，状态丢失
+  * 在极少数情况下，你需要动态调用 HOC。你可以在组件的生命周期方法或其构造函数中进行调用。
+* 务必复制静态方法：可以使用 `hoist-non-react-statics` 自动拷贝所有非 React 静态方法
+* Refs 不会被传递
+
+> 关于 render prop 一个有趣的事情是你可以使用带有 render prop 的常规组件来实现大多数高阶组件 (HOC)。
+
+render props 注意事项
+* 将 Render Props 与 React.PureComponent 一起使用时要小心，可能会导致比较失效，原因在于你写得 render props 可能每次渲染都会新建
+
 ## Hooks 基础
 React 内置的基础 Hooks
 * useState
@@ -198,9 +210,58 @@ ref 属性是一个回调函数
 
 > 对于 HOC，建议使用 React 的 forwardRef 函数来像被包裹的组件转发 ref
 
+准确理解 forwardRef：并不是啥特殊的功能，就是 ref 通过 props 转发，其只是 React 封装的一个简单 api
+
+> 记住 ref 不是 prop 属性。就像 key 一样，其被 React 进行了特殊处理
+
 代码分割
 * 动态 import
 * React.lazy：目前只支持默认导出（default exports）
 * 基于路由的代码分割
 
 > React.lazy 和 Suspense 技术还不支持服务端渲染。如果你想要在使用服务端渲染的应用中使用，我们推荐 Loadable Components 这个库。
+
+Context 基础
+* 当 React 渲染一个订阅了这个 Context 对象的组件，这个组件会从组件树中离自身最近的那个匹配的 Provider 中读取到当前的 context 值。
+* 只有当组件所处的树中没有匹配到 Provider 时，其 defaultValue 参数才会生效。这有助于在不使用 Provider 包装组件的情况下对组件进行测试。
+
+Context 注意事项
+* 如果 Provider 父组件进行重渲染时，会导致的 value 属性被赋值为新对象，则会导致 consumers 组件中触发意外的渲染
+
+错误边界是一种 React 组件，这种组件可以捕获并打印发生在其子组件树任何位置的 JavaScript 错误，并且，它会渲染出备用 UI，而不是渲染那些崩溃了的子组件树。错误边界在渲染期间、生命周期方法和整个组件树的构造函数中捕获错误。
+
+错误边界无法捕获以下场景中产生的错误：
+* 事件处理
+* 异步代码
+* 服务端渲染
+* 它自身抛出来的错误（并非它的子组件）
+
+如果一个 class 组件中定义了 static getDerivedStateFromError() 或 componentDidCatch() 这两个生命周期方法中的任意一个（或两个）时，那么它就变成一个错误边界。当抛出错误后，请使用 static getDerivedStateFromError() 渲染备用 UI ，使用 componentDidCatch() 打印错误信息。
+
+> 只有 class 组件才可以成为错误边界组件。大多数情况下, 你只需要声明一次错误边界组件, 并在整个应用中使用它。
+
+React.Fragment 片段可以具有 key，key 也是目前唯一可以传递给 Fragment 的属性。
+
+JSX 深入
+* 运行时选择类型，由于你不能将通用表达式作为 React 元素类型。如果你想通过通用表达式来（动态）决定元素类型，你需要首先将它赋值给大写字母开头的变量。
+* Props 默认值为 “True”
+* 布尔类型、Null 以及 Undefined 将会忽略：助于依据特定条件来渲染其他的 React 元素
+
+性能优化
+* 虚拟化长列表：react-window 和 react-virtualized
+* React.PureComponent 与 React.memo
+* 不可变数据的力量
+
+Portals
+* 将子节点渲染到存在于父组件以外的 DOM 节点的优秀的方案。
+* 通过 Portal 进行事件冒泡：其行为和普通的 React 子节点行为一致。
+
+Profiler 测量渲染一个 React 应用多久渲染一次以及渲染一次的“代价”。 它的目的是识别出应用中渲染较慢的部分
+
+TODO: 测试相关
+
+项目文件结构
+* 按功能或路由组织
+* 按文件类型组织
+* 避免多层嵌套：考虑将单个项目中的目录嵌套控制在最多三到四个层级内。
+* 不要过度思考：通常，将经常一起变化的文件组织在一起是个好主意。这个原则被称为 “colocation”。
