@@ -180,3 +180,27 @@ refs 能获取到 Component 或 DOM Element 实例，应该尽量避免使用它
 * 使用字符串：避免使用，被淘汰
 * 在 ref 属性中使用回调函数
 * React.createRef()
+
+## 其他
+state 和 props 的更新是异步，所以不要依赖它们的值来更新下一个状态
+* class 组件：setState 通过一个函数而不是一个对象。这个函数用上一个 state 作为第一个参数，将此次更新被应用时的 props 做为第二个参数
+* functional 组件：
+
+事件处理：在 JSX 绑定事件每次创建事件处理函数，在大多数情况下，这没什么问题，但如果该回调函数作为 prop 传入子组件时，这些组件可能会进行额外的重新渲染。
+
+组合 vs 继承：推荐使用组合而非继承来实现组件间的代码重用
+
+ref 属性是一个回调函数
+* class 组件：可使用 createRef api 来创建回调函数来接收
+* functional 组件：可使用 useRef  hook
+
+自定义组件暴露内部元素给父组件：在子组件上设置一个特殊的 props 回调来对父组件暴露 DOM refs，来把父组件的 ref 传向子节点的 DOM 节点
+
+> 对于 HOC，建议使用 React 的 forwardRef 函数来像被包裹的组件转发 ref
+
+代码分割
+* 动态 import
+* React.lazy：目前只支持默认导出（default exports）
+* 基于路由的代码分割
+
+> React.lazy 和 Suspense 技术还不支持服务端渲染。如果你想要在使用服务端渲染的应用中使用，我们推荐 Loadable Components 这个库。
