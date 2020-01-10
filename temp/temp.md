@@ -26,9 +26,11 @@ Render Props 有以下几个优点
 * 可以溯源，子组件的 props 一定是来自于直接父组件
 
 哪为啥造一个 Hooks 呢
-* 复用有状态组件太麻烦了，目前的复用方式 Render Props 和 HOC，无论是哪一种方法都会造成组件数量增多，组件树结构的修改
-* 生命周期钩子函数里的逻辑太乱了吧：我们通常希望一个函数只做一件事情
-* class 让人困惑：主要表现在 this 指向问题和无状态组件到有状态组件的改造
+* 在组件之间复用状态逻辑很难：目前的复用方式 Render Props 和 HOC，无论是哪一种方法都会造成组件数量增多，组件树结构的修改。使用 Hook 从组件中提取状态逻辑，使得这些逻辑可以单独测试并复用。Hook 使你在无需修改组件结构的情况下复用状态逻辑
+* 生命周期钩子函数里的逻辑混乱
+  * 通常希望一个函数只做一件事情，而生命周期钩子将完全不相关的代码却在同一个方法中组合在一起
+  * 一些清除逻辑可能还会在另一个钩子中出现，相互关联且需要对照修改的代码被进行了拆分
+* 难以理解的 class：主要表现在 this 指向问题和无状态组件到有状态组件的改造
 
 > useState 和 useEffect 解决了函数式组件没有状态和生命周期的问题，但是如何才能把可以复用的逻辑抽离出来，变成一个个可以随意插拔的“插销”呢。其实很简单了，将相关 useState 和 useEffect 抽离出来到一个函数中（常取名为use*），返回 stateName 即可，在组件中就可以直接引用这个函数。
 
@@ -47,16 +49,21 @@ render props 注意事项
 ## Hooks 基础
 React 内置的基础 Hooks
 * useState
-  * 参数可以是初始值或者函数形式
+  * 参数可以是初始值或者函数形式（惰性初始 state），后续重新渲染中，React 会确保 state 和 setState 的标识是稳定的，因此依赖列表中省略 setState
   * 把所有 state 都放在同一个 useState 调用中，或是每一个字段都对应一个 useState 调用，这两方式都能跑通。当你在这两个极端之间找到平衡，然后把相关 state 组合到几个独立的 state 变量时，组件就会更加的可读。如果 state 的逻辑开始变得复杂，我们推荐用 reducer 来管理它，或使用自定义 Hook。
   * 如果一个操作，你需要运行多个 setXXX，说明这些 state 的相关的，你可能会考虑放进一个自定义 hook 中，很多时候还可以考虑使用 useReducer hook
+  * class 组件的 this.setState，但是它不会把新的 state 和旧的 state 进行合并
 * useReducer
   * 通过这种方式可以对多个状态同时进行控制
+  * 惰性初始化：将 init 函数作为 useReducer 的第三个参数传入
 * useEffect
+  * componentDidMount、componentDidUpdate 和 componentWillUnmount 具有相同的用途，只不过被合并成了一个 API 
   * 在函数组件主体内改变 DOM、添加订阅、设置定时器、记录日志以及执行其他包含副作用的操作都是不被允许的，因此需要使用 useEffect 完成副作用操作。
   * 用于处理各种状态变化造成的副作用，也就是说只有在特定的时刻，才会执行的逻辑。
   * 回调函数中，我们可以返回一个常用用于清理工作，这是 effect 可选的清除机制，比如事件监听、取消订阅、计时器、中断 Ajax
   * 使用多个 Effect 实现关注点分离，解决面向生命周期编程的问题
+  * 传递给 useEffect 的函数在每次渲染中都会有所不同，这是刻意为之的。事实上这正是我们可以在 effect 中获取最新的值，而不用担心其过期的原因。每次我们重新渲染，都会生成新的 effect，替换掉之前的。
+  * 按照 effect 声明的顺序依次调用组件中的每一个 effect。
 * useCallback
   * 返回一个 memoized 函数，该回调函数仅在某个依赖项改变时才会更新。
   * 当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染的子组件时，它将非常有用。因为函数引用未发生改变。
@@ -65,18 +72,33 @@ React 内置的基础 Hooks
   * 有助于避免在每次渲染时都进行高开销的计算。
   * 当你把引用对象传递给经过优化的并使用引用相等性去避免非必要渲染的子组件时，它将非常有用。因为对象引用未发生改变。
 * useContext
+  * 读取 context 的值以及订阅 context 的变化
   * context 是在外部 create，内部 use 的 state，它和全局变量的区别在于，数据的改变会触发依赖该数据组件的 reRender。而 useContext hooks 可以帮助我们简化 context 的使用。
 * useRef
   * useRef 返回一个可变的 ref 对象，其 `.current` 属性初始化为传递的参数（ initialValue ）。返回的对象将持续整个组件的生命周期。
   * useRef 和 DOM refs 有点类似，但 useRef 是一个更通用的概念，它就是一个你可以放置一些东西的盒子。它可以很方便地保存任何可变值，其类似于在 class 中使用实例字段的方式。
+  * useRef() 和自建一个 {current: ...} 对象的唯一区别是，useRef 会在每次渲染时返回同一个 ref 对象。
 * useImperativeHandle
-  * 需要配合 `forwardRef` 使用，用于将 ref 暴露给父组件
+  * 在使用 ref 时自定义暴露给父组件的实例值，弥补不能引用函数组件的缺陷。
+  * 需要配合 `forwardRef` 使用
 * useLayoutEffect
   * 其函数签名与 useEffect 相同，但它会在所有的 DOM 变更之后同步调用 effect。可以使用它来读取 DOM 布局并同步触发重渲染。
   * 尽可能使用标准的 useEffect 以避免阻塞视觉更新。
 * 自定义 hooks
   * 只需要定义一个函数，并且把相应需要的状态和 effect 封装进去
   * Hook 之间也是可以相互引用的。使用 use 开头命名自定义 Hook，这样可以方便 eslint 进行检查。
+
+useEffect 注意事项
+* 请确保数组中包含了所有外部作用域中会随时间变化并且在 effect 中使用的变量，否则你的代码会引用到先前渲染中的旧变量。
+* 如果想执行只运行一次的 effect（仅在组件挂载和卸载时执行），可以传递一个空数组（[]）作为第二个参数。这就告诉 React 你的 effect 不依赖于 props 或 state 中的任何值，所以它永远都不需要重复执行。如果你传入了一个空数组（[]），effect 内部的 props 和 state 就会一直拥有其初始值。
+* 推荐启用 eslint-plugin-react-hooks 中的 exhaustive-deps 规则。此规则会在添加错误依赖时发出警告并给出修复建议。
+* 虽然 useEffect 会在浏览器绘制后延迟执行，但会保证在任何新的渲染前执行。React 将在组件更新前刷新上一轮渲染的 effect。
+
+Hook 规则
+* 只在组件最顶层使用 Hook，不要在循环，条件或嵌套函数中调用
+* 只在函数组件和自定义 Hook 中使用
+
+> hooks 目前暂时还没有对应不常用的 getSnapshotBeforeUpdate 和 componentDidCatch 生命周期的 Hook 等价写法
 
 ## 性能相关
 在 React 中一切皆组件，因此优化也是面向组件优化，在 React 中引发组件 reRender 的时机很简单，就如下三种情况，第三种我们无需考虑
@@ -114,7 +136,9 @@ React 内置的基础 Hooks
 在 React 中使用内联函数对性能的影响，与每次渲染都传递新的回调会如何破坏子组件的 shouldComponentUpdate 优化有关。Hook 从三个方面解决了这个问题。
 * useCallback Hook 允许你在重新渲染之间保持对相同的回调引用以使得 shouldComponentUpdate 继续工作
 * useMemo Hook 使控制具体子节点何时更新变得更容易
-* useReducer Hook 减少了对深层传递回调的需要，通过 context 用 useReducer 往下传一个 dispatch 函数
+* useReducer Hook 减少了对深层传递回调的需要，通过 context 用 useReducer 往下传一个 dispatch 函数，dispatch 永远是稳定的
+
+> 你依然可以选择是要把应用的 state 作为 props 向下传递（更显明确）还是作为作为 context（对很深的更新而言更加方便）。如果你也使用 context 来向下传递 state，请使用两种不同的 context 类型 —— dispatch context 永远不会变，因此组件通过读取它就不需要重新渲染了，除非它们还需要应用的 state。
 
 什么时候使用 memo 或 PureComponent 呢
 * Pure functional component
@@ -196,7 +220,7 @@ refs 能获取到 Component 或 DOM Element 实例，应该尽量避免使用它
 ## 其他
 state 和 props 的更新是异步，所以不要依赖它们的值来更新下一个状态
 * class 组件：setState 通过一个函数而不是一个对象。这个函数用上一个 state 作为第一个参数，将此次更新被应用时的 props 做为第二个参数
-* functional 组件：
+* functional 组件：useState 中的 setState 同样支持函数形式来接收先前的 state
 
 事件处理：在 JSX 绑定事件每次创建事件处理函数，在大多数情况下，这没什么问题，但如果该回调函数作为 prop 传入子组件时，这些组件可能会进行额外的重新渲染。
 
@@ -265,3 +289,50 @@ TODO: 测试相关
 * 按文件类型组织
 * 避免多层嵌套：考虑将单个项目中的目录嵌套控制在最多三到四个层级内。
 * 不要过度思考：通常，将经常一起变化的文件组织在一起是个好主意。这个原则被称为 “colocation”。
+
+React 怎么知道 useState 对应的是哪个组件，因为我们并没有传递 this 给 React。
+* React 保持对当先渲染中的组件的追踪。
+* 与此同时，多亏了 Hook 规范，每个组件内部都有一个「记忆单元格」列表。它们只不过是我们用来存储一些数据的 JavaScript 对象。当你用 useState() 调用一个 Hook 的时候，它会读取当前的单元格（或在首次渲染时将其初始化），然后把指针移动到下一个。
+
+分离独立 state 变量的建议：这就很哲学了，一个通用的思考方向就是，如果一个操作会触发多个 setState 操作，就可以考虑它们是否可以归为一个组
+
+调用了 useContext 的组件总会在 context 值变化时重新渲染。如果重渲染组件的开销较大，你可以 通过使用 memoization 来优化
+
+函数中看到陈旧的 props 和 state
+* 组件内部的任何函数，都是从它被创建的那次渲染中看到的，典型的闭包问题。如果你刻意地想要从某些异步回调中读取最新的 state，你可以用 一个 ref 来保存它，修改它，并从中读取。
+* 使用了「依赖数组」优化但没有正确地指定所有的依赖
+
+实现 getDerivedStateFromProps 等同于渲染期间的一次更新
+
+callback ref 与 ref
+* 使用 `[]` 作为 `useCallback` 的依赖列表。这确保了 `ref callback` 不会在再次渲染时改变，因此 React 不会在非必要的时候调用它。
+* 不使用 useRef 的原因：当 ref 是一个对象时它并不会把当前 ref 的值的变化通知到我们。如果使用 useEffect 监听 `current` 会有如下问题
+
+依赖列表中使用函数是否安全
+* 不安全：要记住 effect 外部的函数使用了哪些 props 和 state 很难。这也是为什么通常你会想要在 effect 内部去声明它所需要的函数。这同时也允许你通过 effect 内部的局部变量来处理无序的响应。
+* 如果出于某些原因你 无法把一个函数移动到 effect 内部
+  * 把函数移动到你的组件之外，这样依赖，这个函数肯定不会依赖任何 props 和 state，通过传参即可知道其依赖那些状态
+  * 如果你所调用的方法是一个纯计算，并且可以在渲染时调用，你可以转而在 effect 之外调用它， 并让 effect 依赖于它的返回值。
+  * 万不得已的情况下，你可以把函数加入 effect 的依赖但 把它的定义包裹 进 useCallback Hook。这就确保了它不随渲染而改变，除非 它自身的依赖发生了改变
+
+如何从 useCallback 读取一个经常变化的值
+* 某些场景中，你需要使用 useCallback 记住一个回调，但由于闭包的原因，读取外部变化的值会读取到旧值
+* 解决方案：使用 ref 当做实例变量，并手动保存值
+
+ useContext 不同于 `react-redux` 提供的 `useSelector` 具有选择部分值功能，因此只要 context value 发生的改变，所有 consumer 都会触发重新渲染，大致解决办法如下，来源[issue](https://github.com/facebook/react/issues/15156)
+ * 将不会同时变化的值拆分成多个 context
+ * 将组件拆分成多个，将有复杂逻辑的组件使用 memo
+ * 组件内部使用 useMemo
+
+有趣的 ref 回调
+* 不要在 ref 中使用内联函数，这会导致每次重新渲染 ref 都是新的回调函数
+* 这会导致每次更新，都会触发两次回调，一次 null 值和一次 dom 值（如果你设计两个函数，会发现传 null 调用就函数，传 dom 调用新函数）
+* 这是 react 做的 `clean up` 工作（清理旧的 ref，设置新的 ref），为避免内存泄露。针对的场景就是，previous callback 和 next callback 是两个完全不同的函数。清理工作是必须的，用于闲置引用
+
+dependencies 注意事项
+* dependencies 通常指包括参与 React top-down 数据流的数据，比如 props，state 或其他通过他们计算而来的数据
+* 在 dependencies 中监听 mutable field 会存在问题，因为他们不能保证在渲染之前改变或者改变它会触发一次渲染。ref 就是一个例子，他在渲染完成之后改变，这会导致滞后，导致运行异常。
+
+具体分析监听 ref.current 存在的问题
+* 一开始 current 初始值为 undefined，组件初次渲染完成后，current 被设值为 dom element，但此时 React 无法知道更改成功通知
+* 由于某些因素导致组件再次渲染时候，effect 会比较前后两次的值，此时 React 还是把 current 当初 undefined 对待，比较结果为 false，再次触发 effect，虽然其实值并没有发生变化
