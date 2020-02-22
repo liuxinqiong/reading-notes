@@ -9,11 +9,11 @@
 webpack-dev-server
 
 cross-env
-* mac上设置环境变量，直接NODE_ENV=production
-* windows上设置环境变量，需要set NODE_ENV=production
+* mac 上设置环境变量，直接 NODE_ENV=production
+* windows 上设置环境变量，需要 set NODE_ENV=production
 * 帮助我们忽略平台的不同，统一如下：cross-env NODE_ENV=production
 
-webpack.DefinePlugin很重要
+webpack.DefinePlugin 很重要
 * 方便自己代码进行环境判断
 * 第三方库，比如 vue 和 react，会根据不同环境进行区分打包
 
@@ -23,7 +23,7 @@ webpack.DefinePlugin很重要
 
 config.devtool
 * 帮助我们在浏览器中调试
-* 原理使用sourceMap映射
+* 原理使用 sourceMap 映射
 * config.devtool = '#cheap-module-eval-source-map'
 
 vue2
@@ -43,14 +43,14 @@ API重点
   * 不用调用，直接写函数名即可
 
 vue使用 jsx 与使用 vue 文件
-* jsx操作能力更强，因为你可以使用js的所有能力，而不是通过v-if等指令，vue2开始支持
+* JSX 操作能力更强，因为你可以使用 JS 的所有能力，而不是通过 `v-if` 等指令，vue2 开始支持
 * vue 结构更清晰，使用更方便
 
 webpack优化
 * 安装extract-text-webpack-plugin
-* 非javascipt资源打包成单独的文件
+* 非 Javascript 资源打包成单独的文件
   * 做浏览器缓存
-  * 还是希望通过head头部加载style资源
+  * 还是希望通过 head 头部加载 style 资源
 
 区分打包类库代码
   * 类库代码比较稳定，业务经常迭代，优化浏览器缓存

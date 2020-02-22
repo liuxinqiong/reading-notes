@@ -4,18 +4,18 @@
 <!-- more -->
 
 ## ES6 是什么
-* 2015年6月正式发布
-* 使用babel语法转换器，支持低端浏览器
-* 流行库基本基于ES6构建
+* 2015 年 6 月正式发布
+* 使用 babel 语法转换器，支持低端浏览器
+* 流行库基本基于 ES6 构建
 
 ## ES6 重点内容
 * 块级作用域、字符串、函数
   * let、const
   * 字符串模板
-  * 参数默认值、箭头函数（简写代码、绑定this作用域）、展开运算符（...）
+  * 参数默认值、箭头函数（简写代码、绑定 this 作用域）、展开运算符（...）
 * 对象扩展
   * Object.keys、values、entries
-  * 对象方法简写，计算属性 
+  * 对象方法简写，计算属性
   ```js
   const obj = {name,[name]:'hello',hello(){}}
   ```
@@ -32,19 +32,19 @@
   * map
   * symbol
 * 模块化
-  * 告别seajs和requirejs
+  * 告别 seajs 和 requirejs
   * import、import {}
-  * export、export defult
+  * export、export default
   * Node现在还不支持，需要require加载文件
 * ES6其他
   * Promise
   * 迭代器和生成器
-  * 代理Proxy
+  * 代理 Proxy
 * 其他
-  * 虽然不在ES6的范围，但也被babel支持，普遍被大家接受和使用，可能需要安装插件
+  * 虽然不在 ES6 的范围，但也被 babel 支持，普遍被大家接受和使用，可能需要安装插件
   * 对象扩展符，函数绑定
   * 装饰器
-  * async awiat
+  * async await
 
 ## const 和 let
 * 被 const 声明的变量不能被重新赋值或重新声明。你必须小心地使用 const 。使用 const 声明的变量不能被改变，但是如果这个变量是数组或者对象的话，它里面持有的内容可以被更新。它里面持有的内容不是不可改变的。
@@ -210,11 +210,11 @@ export default mod;
 * map：让数组通过某种计算产生一个新的数组
 * filter：筛选出数组中符合条件的项，组成新数组
 * reduce：让数组的前项和后项做某种计算，并累计最终值
-  * 相对比较复杂：正确的语法为 arr.reduce(callback[, initialValue])，callback可以有四个参数，initialValue用作第一个调用 callback的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
-  * accumulator：累加器累加回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue
+  * 相对比较复杂：正确的语法为 arr.reduce(callback[, initialValue])，callback 可以有四个参数，initialValue 用作第一个调用 callback 的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
+  * accumulator：累加器累加回调的返回值; 它是上一次调用回调时返回的累积值，或 initialValue
   * currentValue：数组中正在处理的元素。
   * currentIndex：可选，数组中正在处理的当前元素的索引。 如果提供了initialValue，则索引号为0开始，否则为索引为1开始。
-  * array：可选，调用reduce的数组
+  * array：可选，调用 reduce 的数组
 * every：检测数组中每一项是否符合条件，
 * some：检测数组中是否有某些符合条件
 
@@ -225,6 +225,6 @@ async+await优化异步代码发展：
 * 回调函数，已出现回调地狱，造成不可读，不可调试
 * Promise
 * generator
-* async+await是generator的优化，ES7的内容
+* async + await 是 generator 的优化，ES7 的内容
 
-> await必须在async内部
+> await 必须在 async 内部

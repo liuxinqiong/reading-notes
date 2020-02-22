@@ -561,9 +561,9 @@ Object3D 函数解释
 针对大规模的建筑群，可以将不很重要的建筑进行 merge，这样可以大大的提高渲染效率。
 
 废置对象目标：几何体（不仅仅是 Mesh）、材质（Material）、纹理（Texture）、渲染目标、Scene、其他项：(来自 example 目录类，比如控制器和后期处理过程)
- 
+
 原则：如果存在 dispose 函数，就应当在清理的时候使用它
- 
+
 你可能需要知道：
 1. 对于 mesh 清除，它的 geometry 和 material 并不会自动清除
 2. 非 Group 对象 children 也是可能有值的，比如调用 add/attach 函数

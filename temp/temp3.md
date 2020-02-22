@@ -1,21 +1,34 @@
-添加子仓库
-```shell
-git submodule add <main_project_url>
-```
+前端微服务
 
-仓库中会新增 `.gitmodules` 文件用来记录子仓库信息
+对于微服务来说，模块分开解藕基本就完事了，但是微前端不一样，前端应用在运行时却是一个整体，需要聚合，甚至还需要交互，通信。
 
-git clone 仓库时，可以通过 `--recurse-submodules` 拉去所有的子仓库代码，否则不会自动拉取
-```shell
-git clone --recurse-submodules <main_project_url>
-```
+为什么需要微前端
+* 系统模块增多，单体应用变得臃肿，开发效率低下，构建速度变慢；
+* 人员扩大，需要多个前端团队独立开发，独立部署
+* 解决遗留系统，新模块需要使用最新的框架和技术，旧系统还继续使用。
 
-如果 clone 时没有添加该仓库，执行如下命令，这过程中会用到上面提到的 url 和 head 索引
-```shell
-git submodule update --init --recursive
-```
+方案对比
+* 路由转发
+* 构建时组合
+  * 独立仓储、独立开发，构建时整体打包，合并应用
+  * 优点：方便管理，抽取公共模块
+  * 缺点：无法独立部署
+* 运行时组合
+  * 每个子应用独立构建，运行时由主应用负责应用管理，加载、启动、卸载、通信机制
+  * 优点：真正的独立开发、独立部署
+  * 缺点：复杂，需要设计加载、通信机制，无法彻底隔离，需要解决依赖冲突，样式冲突问题
+* Web components
 
-删除 submodule
-1. 删除 `.gitmodules` 文件
-2. 删除 `.git/config` 对应部分
-3. 删除 `.git/modules/` 对应部分
+社区已有方案
+* [single-spa](https://github.com/CanopyTax/single-spa)
+* 基于 single-spa 的 [qiankun](https://github.com/umijs/qiankun)
+* phodal/mooa
+* 阿里飞冰：icestark
+* [micro-frontends](https://github.com/neuland/micro-frontends)
+
+
+
+相关资料
+* [前端微服务化解决方案](https://alili.tech/archive/ea599f7c/)
+* [微前端的那些事儿](https://microfrontends.cn)
+* 书籍：《前端架构 - 从入门到微前端》

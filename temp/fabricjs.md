@@ -15,7 +15,7 @@ fabric.Canvas：用来管理内部所有的对象
 * item(index) 访问指定下标对象
 * getObjects() 获取所有对象
 * remove(object) 删除指定对象
-* forEachObject 循环遍历 
+* forEachObject 循环遍历
 * isEmpty() 判断是否空画板
 * size() 画板元素个数
 * contains(object) 查询是否包含某个元素
@@ -30,7 +30,7 @@ fabric.Canvas：用来管理内部所有的对象
 * getSelectionElement()获取选中的元素
 * getActiveObject() 获取选中的对象
 * getActiveObjects() 获取选中的多个对象
-* discardActiveObject()取消当前选中对象 
+* discardActiveObject()取消当前选中对象
 
 7 种基础形状
 * fabric.Line：直线
@@ -69,7 +69,7 @@ left 和 top 是每种 Object 都有的属性，至于它到底指图形中哪�
 
 动画：这个无敌强
 * object.animate(key, value, options)
-* options 可以指定from、duration、onChange、onComplete 、easing 
+* options 可以指定from、duration、onChange、onComplete 、easing
 
 进阶函数
 * fabric.util.cos

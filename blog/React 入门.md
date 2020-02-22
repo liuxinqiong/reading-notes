@@ -13,7 +13,7 @@
 * 第一代 SPA 框架更贴近企业级。它们缺乏足够的灵活性。
 * React 生态圈组成了一个整体的灵活且可替换的框架，React 拥有简单整洁的 API、神奇的生态圈以及很棒的社区。
 * 一切皆组件
-* ES6语法，最新版本16
+* ES6 语法，最新版本 16
 
 ### node 和 npm
 全局 node 包只需要一次性地安装在全局目录，可以在终端的任何地方使用。
@@ -40,10 +40,10 @@ npm install --save-dev <package> # 标记表示该 node 包只是用作开发环
 3. babel：使项目支持 JSX 语法和 ES6
 4. ...
 
-这一步设置包含一堆的配置和工具，对于一个新手来说可能会感觉到不小的压力。由于这个原因，Facebook 引入了`create-react-app`作为零配置的 React 解决方案。
+这一步设置包含一堆的配置和工具，对于一个新手来说可能会感觉到不小的压力。由于这个原因，Facebook 引入了 `create-react-app` 作为零配置的 React 解决方案。
 
 # create-react-app
-Facebook 在 2016 年创建了这样一个零配置的 React 初始化套件。使用 create-react-app，我们不需要在手动配置webpack和eslint等，各种工具和配置都会在后台集成，而开发人员只需要专注于实现就好。
+Facebook 在 2016 年创建了这样一个零配置的 React 初始化套件。使用 create-react-app，我们不需要在手动配置 webpack 和 eslint 等，各种工具和配置都会在后台集成，而开发人员只需要专注于实现就好。
 
 安装和使用脚手架创建 myapp 应用
 ```
@@ -52,9 +52,9 @@ create-react-app myapp
 ```
 
 create-react-app 创建的是一个 npm 项目。你可以通过 npm 来给你的项目安装和卸载 node 包。另外它还附带了下面几个 npm 脚本（在package.json下的scripts中配置）：
-```
+```shell
 启动应用，开启调试页面(开发环境)
-npm start 
+npm start
 运行测试用例
 npm run test
 弹出配置，默认脚手架帮我们把配置隐藏了，只能使用一次
@@ -102,13 +102,13 @@ pushstate-server build
 ### 弹出
 `reate-react-app` 提供了一个特性，既可以保持应用的可扩展性，又可以避免被第三方依赖绑架。被第三方依赖绑架通常意味着一旦我们采取了某项技术就没有退出机制的情况。
 
-在 package.json 中，你可以找到“start”、“test”和“build”这些命令，用来启动、测试和构建应用。最后的命令就是 eject。你可以试着去执行它，但是这个命令只能被执行一次并且不能撤回。这是一个破坏性的命令，一旦执行就不能反悔，如果你只是学习 React，那就没有理由离开 create-react-app 提供给你的便利环境。。
+在 package.json 中，你可以找到 “start”、“test” 和 “build” 这些命令，用来启动、测试和构建应用。最后的命令就是 eject。你可以试着去执行它，但是这个命令只能被执行一次并且不能撤回。这是一个破坏性的命令，一旦执行就不能反悔，如果你只是学习 React，那就没有理由离开 create-react-app 提供给你的便利环境。。
 
-假设你运行了 npm run eject，它会复制所有的配置和依赖到 package.json 中，同时创建一个新的 config/文件夹。你会将整个项目完全转换成带有 Babel 和 Webpack 等工具的自定义配置。最终，你将可以完全控制所有这些工具。
+假设你运行了 npm run eject，它会复制所有的配置和依赖到 package.json 中，同时创建一个新的 config/ 文件夹。你会将整个项目完全转换成带有 Babel 和 Webpack 等工具的自定义配置。最终，你将可以完全控制所有这些工具。
 
-npm run eject 弹出配置文件，可以自定义 webpack（Jest、Babel、ESLint），发现多了 config 和 script 文件夹，同时package.json多了很多的依赖项，之前都是封装在react script内部的，之后我们便可以自定义配置了。
+npm run eject 弹出配置文件，可以自定义 webpack（Jest、Babel、ESLint），发现多了 config 和 script 文件夹，同时 package.json 多了很多的依赖项，之前都是封装在 react script 内部的，之后我们便可以自定义配置了。
 
-> 官方文档也说了 create-react-app 更适合中小型项目，所以你不用感到愧疚运行“eject”命令来移除掉 create-react-app 并拿回控制权。
+> 官方文档也说了 create-react-app 更适合中小型项目，所以你不用感到愧疚运行 “eject” 命令来移除掉 create-react-app 并拿回控制权。
 
 ### yarn
 Yarn 是 Facebook, Google, Exponent 和 Tilde 开发的一款新的 JavaScript 包管理工具。它的目的是解决这些团队使用 npm 面临的少数问题，即：
@@ -285,7 +285,7 @@ React 的生态使用了大量的函数式编程概念。通常情况下，你�
 
 ### 状态提取
 
-将子状态（substate）从一个组件移动到其他组件中的重构过程被称为状态提取。
+将子状态（subState）从一个组件移动到其他组件中的重构过程被称为状态提取。
 
 随着项目的推进，一个组件的状态可能越来越多，无疑使得代码不够简洁，这时候就需要思考，是不是有那么一些状态，只和某个组件有关，和其他组件都无关，这时候就可以把状态提取出来，交给子组件单独管理。状态提取可以使组件更加轻量，同时父子组件间协调更加简洁。
 

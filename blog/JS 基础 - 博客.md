@@ -4,7 +4,7 @@
 
 ## 关于原型和原型链
 
-* 原型对象`Person.prototype`的用途是为每个实例对象存储共享的方法和属性，它仅仅是一个普通对象，也有`__proto__`指向上一级 prototype，所有的实例是共享同一个原型对象，因此有别于实例方法或属性，原型对象仅有一份。结构如下：
+* 原型对象 `Person.prototype` 的用途是为每个实例对象存储共享的方法和属性，它仅仅是一个普通对象，也有 `__proto__` 指向上一级 prototype，所有的实例是共享同一个原型对象，因此有别于实例方法或属性，原型对象仅有一份。结构如下：
 
 ```js
 Function.prototype = {
@@ -14,8 +14,8 @@ Function.prototype = {
 };
 ```
 
-* 对象在调用一个方法时会首先在自身里寻找是否有该方法，若没有，则去原型链上去寻找，依次层层递进，这里的原型链就是实例对象的`__proto__`属性。
-* 总结：函数的原型对象 constructor 默认指向函数本身，原型对象除了有原型属性外，为了实现继承，还有一个原型链指针`__proto__`，该指针指向上一层的原型对象，而上一层的原型对象的结构依然类似，这样利用`__proto__`一直指向 Object 的原型对象上，而 Object 的原型对象用`Object.prototype.__proto__ = null`表示原型链的最顶端，如此形成了 javascript 的原型链继承，同时也解释了为什么所有的 javascript 对象都具有 Object 的基本方法。理解下面三个表达式：
+* 对象在调用一个方法时会首先在自身里寻找是否有该方法，若没有，则去原型链上去寻找，依次层层递进，这里的原型链就是实例对象的 `__proto__` 属性。
+* 总结：函数的原型对象 constructor 默认指向函数本身，原型对象除了有原型属性外，为了实现继承，还有一个原型链指针 `__proto__`，该指针指向上一层的原型对象，而上一层的原型对象的结构依然类似，这样利用 `__proto__` 一直指向 Object 的原型对象上，而 Object 的原型对象用 `Object.prototype.__proto__ = null` 表示原型链的最顶端，如此形成了 javascript 的原型链继承，同时也解释了为什么所有的 javascript 对象都具有 Object 的基本方法。理解下面三个表达式：
 
 ```js
 person.__proto__ === Person.prototype; // true
@@ -40,7 +40,7 @@ Person.prototype.__proto__ === Object.prototype; // true
     * referenced name：属性的名称
     * strict reference：严格模式
   * 获取 Reference 方法
-    * GetBase：得到`Reference`的`base`值 - IsPropertyReference：如果`base value`是一个`对象`，就返回`true`。 - GetValue： 从 Reference 类型获取对应值的方法，调用`GetValue`，返回的将是具体的值，而不再是一个`Reference`，这个很重要！ - ImplicitThisValue：该函数始终返回`undefined`。
+    * GetBase：得到 `Reference` 的 `base` 值 - IsPropertyReference：如果 `base value` 是一个 `对象`，就返回 `true`。 - GetValue： 从 Reference 类型获取对应值的方法，调用 `GetValue`，返回的将是具体的值，而不再是一个 `Reference`，这个很重要！ - ImplicitThisValue：该函数始终返回 `undefined`。
   * Reference to this
     * ref = MemberExpression = ()左边的部分
     * 判断 `ref` 是不是一个 `Reference` 类型
@@ -71,7 +71,7 @@ Person.prototype.__proto__ === Object.prototype; // true
   * 自由变量是指在函数中使用的，但既不是函数参数也不是函数的局部变量的变量。
 * 共享传递
   * 共享传递是传递对象的引用的副本，在共享传递中对函数形参的赋值操作，不会影响实参的值。
-* call&apply
+* call & apply
   * call 像点名，one by one，因此参数是多个入参。apply 是直接应用，因此参数是数组
   * 改变 this 的原理：将方法变成传入对象的属性，这样方法的 this 也就被改变了，同时避免污染对象，执行完后调用 delete 删除方法。
   * 参数：arguments 配合 eval
