@@ -2,9 +2,9 @@
 1. 搭建前端工程
   * 已经不是所见即所得了（ES6，sass）
 2. 网络优化
-  * HTTP知识
-3. API定制
-4. nodejs层npm
+  * HTTP 知识
+3. API 定制
+4. nodejs 层 npm
 
 webpack-dev-server
 
@@ -42,12 +42,12 @@ API重点
   * 缓存功能
   * 不用调用，直接写函数名即可
 
-vue使用 jsx 与使用 vue 文件
+vue 使用 jsx 与使用 vue 文件
 * JSX 操作能力更强，因为你可以使用 JS 的所有能力，而不是通过 `v-if` 等指令，vue2 开始支持
 * vue 结构更清晰，使用更方便
 
-webpack优化
-* 安装extract-text-webpack-plugin
+webpac k优化
+* 安装 extract-text-webpack-plugin
 * 非 Javascript 资源打包成单独的文件
   * 做浏览器缓存
   * 还是希望通过 head 头部加载 style 资源
