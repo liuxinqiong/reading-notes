@@ -44,28 +44,38 @@ JSX 本质
 * constructor
   * 用于初始化内部状态
   * 唯一可以直接修改 state 的地方
+  * 避免在构造函数中引入任何副作用或订阅。对于这些用例，请 componentDidMount() 改为使用。
+  * 构造函数是初始化状态的正确位置。构造函数也经常用于将事件处理程序绑定到类实例。
+  * 如果您没有初始化状态并且没有绑定方法，则不需要为您的 React 组件实现构造函数。
 * getDerivedStateFromProps（取代 componentsWillReceiveProps）
   * 当 state 需要从 props 初始化时使用
   * 尽量不要使用：维护两者状态一致性会增加复杂度
   * 每次 render 都会调用
   * 典型场景：表单控件获取默认值
+* componentWillMount()
+  * 在安装发生之前立即被调用。它之前被调用 render()
+  * 在服务器渲染上调用的唯一生命周期钩子。
 * componentDidMount
-  * UI 渲染完成后调用
   * 只执行一次
+  * UI 渲染完成后调用，需要 DOM 节点的初始化应该放在这里
+  * 此方法是设置任何订阅的好地方。如果你这样做，不要忘记退订 componentWillUnmount()
   * 典型场景：获取外部资源
 * componentWillUnmount
   * 组件移除时被调用
-  * 典型场景：释放资源
+  * 典型场景：释放资源在，例如使定时器失效，取消网络请求或清理在其中创建的任何订阅
 * getSnapshotBeforeUpdate
   * 页面 render 之前调用，state 已更新
   * 典型场景：获取 render 之前的 DOM 状态，比如保存之前的 DOM 状态（滚动位置等）
-* componentDitUpdate
-  * 每次 UI 更新时被调用
+* componentDidUpdate
+  * 每次 UI 更新时被调用，此方法不用于初始渲染。
+  * 在更新组件时，将此用作在 DOM 上操作的机会
   * 典型场景：页面需要根据 props 变化重新获取数据
 * shouldComponentUpdate
   * 决定 Virtual DOM 是否要重绘
   * 一般可以由 PureComponent 自动实现
   * 典型场景：性能优化
+* componentDidCatch()
+  * 在其子组件树中的任何位置捕获 JavaScript 错误，记录这些错误并显示回退 UI，而不是崩溃的组件树。
 
 Virtual DOM 与 key
 * 广度优先分层比较
