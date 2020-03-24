@@ -13,3 +13,7 @@ e2e 测试：puppeteer
 聚焦和忽略用例：使用 xit() 取代 it() 可以暂时忽略用例，fit() 可以聚焦当前用例并忽略其他所有用例。这两个方法可以帮助你在开发过程中只关注当前需要的用例。
 
 接入集成测试服务：注意 e2e 测试需要集成环境支持 electron，如果不支持，你可以使用 npm test .test.js 单独运行单元测试。
+
+了解 yarn，通过 Zero Install 概念，让依赖安装速度不在是瓶颈
+
+react-testing-library(@testing-library/react) + jest 成为主流，enzyme 淡出
