@@ -5,9 +5,6 @@
   * Object3D 的 userData 类型
   * axios 返回值类型定义
   * Redux Action payload 类型定义
-4. 物件
-  * 方案规则验证
-  * push_commit
 
 技术部茶会
 1. 简单、反复重构、单侧、避免过度设计
@@ -23,3 +20,4 @@ TODO
 * 物件优化
   * 减少重复代码
   * 架空层和女儿层不能自动被关闭
+* ant design 主题定制与变量修改问题
