@@ -21,3 +21,6 @@ TODO
   * 减少重复代码
   * 架空层和女儿层不能自动被关闭
 * ant design 主题定制与变量修改问题
+
+yarn vs npm
+* 了解 yarn，通过 Zero Install 概念，让依赖安装速度不在是瓶颈
