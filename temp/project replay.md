@@ -16,15 +16,15 @@ TODO
 * 数值输入框优化
   * 滚动操作
   * 空白重置
-* 用户选择刷新不重置
+* 方案信息面板用户选择刷新不重置
 * 物件优化
   * 减少重复代码
   * 架空层和女儿层不能自动被关闭
 * ant design 主题定制与变量修改问题
-* build 失败
 * 依赖升级（react-redux）
 * 优化 path 提示：Absolute Imports
 * Running Test Part
+* MaterialHelper 内存释放问题
 
 在 npm 5.2+，新增 npx 命令，推荐使用 npx 创建项目，它会使用最新的版本
 ```shell
@@ -48,3 +48,6 @@ node 版本切换神器
 通用组件管理工具
 * Storybook for React
 * React Styleguidist
+
+yarn vs npm
+* 了解 yarn，通过 Zero Install 概念，让依赖安装速度不在是瓶颈
