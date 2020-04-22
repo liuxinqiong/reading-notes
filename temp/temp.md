@@ -104,3 +104,29 @@ const renderWithRouter = (component) => {
   }
 }
 ```
+
+单元测试框架
+* 匹配器 Matchers
+  * 通用：浅比较、深比较
+  * 真假：undefined、null、boolean
+  * number 比较
+  * string：toMatch
+  * 数组与迭代器：包含
+  * 异常
+* 异步能力
+* 装载与卸载：beforeEach/afterEach/beforeAll/afterAll，同时可通过 describe 限定作用域范围
+* Mock Functions
+  * jest.fn => mockFn
+  * mockFn.mock.(calls|results|instances)
+  * mockFn.(mockReturnValueOnce|mockReturnValue|mockResolvedValue|mockImplementation|mockImplementationOnce|mockReturnThis|mockName)
+* Mock Module
+  * jest.mock
+* Manual Mock
+  * 约定文件夹名称为：`__mocks__`
+* ES6 Class Mocks
+  * Automatic mock：jest.mock
+  * Manual mock
+  * Calling jest.mock() with the module factory parameter
+  * Replacing the mock using mockImplementation() or mockImplementationOnce()
+
+> 在 Jest 中如果想捕获函数的调用情况，则该函数必须被 mock 或者 spy，jest.spyOn()是 jest.fn()的语法糖，它创建了一个和被 spy 的函数具有相同内部代码的 mock 函数。
