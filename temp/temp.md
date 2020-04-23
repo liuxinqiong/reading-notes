@@ -123,10 +123,15 @@ const renderWithRouter = (component) => {
   * jest.mock
 * Manual Mock
   * 约定文件夹名称为：`__mocks__`
-* ES6 Class Mocks
-  * Automatic mock：jest.mock
-  * Manual mock
-  * Calling jest.mock() with the module factory parameter
-  * Replacing the mock using mockImplementation() or mockImplementationOnce()
 
-> 在 Jest 中如果想捕获函数的调用情况，则该函数必须被 mock 或者 spy，jest.spyOn()是 jest.fn()的语法糖，它创建了一个和被 spy 的函数具有相同内部代码的 mock 函数。
+> 在 Jest 中如果想捕获函数的调用情况，则该函数必须被 mock 或者 spy，jest.spyOn()是 jest.fn() 的语法糖，它创建了一个和被 spy 的函数具有相同内部代码的 mock 函数。
+
+如何 Mock ES6 Class，主要用两种方式，分为自动 Mock 与手动 Mock
+* 自动 Mock：使用 jest.mock 直接 Mock 整个模块
+* 手动 Mock：在需要 Mock 的文件同级创建 `__mocks__` 文件夹，然后创建同名文件即可，依旧需要使用 jest.mock 调用，但检测到 `__mocks__` 文件夹且存在同名文件时，会优先使用手动 Mock
+
+> 你还可以通过 jest.mock 中第二参数 moduleFactory 指定 mock，其实只是一种手动 Mock 的变体
+
+jest.genMockFromModule(moduleName)
+
+jest.requireActual(moduleName)
