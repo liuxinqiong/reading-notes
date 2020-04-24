@@ -105,6 +105,8 @@ const renderWithRouter = (component) => {
 }
 ```
 
+className 为空的坑
+
 单元测试框架
 * 匹配器 Matchers
   * 通用：浅比较、深比较
@@ -123,15 +125,28 @@ const renderWithRouter = (component) => {
   * jest.mock
 * Manual Mock
   * 约定文件夹名称为：`__mocks__`
+  * 用户模块需要限制调用 jest.mock
+  * node module 在 node_modules 同级建立 `__mocks__` 文件即可，且无需显示调用 jest.mock。注：如果 mock 的是 Node code modules，比如 fs 或 path，依旧需要显示调用 jest.mock
 
-> 在 Jest 中如果想捕获函数的调用情况，则该函数必须被 mock 或者 spy，jest.spyOn()是 jest.fn() 的语法糖，它创建了一个和被 spy 的函数具有相同内部代码的 mock 函数。
+> 在 Jest 中如果想捕获函数的调用情况，则该函数必须被 mock 或者 spy，jest.spyOn()是 jest.fn() 的语法糖，它创建了一个和被 spy 的函数具有相同内部代码的 mock 函数，使用它可以轻松监控一个对象函数的调用情况，函数原型：jest.spyOn(object, methodName)。
 
 如何 Mock ES6 Class，主要用两种方式，分为自动 Mock 与手动 Mock
 * 自动 Mock：使用 jest.mock 直接 Mock 整个模块
 * 手动 Mock：在需要 Mock 的文件同级创建 `__mocks__` 文件夹，然后创建同名文件即可，依旧需要使用 jest.mock 调用，但检测到 `__mocks__` 文件夹且存在同名文件时，会优先使用手动 Mock
 
-> 你还可以通过 jest.mock 中第二参数 moduleFactory 指定 mock，其实只是一种手动 Mock 的变体
+> 你还可以通过 jest.mock 中第二参数 moduleFactory 指定 mock，其实只是一种手动 Mock 的变体。这里有个限制，由于 jest 需要将 jest.mock 提升到文件顶部，因此对于工厂函数需要用到的变量，jest 提供了一个逃生舱，变量名使用 mock 开头，同样会自动将变量提升到文件顶部
 
-jest.genMockFromModule(moduleName)
+理解为什么 Mock 一个类看上去比他本来的样子更复杂
+* 首先需要知道的是你也可以在 mock 中直接创建一个普通的类来替换原本的类，但你无法监控函数的调用情况
+* 如果你需要跟踪使用情况，你就需要用到 spy 技术，你需要用到 jest mock 的函数来替换普通的函数
+  * 监测构造函数：你需要用到 jest.fn.mockImplementation
+  * 监测自身函数：用 jest.fn 来创建函数
 
-jest.requireActual(moduleName)
+> 总的来说就是，我们为了监控函数的调用情况，才导致 mock 的类看上去比原本更复杂
+
+其他高阶的 jest api
+* jest.genMockFromModule(moduleName)：当你手动 Mock 时，使用该函数先得到自动 Mock 的版本，然后你可以修改部分
+* jest.requireActual(moduleName)：获取真正的模块，使用该 api 可以做到一部分真实，一部分修改
+* jest.unmock(moduleName)：总是返回真实的模块
+* jest.doMock(moduleName, factory, options)：mock 函数会被提升到代码顶部，该 api 可以回避掉这个特性
+* jest.dontMock(moduleName)：unmock 函数会被提升到代码顶部，该 api 可以回避掉这个特性
