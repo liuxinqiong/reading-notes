@@ -121,7 +121,7 @@ ndc 坐标系：设备无关坐标系，[-1, 1]
 * 平行投影
 
 相机种类
-* 正投影相机OrthographicCamera(left, right, top, bottom, near, far) ：物体发出的光平行地投射到屏幕上，远近的方块都是一样大的
+* 正投影相机 OrthographicCamera(left, right, top, bottom, near, far) ：物体发出的光平行地投射到屏幕上，远近的方块都是一样大的
   * 为了保持照相机的横竖比例，需要保证 (right - left) 与 (top - bottom) 的比例与 Canvas 宽度与高度的比例一致。
   * near 与 far 都是指到照相机位置在深度平面的位置，而照相机不应该拍摄到其后方的物体，因此这两个值应该均为正值。
 * 透视投影相机 PerspectiveCamera(fov, aspect, near, far) ：近大远小，符合我们平时看东西的感觉
@@ -228,7 +228,7 @@ Mesh 基本属性
 
 为了衡量画面切换速度，引入了每秒帧数 FPS（Frames Per Second）的概念，是指每秒画面重绘的次数。FPS 越大，则动画效果越平滑，当 FPS 小于 20 时，一般就能明显感受到画面的卡滞现象。
 
-NTSC 标准的电视 FPS 是 30，PAL 标准的电视 FPS 是 25，电影的 FPS 标准为 24。而对于 Three.js 动画而言，一般 FPS 在 30 到 60之 间都是可取的。
+NTSC 标准的电视 FPS 是 30，PAL 标准的电视 FPS 是 25，电影的 FPS 标准为 24。而对于 Three.js 动画而言，一般 FPS 在 30 到 60 之间都是可取的。
 
 requestAnimationFrame 方法：通常可能达到 60FPS
 

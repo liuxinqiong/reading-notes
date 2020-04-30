@@ -100,7 +100,7 @@ pushstate-server build
 ```
 
 ### 弹出
-`reate-react-app` 提供了一个特性，既可以保持应用的可扩展性，又可以避免被第三方依赖绑架。被第三方依赖绑架通常意味着一旦我们采取了某项技术就没有退出机制的情况。
+`create-react-app` 提供了一个特性，既可以保持应用的可扩展性，又可以避免被第三方依赖绑架。被第三方依赖绑架通常意味着一旦我们采取了某项技术就没有退出机制的情况。
 
 在 package.json 中，你可以找到 “start”、“test” 和 “build” 这些命令，用来启动、测试和构建应用。最后的命令就是 eject。你可以试着去执行它，但是这个命令只能被执行一次并且不能撤回。这是一个破坏性的命令，一旦执行就不能反悔，如果你只是学习 React，那就没有理由离开 create-react-app 提供给你的便利环境。。
 
@@ -160,7 +160,7 @@ Yarn 同样是一个从 npm 注册源获取模块的新的 CLI 客户端。注�
 * ref：方便父组件调用子组件
 * key：提高页面渲染性能，体现在节点的比较，给每个节点添加一个唯一标识。在组件内部中，key 必须不一样。Diff 算法基于一个假设，如果节点不同，那么内容很大可能不同，因此在节点不同时，直接生成新的节点。
 
-# React基本语法
+# React 基本语法
 提示：在最新的React中，可能看不到咯。
 * ReactDOM.render(template,element)
   * ReactDOM.render() 会使用你的 JSX 来替换你的 HTML 中的一个 DOM 节点。这样你就可以很容易地把 React 集成到每一个其他的应用中。
@@ -187,7 +187,7 @@ Yarn 同样是一个从 npm 注册源获取模块的新的 CLI 客户端。注�
 
 > React拥护不可变数据结构。因此你不应该改变一个对象，更好的做法是基于现在拥有的资源来创建一个新的对象。这样就没有任何对象被改变了。这样做的好处是数据结构将保持不变，因为你总是返回一个新对象，而之前的对象保持不变。
 
-### this问题
+### this 问题
 当使用 ES6 编写的 React 组件时，了解在 JavaScript 类的绑定会非常重要。
 
 绑定的步骤是非常重要的，因为类方法不会自动绑定 this 到实例上。是使用 React 主要的 bug 来源。其中一种方式就是类方法在构造函数中正确绑定。
@@ -477,8 +477,8 @@ React 还提供两种特殊状态的处理函数：
 即使这样，了解每个生命周期方法的适用场景还是对你有帮助的：
 * **constructor(props)** - 它在组件初始化时被调用。在这个方法中，你可以设置初始化状态以及绑定类方法。
 * **componentWillMount()** - 它在 render() 方法之前被调用。这就是为什么它可以用作去设置组件内部的状态，因为它`不会触发组件的再次渲染`。但一般来说，还是`推荐在 constructor() 中去初始化状态`。
-* **componentWillReceiveProps(nextProps)** - 这个方法在一个`更新生命周期`（update lifecycle）中被调用。`新的属性会作为它的输入`。因此你可以利用 this.props 来对比之后的属性和之前的属性，`基于对比的结果去实现不同的行为`。此外，你可以基于新的属性来设置组件的状态。
-* **shouldComponentUpdate(nextProps, nextState)** - `每次组件因为状态或者属性更改而更新时，它都会被调用`。你将在成熟的 React 应用中使用它来进行`性能优化`。在一个更新生命周期中，组件及其子组件将`根据该方法返回的布尔值来决定是否重新渲染`。这样你可以阻止组件的`渲染生命周期`（render lifecycle）方法，避免`不必要的渲染`。
+* **componentWillReceiveProps(nextProps)** - 这个方法在一个`更新生命周期`（update lifeCycle）中被调用。`新的属性会作为它的输入`。因此你可以利用 this.props 来对比之后的属性和之前的属性，`基于对比的结果去实现不同的行为`。此外，你可以基于新的属性来设置组件的状态。
+* **shouldComponentUpdate(nextProps, nextState)** - `每次组件因为状态或者属性更改而更新时，它都会被调用`。你将在成熟的 React 应用中使用它来进行`性能优化`。在一个更新生命周期中，组件及其子组件将`根据该方法返回的布尔值来决定是否重新渲染`。这样你可以阻止组件的`渲染生命周期`（render lifeCycle）方法，避免`不必要的渲染`。
 * **componentWillUpdate(nextProps, nextState)** - 这个方法是 render() 执行之前的`最后一个方法`。你已经拥有下一个属性和状态，它们可以在这个方法中任由你处置。你可以利用这个方法在渲染之前进行最后的准备。注意在这个生命周期方法中你`不能再触发 setState()`。如果你想基于新的属性计算状态，你必须利用 componentWillReceiveProps()。
 * **render()** - 这个生命周期方法是必须有的，它返回作为组件输出的元素。这个方法应该是一个`纯函数`，因此不应该在这个方法中修改组件的状态。它把属性和状态作为输入并且返回（需要渲染的）元素
 * **componentDidUpdate(prevProps, prevState)** - 这个方法在 render() 之后立即调用。你可以用它当成`操作 DOM 或者执行更多异步请求`的机会。
@@ -547,7 +547,7 @@ render(){
     return <ComposeComponent {...this.props}/>
 }
 ```
-第一件事情，组件虽被你高阶组件加强过，但是基础的用法还是得维持不变，不然就徒增复杂度，所以{...this.props}的数据可以说是必不可少的。
+第一件事情，组件虽被你高阶组件加强过，但是基础的用法还是得维持不变，不然就徒增复杂度，所以 {...this.props} 的数据可以说是必不可少的。
 
 常用场景
 * 用来添加和增强功能
@@ -560,7 +560,7 @@ render(){
     * refs 获取组件实例
     * 抽离 state
   * 反向继承
-    * 不继承React.Component，而是继承当前组件
+    * 不继承 React.Component，而是继承当前组件
     * 添加新函数，或者新生命周期，如果父组件同时存在对应生命周期，则均会执行
     * 渲染劫持
 * 目的
@@ -674,9 +674,9 @@ class Cat extends React.Component {
 Axios 库是最广泛使用的 HTTP 客户端。它能同时在用户端（在用户端发起 Ajax 请求）与服务器端（在 Node.js 环境中）使用。
 
 ### Fetch API
-fetch API：返回的响应需要被转化成 JSON 格式的数据结构。这是在处理 JSON 数据结构时，原生的 fetch API 中的`强制步骤`。最后将处理后的响应赋值给组件内部状态中的结果。此外，我们用一段 catch 代码来处理出错的情况。如果在发起请求时出现错误，这个函数会进入到 catch 中而不是 then 中。此时我们需要进行错误处理。
+fetch API：返回的响应需要被转化成 JSON 格式的数据结构。这是在处理 JSON 数据结构时，原生的 fetch API 中的 `强制步骤`。最后将处理后的响应赋值给组件内部状态中的结果。此外，我们用一段 catch 代码来处理出错的情况。如果在发起请求时出现错误，这个函数会进入到 catch 中而不是 then 中。此时我们需要进行错误处理。
 
-你使用了大多数浏览器支持的原生 fetch API 来执行对 API 的异步请求。create-react-app 中的配置保证了`它被所有浏览器支持`。你也可以使用第三方库来代替原生 fetch API，例如：`superagent` 和 `axios`。
+你使用了大多数浏览器支持的原生 fetch API 来执行对 API 的异步请求。create-react-app 中的配置保证了 `它被所有浏览器支持`。你也可以使用第三方库来代替原生 fetch API，例如：`superagent` 和 `axios`。
 
 HTML5 Fetch API，浏览器端直接隶属于 window 的属性，可以直接访问，有兼容性问题，polyfill 解决
 * whatwg-fetch polyfill for browser
@@ -729,7 +729,7 @@ Button.propTypes = {
 * PropTypes.node
 * PropTypes.element
 
-现在为 Button 定义的所有 PropTypes 都是可选的。参数可以为 null 或者 undefined。但是对于那么几个需要强制定义的 props，你可以标记这些 props 是必须传递给组件的。直接添加.isRequired 即可。
+现在为 Button 定义的所有 PropTypes 都是可选的。参数可以为 null 或者 undefined。但是对于那么几个需要强制定义的 props，你可以标记这些 props 是必须传递给组件的。直接添加 .isRequired 即可。
 
 我们可以给元素定义的更加明确
 ```js

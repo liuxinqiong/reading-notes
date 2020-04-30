@@ -81,7 +81,7 @@ new htmlWebpackPlugin({
 * 初始化代码不想通过加载 js 脚本的方式实现，而是直接 inline 到页面，减少 http 请求，这时候就需要关闭 inject，然后在模板中使用模板写法过滤掉已经加载完成的初始化脚本啦
 ```js
 <script>
-    <%= compilation.assets[htmlWebpackPlugin.files.chunks.main.entry.substr(htmlWebpackPlugin.files.publicPath.length)].source()%>
+  <%= compilation.assets[htmlWebpackPlugin.files.chunks.main.entry.substr(htmlWebpackPlugin.files.publicPath.length)].source()%>
 </script>
 ```
 
@@ -90,7 +90,6 @@ loader 常见使用场景
 * 处理 css，less、sass
 * 图片压缩，转 base64（减少请求）
 * loader 配置文件参数有 test、loader、loaders、include、exclude
-
 
 loader 处理 es6
 ```js
