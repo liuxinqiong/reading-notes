@@ -41,7 +41,7 @@ React16 是第一个核心代码重写的版本，整体 API 变化不大。
 ### chrome扩展
 react官方推荐插件：React Developer Tools
 
-# Antd-mobild的使用
+# Antd-mobile 的使用
 * 蚂蚁金服 UI 组件库，专门针对 React
 * npm install antd-mobile@next --save
 * 兼容 Web 和 ReactNative
@@ -98,7 +98,7 @@ Redux 如何和 React 一起使用
     * 使用 compose 结合 thunk 和 window.devToolsExtension
     * 调试窗 redux 选项卡，实时看到 state
   * npm install redux-devtools-extension 并且开启
-  * 使用 react-redux 优雅的链接 react 和r edux
+  * 使用 react-redux 优雅的链接 react 和 redux
     * npm install react-redux --save
     * 忘记 subscribe，记住 reducer、action、dispatch 即可，也不需要从属性开始传递
     * react-redux 提供 provider 和 connect 两个接口链接
@@ -255,8 +255,8 @@ React 15 以后，新增 PureComponent，帮你解决了手写 shouldComponentUp
 * 此时性能检测：直接没有渲染，比我们定制的更棒
 * 如果你的组件只是根据你传进来的值进行渲染，并没有内部的状态，可以直接继承 PureComponent 即可
 
-## immutablejs
-immutablejs 存在的意义和使用
+## immutable.js
+immutable.js 存在的意义和使用
 * 递归对比，复杂度太高，不可接受
 * React妥协，只做浅对比，这也是为什么我们在做 redux 和 state 的时候，建议不要那么深层次嵌套
 * facebook 官方库，在 JS 里引出一个不可变的数据结构
@@ -325,7 +325,7 @@ React同构API
   * 中间件的处理
 * applyMiddleware(...middlewares)
   1. 执行 createStore，得到初始的 store
-  2. 创建 midApi，在redux中间件中需要 dispatch和getState，依次执行中间件的得到 middlewareChain
+  2. 创建 midApi，在redux中间件中需要 dispatch 和 getState，依次执行中间件的得到 middlewareChain
   3. compose 多个中间件，传入 dispatch 执行，得到新的 dispatch
   4. 返回新的 store，主要是包装了 dispatch
 * bindActionCreators(creators, dispatch)
@@ -334,7 +334,7 @@ React同构API
 ## mini-react-redux
 
 ### React Context API
-Context API 在这里是我们实现mini-react的关键，因此我们先熟悉 Context API的基本使用。
+Context API 在这里是我们实现 mini-react 的关键，因此我们先熟悉 Context API 的基本使用。
 * 严格类型要求，否则无法获取数据
 * 通过将 childContextTypes 和 getChildContext 添加到父组件(context 提供者)，React 自动地向下传递信息，并且子树中的任何组件都可以通过定义 contextTypes 去访问它。如果 contextTypes 没有定义， context 将是一个空对象。
 
@@ -388,7 +388,7 @@ export default Page;
 
 在无状态的函数式组件中引用 Context
 
-无状态的函数式组件也可以引用 context , 如果 contextTypes 作为函数的属性被定义。
+无状态的函数式组件也可以引用 context, 如果 contextTypes 作为函数的属性被定义。
 
 ```js
 const PropTypes = require('prop-types');
@@ -496,17 +496,17 @@ react 开发环境搭建
 1. 格式化问题
   * vscode shift+option+f(mac)
   * editor.formatOnSave为true启用保存格式化
-2. JSX标签自动补齐
+2. JSX 标签自动补齐
   * emmet.triggerExpansionOnTab为true
-  * 有时候会失效，继续设置"emmet.includeLanguages": {"javascript": "javascriptreact"}
-3. 启用ESLint校验
+  * 有时候会失效，继续设置 "emmet.includeLanguages": {"javascript": "javascriptreact"}
+3. 启用 ESLint 校验
   * 安装 ESLint 插件
-  * 修改配置 eslint.autoFixOnSave 为 ture
+  * 修改配置 eslint.autoFixOnSave 为 true
 
 ### React 动画
-* CSS动画
+* CSS 动画
   * 官方解决方案：ReactCSSTransitionGroup
-* JS动画
+* JS 动画
 * Ant Motion
   * 进出场动画：npm install rc-queue-anim --save
 
@@ -517,7 +517,7 @@ react 开发环境搭建
 * build 设置为静态资源地址
 
 ### npm scripts
-* 有没有觉得奇怪，为什么命令中，可以直接npm start，其余命令却需要使用npm run xxx呢
+* 有没有觉得奇怪，为什么命令中，可以直接npm start，其余命令却需要使用 npm run xxx 呢
 * 四个常用的 npm 脚本有简写形式
   * npm start 是 npm run start
   * npm stop 是 npm run stop的简写

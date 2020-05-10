@@ -26,7 +26,7 @@ class DndSample extends Component {
     offsetPageY: 0,
   };
 
-  handleMounseDown = (evt, index) => {
+  handleMouseDown = (evt, index) => {
     this.setState({
       dragging: true,
       startPageY: evt.pageY,

@@ -35,7 +35,7 @@ vue2
   * 数据变动，自动调用 render
   * 会逐层遍历 template 结构，渲染数据
 
-API重点
+API 重点
 * 生命周期方法
 * computed
   * 有变动自动调用
@@ -46,7 +46,7 @@ vue 使用 jsx 与使用 vue 文件
 * JSX 操作能力更强，因为你可以使用 JS 的所有能力，而不是通过 `v-if` 等指令，vue2 开始支持
 * vue 结构更清晰，使用更方便
 
-webpac k优化
+webpack 优化
 * 安装 extract-text-webpack-plugin
 * 非 Javascript 资源打包成单独的文件
   * 做浏览器缓存

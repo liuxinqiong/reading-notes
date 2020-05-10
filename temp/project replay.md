@@ -51,3 +51,11 @@ node 版本切换神器
 
 yarn vs npm
 * 了解 yarn，通过 Zero Install 概念，让依赖安装速度不在是瓶颈
+
+环境变量
+* 通过 .env 文件声明环境变量，比如 `.env`、`.env.local`、`env.development`、`env.test`、`env.production` 等等
+  * npm start：development
+  * npm run build：production
+  * npm test: test
+* 如果上述三个环境不够用，你还可以通过 `env-cmd` 模块进行自定义设置
+* HTML 文件中可以通过 `%REACT_APP_PARAM%` 的方式进行引用
