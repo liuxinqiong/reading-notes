@@ -34,4 +34,15 @@
 * 书籍：《前端架构 - 从入门到微前端》
 * [基于 qiankun 的微前端最佳实践（万字长文） - 从 0 到 1 篇](https://juejin.im/post/5ebbd2986fb9a0432f0fff86)
 
-https://juejin.im/post/5ec1cf24f265da7bc60e1949 监控体系
+https://juejin.im/post/5ec1cf24f265da7bc60e1949 监控体系\
+
+微服务带来的问题，这个问题其实在多部门中同样存在
+* 公共组件管理
+* 公共工具包管理
+
+管理方式
+* npm 私有仓库
+* gitsubmodules
+* 文档管理
+
+> 尽量减少不必要的外部依赖，允许一定冗余
