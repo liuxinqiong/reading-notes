@@ -457,13 +457,13 @@ class Input extends Component {
 class App extends Component {
   render() {
     return (
-      <Input ref={ref => { this.inpitRef = ref.getWrappedRef() }} ></Input>
+      <Input ref={ref => { this.inputRef = ref.getWrappedRef() }} ></Input>
     );
   }
 }
 ```
 
-React 16.3 版本提供了一个 `forwardRef API` 来帮助我们进行 `refs` 传递，这样我们在高阶组件上获取的 `ref` 就是原组件的 `ref` 了，而不需要再手动传递
+React 16.3 版本提供了一个 `forwardRef` API 来帮助我们进行 `refs` 传递，这样我们在高阶组件上获取的 `ref` 就是原组件的 `ref` 了，而不需要再手动传递
 ```js
 function hoc(WrappedComponent) {
   class HOC extends Component {
