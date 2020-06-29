@@ -34,3 +34,16 @@ Form
 * FormInstance.scrollToField 滚动到字段对应位置
 * 时间类组件的 value 类型为 moment 对象，所以在提交服务器前需要预处理
 * Form 具有自动收集数据并校验的功能，如果默认行为无法满足要求，可自行处理，通过 Form.Item 的 validateStatus、help、hasFeedback 等属性
+
+表单校验失败
+```tsx
+<Form.Item noStyle shouldUpdate>
+    {({ getFieldsError }) => {
+    if (onStatusChange) {
+        onStatusChange(!getFieldsError().filter(({ errors }) => errors.length).length);
+    }
+    return null;
+    }}
+</Form.Item>
+
+```

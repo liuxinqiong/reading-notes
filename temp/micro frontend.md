@@ -38,7 +38,7 @@
 
 优雅管理方式
 * npm 私有仓库
-* gitsubmodules
+* git submodules
 * 文档管理
 
 > 尽量减少不必要的外部依赖，允许一定冗余

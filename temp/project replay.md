@@ -16,3 +16,4 @@ CAD TODO
   * 架空层和女儿层不能自动被关闭
 * ant design 主题定制与变量修改问题
 * MaterialHelper 内存释放问题
+* 请求竞态控制

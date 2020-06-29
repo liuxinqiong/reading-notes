@@ -12,8 +12,7 @@ object.traverse(child => {
 })
 ```
 8. useEffect 非预期的方式执行
-
-antd/es vs antd/lib：https://github.com/ant-design/ant-design/issues/20847
+9. antd/es vs antd/lib：https://github.com/ant-design/ant-design/issues/20847
 
 http://zhangchen915.com/index.php/archives/715/
 
