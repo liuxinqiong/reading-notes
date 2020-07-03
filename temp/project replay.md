@@ -5,15 +5,3 @@
   * Object3D 的 userData 类型
   * axios 返回值类型定义
   * Redux Action payload 类型定义
-
-CAD TODO
-* 数值输入框优化
-  * 滚动操作
-  * 空白重置
-* 方案信息面板用户选择刷新不重置
-* 物件优化
-  * 能否更优雅一点
-  * 架空层和女儿层不能自动被关闭
-* ant design 主题定制与变量修改问题
-* MaterialHelper 内存释放问题
-* 请求竞态控制
