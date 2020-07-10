@@ -108,3 +108,17 @@ typescript 关键字
   * round：随着允许的空间在尺寸上的增长
   * space：尽可能重复，但不裁剪
   * 双值语法中, 第一个值表示水平重复行为, 第二个值表示垂直重复行为
+
+
+breakpoint width
+{
+  xs: '480px',
+  sm: '576px',
+  md: '768px',
+  lg: '992px',
+  xl: '1200px',
+  xxl: '1600px',
+}
+https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
+
+https://www.iambacon.co.uk/blog/life-is-now-easier-create-media-query-mixins-with-rulesets-less-css
