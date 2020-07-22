@@ -48,6 +48,14 @@ typescript 关键字
 * typeof
 * keyof
 
+```ts
+export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
+  breadcrumbNameMap: {
+    [path: string]: MenuDataItem;
+  };
+};
+```
+
 多种类型
 * 继承类型
 * 条件类型
@@ -71,6 +79,8 @@ typescript 关键字
 * 泛型约束：extends 关键字
 
 更多类型工具
+
+如何引用一个类型的子类型：A['a']
 
 补充：对于事件机制，会存在多个地方发布事件修改同一个值的情况，如果出现问题会导致不易排查，不知道被谁意外修改。建议给每个派发事件的地方，增加一个 target 属性，方便排查
 
@@ -108,3 +118,45 @@ typescript 关键字
   * round：随着允许的空间在尺寸上的增长
   * space：尽可能重复，但不裁剪
   * 双值语法中, 第一个值表示水平重复行为, 第二个值表示垂直重复行为
+
+Less 中 ~ 的含义
+* import 路径中的 ~ 是 less-loader 提供的路径别名机制
+* 表达式中带的，表示不由 Less 计算编译出结果，而是保持原样输出
+
+绘制权限相关流程图
+1. 参考 Antd Pro
+2. 搜索资料
+3. 权控组件
+
+关于类型文件
+* models
+* types
+* typings
+
+箭头函数泛型
+```ts
+<T>(func: (state: ConnectState) => T) => T
+```
+
+比较复杂的使用场景
+```ts
+export type Dispatch = <P = any, C = (payload: P) => void>(action: {
+  type: string;
+  payload?: P;
+  callback?: C;
+  [key: string]: any;
+}) => any;
+export default interface RouterTypes<T extends Object = {}, P = {}> extends BasicRouteProps {
+  computedMatch?: match<P>;
+  route?: RouteType & T;
+}
+export interface ConnectProps<T = {}> extends Partial<RouterTypes<Route, T>> {
+  dispatch?: Dispatch<AnyAction>;
+}
+export interface ConnectProps<P extends { [K in keyof P]?: string } = {}, S = LocationState> {}
+
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+export type WrappedLoginItemProps = Omit<LoginItemProps, 'type' | 'updateActive'>;
+
+```
