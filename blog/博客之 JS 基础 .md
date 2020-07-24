@@ -64,21 +64,21 @@ Person.prototype.__proto__ === Object.prototype; // true
 * 如果函数内部又创建了函数，则重复 3-5 步骤
 * 函数执行完毕，函数上下文从执行上下文栈中弹出
 
-## 闭包、共享传递、call&apply、bind、new
+## 闭包、共享传递、call、apply、bind、new
 
 * 闭包 = 函数 + 函数能够访问的自由变量
   * 闭包是指那些能够访问自由变量的函数。
   * 自由变量是指在函数中使用的，但既不是函数参数也不是函数的局部变量的变量。
 * 共享传递
   * 共享传递是传递对象的引用的副本，在共享传递中对函数形参的赋值操作，不会影响实参的值。
-* call & apply
+* call、apply
   * call 像点名，one by one，因此参数是多个入参。apply 是直接应用，因此参数是数组
   * 改变 this 的原理：将方法变成传入对象的属性，这样方法的 this 也就被改变了，同时避免污染对象，执行完后调用 delete 删除方法。
   * 参数：arguments 配合 eval
 * bind
   * 返回一个函数，bind 传入参数，执行时也可以传入参数
   * 细节：bind 返回的函数作为构造函数使用时，绑定 this 会失效，但参数依旧有效
-  * 内部调用 call||apply
+  * 内部调用 call、apply
 * new
   * 新建一个对象
   * 将对象的原型指向 Constructor.prototype，`obj.__proto__ = Constructor.prototype;`
@@ -108,7 +108,7 @@ Person.prototype.__proto__ === Object.prototype; // true
 
 ## 切面编程
 
-* 类似于 call&apply 和 bind 等，直接在 Function 的原型上增加方法
+* 类似于 call、apply 和 bind 等，直接在 Function 的原型上增加方法
 * 直接新增 before 和 after 方法，执行原方法且执行传入的方法
 
 ## 函数节流和函数防抖

@@ -47,7 +47,7 @@ react官方推荐插件：React Developer Tools
 * 兼容 Web 和 ReactNative
 * 按需加载
   * 需要 babel-plugin-import 的支持
-  * 在 package.json 中babel中添加
+  * 在 package.json 中 babel 中添加
   ```
     "plugins":[
       ["import",{"libraryName":"antd-mobile","style":"css"}]
@@ -145,7 +145,7 @@ react-redux具体使用
 ```
 
 其他组件
-* url 参数，Route 组件参数可用冒号标识参数，路由组件给自己的组件添加了很多属性，打印 props 可以看到，eg：this.props.match.params.paramname读取值
+* url 参数，Route 组件参数可用冒号标识参数，路由组件给自己的组件添加了很多属性，打印 props 可以看到，eg：this.props.match.params.paramName 读取值
 * this.props.match
   * url 是实际的路由
   * path 是我们定义的路由，有可能有变量
@@ -161,7 +161,7 @@ this.props.history.push('/register');
 
 > 经观察 DOM，react-router 不同于 angular 路由，在 DOM 结构上，只要不是当前页面显示的内容，在DOM中直接被移除，不存在缓存的概念（可能有？还没学到？）
 
-对于非路由组件，如果需要使用路由组件的相关功能，即将路由的相关函数和属性挂载到组件的props下， 使用withRouter，在配置了装饰器的情况下，在 class 前`@withRouter`即可。
+对于非路由组件，如果需要使用路由组件的相关功能，即将路由的相关函数和属性挂载到组件的props下， 使用withRouter，在配置了装饰器的情况下，在 class 前 `@withRouter` 即可。
 
 # Socket.io
 Socket.io 是什么
