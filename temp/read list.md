@@ -18,7 +18,11 @@
 [前端架构 101：MVC 初探](https://mp.weixin.qq.com/s/8ILlKiZIGCqqVoKhH4VDtA)
 [前端架构 101：MVC 的不足与 Flux 的崛起](https://mp.weixin.qq.com/s/BB1VUmtQ5uBJ7VSnRf11ZQ)
 [前端架构 101：从 Flux 进化到 Model-View-Presenter](https://mp.weixin.qq.com/s/jB3POItNJ-MjI_Ubeu_Dfw)
-[前端架构101：整洁（Clean Architecture）架构是归宿](https://mp.weixin.qq.com/s/n9myHRtXleOY2MKZWhN8Eg)
+[前端架构 101：整洁（Clean Architecture）架构是归宿](https://mp.weixin.qq.com/s/n9myHRtXleOY2MKZWhN8Eg)
+
+[前端架构鉴赏01：Angular 架构模式与最佳实践](https://mp.weixin.qq.com/s/gz98PLI4ne1-AAa-MMC6aw)
+[前端架构鉴赏02：可拓展 Angular 2 架构](https://mp.weixin.qq.com/s/4bd-xkyus-tNuylTBm_tGw)
+[前端架构鉴赏03：Angular 与 MVP 模式](https://mp.weixin.qq.com/s/7uYxFxbvcZS4wjbWPVmGpg)
 
 [可扩展的前端 -- 架构基础](https://mp.weixin.qq.com/s/AYf8CkwY1NjBvv_HzggmZw)
 [可扩展的前端 -- 常见模式](https://mp.weixin.qq.com/s/6LJH6Myr4ulrYByIAaq_XQ)
@@ -26,3 +30,8 @@
 [深入源码剖析componentWillXXX为什么UNSAFE](https://mp.weixin.qq.com/s/aL5NHz3Jq4KZT_m5rIbx3A)
 
 [NutUI Picker组件的设计与实现](https://mp.weixin.qq.com/s/13kGxbdIVeOzbObrECdEeQ)
+
+[多应用项目开发架构和多进程间构建优化分析](https://mp.weixin.qq.com/s/O0e2Iou96PDUiNN5uciyIA)
+[闪电智能创作平台项目前端总结](https://mp.weixin.qq.com/s/sQHLetPT85w4fKrv15Qf0g)
+[在浏览器中存储数据 - IndexedDB](https://mp.weixin.qq.com/s/EO10qD9hn4cuH5o74_EPSQ)
+[奇妙的 CSS MASK](https://mp.weixin.qq.com/s/XMiEBQT9MpV9pJyAWsb0qQ)

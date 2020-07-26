@@ -73,9 +73,9 @@ Redux 是什么
 * 单一状态，单项数据流
 
 大概理解：
-* 有一个保险箱(store)，所有人的状态在那里都有记录(state)
-* 需要改变的时候，需要告诉专员(dispatch)要干什么(action)
-* 处理变化的人(reducer)拿到 state 和 action，生成新的 state
+* 有一个保险箱 `store`，所有人的状态在那里都有记录 state
+* 需要改变的时候，需要告诉专员 `dispatch` 要干什么 action
+* 处理变化的人 `reducer` 拿到 state 和 action，生成新的 state
 
 正确的使用方式
 * 首先通过 reducer 新建 store，随时通过 store.getState 获取状态
@@ -153,20 +153,20 @@ react-redux具体使用
 ```js
 <Redirect to={this.props.redirectTo}></Redirect>
 ```
-* Switch只渲染命中的第一个子Route组件
-* 使用push方法进行跳转
+* Switch 只渲染命中的第一个子 Route 组件
+* 使用 push 方法进行跳转
 ```js
 this.props.history.push('/register');
 ```
 
 > 经观察 DOM，react-router 不同于 angular 路由，在 DOM 结构上，只要不是当前页面显示的内容，在DOM中直接被移除，不存在缓存的概念（可能有？还没学到？）
 
-对于非路由组件，如果需要使用路由组件的相关功能，即将路由的相关函数和属性挂载到组件的props下， 使用withRouter，在配置了装饰器的情况下，在 class 前 `@withRouter` 即可。
+对于非路由组件，如果需要使用路由组件的相关功能，即将路由的相关函数和属性挂载到组件的 props 下， 使用 withRouter，在配置了装饰器的情况下，在 class 前 `@withRouter` 即可。
 
 # Socket.io
 Socket.io 是什么
 * 基于事件的实时双向通信库
-* 基于websocket协议
+* 基于 websocket 协议
 
 Socket.io(websocket) 与 ajax 区别
 * ajax 基于 http 协议，单向，实时获取数据只能轮询
@@ -201,7 +201,7 @@ Socket.io 前端API
 * axios 拦截器，统一 loading 处理，axios.interceptors
 * redux 使用异步数据，渲染页面
 
-elint
+eslint
 * package.json 中默认继承 react-app，这是 create-react-app 默认的配置
 * 保证团队代码风格的统一
 * 自定义配置
@@ -258,17 +258,17 @@ React 15 以后，新增 PureComponent，帮你解决了手写 shouldComponentUp
 ## immutable.js
 immutable.js 存在的意义和使用
 * 递归对比，复杂度太高，不可接受
-* React妥协，只做浅对比，这也是为什么我们在做 redux 和 state 的时候，建议不要那么深层次嵌套
+* React 妥协，只做浅对比，这也是为什么我们在做 redux 和 state 的时候，建议不要那么深层次嵌套
 * facebook 官方库，在 JS 里引出一个不可变的数据结构
   * 数据结构一旦创立不能修改，只能生成新的数据结构
-  * 我们直接用等号就可以判断两个数据结构是不是相等，这对shouldComponentUpdate而言，简直就是利器
+  * 我们直接用等号就可以判断两个数据结构是不是相等，这对 shouldComponentUpdate 而言，简直就是利器
 * npm install immutable --save
 * Map
 * 优点：
   * 节省内存，数据不需要修改
   * 并发安全
   * 降低了可变带来的复杂度，共享可变状态是万恶之源
-  * 便于比较复杂数据，定制shouldComponentUpdate方便
+  * 便于比较复杂数据，定制 shouldComponentUpdate 方便
   * 时间旅行功能
   * 拥抱函数式编程，纯函数
 * 缺点
@@ -300,7 +300,7 @@ React同构API
 * React16 新出的 RenderToNodeStream，性能更好
   * RenderToString 解析为字符串
   * RenderToNodeStream 解析为可读的字节流对象
-  * 官方说速度会快3倍左右
+  * 官方说速度会快 3 倍左右
 * React16 里，客户端 ReactDom.hydrate 取代 ReactDom.render
 
 项目SSR具体步骤
@@ -405,7 +405,7 @@ Button.contextTypes = {color: PropTypes.string};
 我们需要一个 Provider 组件用来包裹整个应用，然后就是实现 connect 高阶组件。
 
 Provider组件
-1. 通过 props 得到 store，实现 childContextTypes 属性和 getChildContext方法，将 store 放入 context 中
+1. 通过 props 得到 store，实现 childContextTypes 属性和 getChildContext 方法，将 store 放入 context 中
 2. render 返回 this.props.children 即可
 
 connect高阶组件
@@ -419,7 +419,7 @@ connect高阶组件
 ## 中间件
 
 ### mini-redux-thunk
-典型的高阶函数，我们依次需要初始的dispatch，next，action参数，源代码为：
+典型的高阶函数，我们依次需要初始的 dispatch，next，action 参数，源代码为：
 ```js
 const thunk = ({ dispatch, getState }) => next => action => {
     // 如果不符合我们的要求，直接调用下一个中间件，使用 next
@@ -435,7 +435,7 @@ export default thunk;
 ```
 
 ### compose 函数
-compose 函数组合，是实现redux中间件的关键，因此我们先讲讲compose的简单实现和一个例子
+compose 函数组合，是实现 redux 中间件的关键，因此我们先讲讲 compose 的简单实现和一个例子
 
 ```js
 function compose(...funcs){
@@ -495,9 +495,9 @@ newOrigin(123);
 react 开发环境搭建
 1. 格式化问题
   * vscode shift+option+f(mac)
-  * editor.formatOnSave为true启用保存格式化
+  * editor.formatOnSave 为 true 启用保存格式化
 2. JSX 标签自动补齐
-  * emmet.triggerExpansionOnTab为true
+  * emmet.triggerExpansionOnTab 为 true
   * 有时候会失效，继续设置 "emmet.includeLanguages": {"javascript": "javascriptreact"}
 3. 启用 ESLint 校验
   * 安装 ESLint 插件
@@ -520,9 +520,9 @@ react 开发环境搭建
 * 有没有觉得奇怪，为什么命令中，可以直接npm start，其余命令却需要使用 npm run xxx 呢
 * 四个常用的 npm 脚本有简写形式
   * npm start 是 npm run start
-  * npm stop 是 npm run stop的简写
-  * npm test 是 npm run test的简写
-  * npm restart 是 npm run stop && npm run restart && npm run start的简写
+  * npm stop 是 npm run stop 的简写
+  * npm test 是 npm run test 的简写
+  * npm restart 是 npm run stop && npm run restart && npm run start 的简写
 * 更多[npm scripts 使用指南](http://www.ruanyifeng.com/blog/2016/10/npm_scripts.html)
 
 ### 图片路径

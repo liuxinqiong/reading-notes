@@ -45,7 +45,7 @@ loader的使用方式
   * 默认从根目录读取此文件，否则通过 --config 参数进行自定义配置
 * entry 参数：入口文件，三种方式
   * 简单的字符串，默认 chunk name 为 main
-  * 数组：多个入口文件，默认chunk name 为 main
+  * 数组：多个入口文件，默认 chunk name 为 main
   * 对象：k-v，k 表示 chunk name，适合多页应用的情况
 * output 参数：打包后文件
   * path：执行输出目录

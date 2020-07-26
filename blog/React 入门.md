@@ -1,4 +1,4 @@
-主要掌握 React 的基础语法和官方脚手架的使用。主要内容有create-react-app、react-starter-kit和The road to learn React。
+主要掌握 React 的基础语法和官方脚手架的使用。主要内容有 create-react-app、react-starter-kit 和 The road to learn React。
 
 <!-- more -->
 # 简介
@@ -51,15 +51,15 @@ npm install -g create-react-app
 create-react-app myapp
 ```
 
-create-react-app 创建的是一个 npm 项目。你可以通过 npm 来给你的项目安装和卸载 node 包。另外它还附带了下面几个 npm 脚本（在package.json下的scripts中配置）：
+create-react-app 创建的是一个 npm 项目。你可以通过 npm 来给你的项目安装和卸载 node 包。另外它还附带了下面几个 npm 脚本（在 package.json 下的scripts 中配置）：
 ```shell
-启动应用，开启调试页面(开发环境)
+# 启动应用，开启调试页面(开发环境)
 npm start
-运行测试用例
+# 运行测试用例
 npm run test
-弹出配置，默认脚手架帮我们把配置隐藏了，只能使用一次
+# 弹出配置，默认脚手架帮我们把配置隐藏了，只能使用一次
 npm run eject
-打包
+# 打包
 npm run build
 ```
 
@@ -161,7 +161,7 @@ Yarn 同样是一个从 npm 注册源获取模块的新的 CLI 客户端。注�
 * key：提高页面渲染性能，体现在节点的比较，给每个节点添加一个唯一标识。在组件内部中，key 必须不一样。Diff 算法基于一个假设，如果节点不同，那么内容很大可能不同，因此在节点不同时，直接生成新的节点。
 
 # React 基本语法
-提示：在最新的React中，可能看不到咯。
+提示：在最新的 React 中，可能看不到咯。
 * ReactDOM.render(template,element)
   * ReactDOM.render() 会使用你的 JSX 来替换你的 HTML 中的一个 DOM 节点。这样你就可以很容易地把 React 集成到每一个其他的应用中。
   * ReactDOM.render() 总会很好地渲染你的 App 组件。你可以将一个简单的 JSX 直接用 JSX 的方式传入，而不用必须传入一个组件的实例。
@@ -260,7 +260,7 @@ render() {
 ### 内部状态
 * 使用 ES6 类组件可以在构造函数中初始化组件的状态。 构造函数只会在组件初始化时调用一次。
 * 当你使用 ES6 编写的组件有一个构造函数时，它需要强制地调用 super(); 方法
-* 你也可以调用 super(props);，它会在你的构造函数中设置 this.props 以供在构造函数中访问它们。 否则当在构造函数中访问 this.props ，会得到 undefined。
+* 你也可以调用 super(props)，它会在你的构造函数中设置 this.props 以供在构造函数中访问它们。 否则当在构造函数中访问 this.props ，会得到 undefined。
 * 不要直接修改 state。你必须使用 setState() 方法来修改它，每次你修改组件的内部状态，组件的 render 方法会再次运行。
 
 ### 单项数据流
@@ -301,7 +301,7 @@ this.setState((prevState, props) => {
 });
 ```
 
-为什么你会需要第二种形式呢？使用函数作为参数而不是对象，有一个非常重要的应用场景，就是当更新状态需要取决于之前的`状态或者属性`的时候。如果不使用函数参数的形式，组件的内部状态管理可能会引起 bug。
+为什么你会需要第二种形式呢？使用函数作为参数而不是对象，有一个非常重要的应用场景，就是当更新状态需要取决于之前的 `状态或者属性` 的时候。如果不使用函数参数的形式，组件的内部状态管理可能会引起 bug。
 
 当更新状态需要取决于之前的状态或者属性时，为什么使用对象而不是函数会引起 bug 呢？这是因为 React 的 setState() 方法是异步的。React 依次执行 setState() 方法，最终会全部执行完毕。如果你的 setState() 方法依赖于之前的状态或者属性的话，有可能在按批次执行的期间，状态或者属性的值就已经被改变了。
 
@@ -310,9 +310,9 @@ this.setState((prevState, props) => {
 setState() 中函数参数形式相比于对象参数来说，在预防潜在 bug 的同时，还可以提高代码的可读性和可维护性。此外，它可以在 App 组件之外进行测试。
 
 总结
-* setState更新可能是异步的
-* 你不能依赖this.state 和 this.props的值计算下一个state
-* 解决这个问题，使用setState的函数形式，该函数接收前一个状态作为第一个参数，应用更新时props作为第二个参数
+* setState 更新可能是异步的
+* 你不能依赖 this.state 和 this.props 的值计算下一个 state
+* 解决这个问题，使用 setState 的函数形式，该函数接收前一个状态作为第一个参数，应用更新时 props 作为第二个参数
 
 ### 驾驭 state
 状态管理在大型的应用中是一个至关重要的话题。总体来说，不光是 React ，很多单页面应用（SPA）框架都面临这个问题。近些年来应用变得越来越复杂。当今的 web 应用面临的一个重大挑战就是如何驾驭和控制状态。
@@ -327,7 +327,7 @@ setState() 中函数参数形式相比于对象参数来说，在预防潜在 bu
 
 ### 受控组件
 
-表单元素比如 `<input>`, `<textarea>` 和 `<select>` 会以原生 HTML 的形式保存他们自己的状态。一旦有人从外部做了一些修改，它们就会修改内部的值，在 React 中这被称为`不受控组件`，因为它们自己处理状态。在 React 中，你应该确保这些元素变为`受控组件`。
+表单元素比如 `<input>`, `<textarea>` 和 `<select>` 会以原生 HTML 的形式保存他们自己的状态。一旦有人从外部做了一些修改，它们就会修改内部的值，在 React 中这被称为 `不受控组件`，因为它们自己处理状态。在 React 中，你应该确保这些元素变为 `受控组件`。
 
 你只需要设置输入框的值属性，这个值已经在 searchTerm 状态属性中保存了。
 
@@ -368,7 +368,7 @@ class Button extends Component {
 
 请问这样的用处是什么呢，难道只是为了省略一个 type 属性的书写吗？答案是否定的！
 
-必须要考虑到长期投资。想象在你的应用中有若干个 button，但是你想改变它们的一个属性、样式或者行为。如果没有这个组件的话，你就必须重构每个 button。相反，Button 组件拥有`单一可信数据源`。一个 Button 组件可以立即重构所有 button。一个 Button 组件统治所有的 button。
+必须要考虑到长期投资。想象在你的应用中有若干个 button，但是你想改变它们的一个属性、样式或者行为。如果没有这个组件的话，你就必须重构每个 button。相反，Button 组件拥有 `单一可信数据源`。一个 Button 组件可以立即重构所有 button。一个 Button 组件统治所有的 button。
 
 默认参数：Button 组件期望在 props 里面有一个 className 属性. className 属性是 React 基于 HTML 属性 class 的另一个衍生物。但是当使用 Button 组件时，我们并没有传递任何 className 属性，所以在 Button 组件的代码中，我们更应该明确地标明 className 是可选的。
 
@@ -666,7 +666,7 @@ class Cat extends React.Component {
 }
 ```
 
-> 虽然这个技巧或者说模式(Pattern)叫 Render Props, 但是并不一定要使用 render 来传递渲染函数, 你甚至可以使用 children
+> 虽然这个技巧或者说模式（Pattern）叫 Render Props, 但是并不一定要使用 render 来传递渲染函数, 你甚至可以使用 children
 
 # 数据获取
 
@@ -796,11 +796,11 @@ import SubmitButton from "../Buttons/SubmitButton"; // 糟糕的实践，不要�
 5. 单元测试
   * yarn run test
   * yarn run test:watch
-6. 发布(Git)：yarn run deploy
+6. 发布（Git）：yarn run deploy
 
 ### React 风格向导
 1. 单独的 UI 组件文件夹
-  * 更容易找到特定组件的相关资源(CSS、image，unit test、files etc.)，且更利于重构
+  * 更容易找到特定组件的相关资源（CSS、image，unit test、files etc），且更利于重构
   * 避免多组件之间共享 css、image 和其他资源文件，将使你代码更利于维护和重构
   * 每个组件文件夹中添加 package.json 文件，将使你更容易在别的地方引入组件
 2. 偏向于使用函数式组件

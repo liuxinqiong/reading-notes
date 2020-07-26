@@ -36,7 +36,7 @@ Person.prototype.__proto__ === Object.prototype; // true
   * 函数激活：当函数激活时，创建函数上下文，创建 VO/AO 后，就会将活动对象添加到作用链的前端。`[AO].concat([[Scope]]);`
 * this
   * Reference 组成
-    * base value：属性所在的对象或者就是 `EnvironmentRecord`，比如单纯的 foo.boo()，则值为 foo，如果只是 foo()，则值为`EnvironmentRecord`
+    * base value：属性所在的对象或者就是 `EnvironmentRecord`，比如单纯的 foo.boo()，则值为 foo，如果只是 foo()，则值为 `EnvironmentRecord`
     * referenced name：属性的名称
     * strict reference：严格模式
   * 获取 Reference 方法
@@ -47,15 +47,15 @@ Person.prototype.__proto__ === Object.prototype; // true
       * 属性访问方式(`eg:foo.boo`)，return true
       * 分组操作符(`eg:(express)`)，根据组内表达式决定
       * 赋值，逻辑与，逗号，会调用 GetValue 函数，返回的将是具体的值，不再是 Reference
-      * 解析标识符(`eg:foo`)，最简单情况，属于 Reference，base 值为`EnvironmentRecord`
+      * 解析标识符(`eg:foo`)，最简单情况，属于 Reference，base 值为 `EnvironmentRecord`
     * Reference 结果
-      * true，并且`IsPropertyReference(ref)`是`true`(对象即可), 那么`this`的值为`GetBase(ref)`
-      * true，并且`base value`值是`Environment Record`, 那么`this`的值为`ImplicitThisValue(ref) == undefined`
-      * false，那么`this`的值为`undefined`，非严格模式下，`this`的值为`undefined`的时候，其值会被隐式转换为全局对象。
+      * true，并且 `IsPropertyReference(ref)` 是 `true` (对象即可), 那么 `this` 的值为 `GetBase(ref)`
+      * true，并且 `base value` 值是 `Environment Record`, 那么 `this` 的值为 `ImplicitThisValue(ref) == undefined`
+      * false，那么 `this` 的值为 `undefined`，非严格模式下，`this` 的值为 `undefined` 的时候，其值会被隐式转换为全局对象。
 * 具体处理过程
   * 创建全局上下文压入全局上下文栈
   * 全局上下文初始化
-  * A 函数创建，保存作用域链到内部属性`[[scope]]`
+  * A 函数创建，保存作用域链到内部属性 `[[scope]]`
   * A 函数执行，创建函数上下文并压入执行上下文栈
   * 函数上下文初始化
     * 复制函数[[scope]]属性创建作用域链 -- 为什么复制，因为函数会被调用多次

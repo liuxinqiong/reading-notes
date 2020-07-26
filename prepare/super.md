@@ -428,7 +428,7 @@ setState 的过程
 
 由于 setState 是异步的，因此如果想知道成功修改完成的时机，可以将回调函数作为第二个参数传入
 
-React vs vue
+React vs Vue
 * 本质区别
   * vue 本质是 MVVM 框架，由 MVC 发展而来
   * React 本质是前端组件化框架，由后端组件化发展而来

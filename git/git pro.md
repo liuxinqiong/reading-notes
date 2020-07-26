@@ -33,7 +33,7 @@ diff 命令用于比较任意两个状态的差别，语法为：`git diff sourc
 
 如果我想比较暂存目录和各个 commit 怎么整呢，使用如下命令
 ```shell
-git diff --cached 分支名/commit hash/HEAD快捷方式
+git diff --cached 分支名/commit hash/HEAD 快捷方式
 ```
 
 ## reset

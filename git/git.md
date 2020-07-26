@@ -36,7 +36,7 @@ git config --list --system # 对系统所有登录的用户有效
 * 把已有的项目代码纳入 git 管理：git init
 * 新建的项目直接用 git 管理: git init your_project，会在当前路径下创建和项目名称同名的文件夹
 
-暂存区的目的：字面理解就是暂时存着，还不是一个正式的提交。比如你写了一个方案A，此时你可以提交到暂存区，然后继续写方案B，后来发现方案A更合适，此时可以用暂存区的内容替换工作区内容。
+暂存区的目的：字面理解就是暂时存着，还不是一个正式的提交。比如你写了一个方案A，此时你可以提交到暂存区，然后继续写方案 B，后来发现方案 A 更合适，此时可以用暂存区的内容替换工作区内容。
 
 git add 命令
 * git add file
@@ -109,7 +109,7 @@ git diff HEAD HEAD~1 # 往前第一次提交
 
 怎么把间隔的几个 commit 整理成一个 commit 呢？同样使用 git rebase -i commitID，其实和处理连续的类似，只不过我们要手动将不连续的调整成连续的，同样使用 squash 模式。
 
-> 我们知道变基ID的选择是我们要修改的前一个，如果我们要修改最开始的祖先ID该如何处理呢。此时我们可以手动 pick ID 来达到目的。
+> 我们知道变基 ID 的选择是我们要修改的前一个，如果我们要修改最开始的祖先 ID 该如何处理呢。此时我们可以手动 pick ID 来达到目的。
 
 如果有多个分支的情况下，我们对其中某个分支进行了变基整理，因此对于当前分支而言，之前很多 commit 都没有了，此时基于之前 commit 创建的 branch 和 tag 该如何自处呢？此时就有可能出现多个独立的树结构出来。
 
@@ -129,8 +129,8 @@ git diff HEAD HEAD~1 # 往前第一次提交
 
 git reset 三个参数
 * --soft：只是把 HEAD 指向的 commit 恢复到你指定的 commit，暂存区和工作区不变
-* --hard：把HEAD、暂存区和工作区修改为你指定的 commit 的时候的文件状态
-* --mixed：默认参数，把HEAD、暂存区修改为你指定的 commit 的时候的文件状态，工作区保持不变
+* --hard：把 HEAD、暂存区和工作区修改为你指定的 commit 的时候的文件状态
+* --mixed：默认参数，把 HEAD、暂存区修改为你指定的 commit 的时候的文件状态，工作区保持不变
 
 正确删除文件的方式：和重命名类似，git 有内置命令，使用 git rm 即可。
 
@@ -162,7 +162,7 @@ GitHub 配置公私钥（mac）
 * git remote add name remote_url
 * git push name --all（all 表示推送所有分支，name 为 origin 才可缺省）
 
-通常我们建立远程仓库的时候，可能预先就有文件了，比如readme.md、.gitignore 或 LICENCE，此时本地和远程同步，往往会遇到问题，因为本地和远程是没有上下游关系的，是互相独立的版本树，直接 git merge 会报错。我们可以先通过 git fetch，然后再单独执行 git merge 操作查看哪个步骤报错（git pull 等同于 git fetch + git merge），此时可以通过 git merge --allow-unrelated-histories origin/master 来达到合并目的。
+通常我们建立远程仓库的时候，可能预先就有文件了，比如 readme.md、.gitignore 或 LICENCE，此时本地和远程同步，往往会遇到问题，因为本地和远程是没有上下游关系的，是互相独立的版本树，直接 git merge 会报错。我们可以先通过 git fetch，然后再单独执行 git merge 操作查看哪个步骤报错（git pull 等同于 git fetch + git merge），此时可以通过 git merge --allow-unrelated-histories origin/master 来达到合并目的。
 
 解锁 git fetch 和 git pull 更多用法
 ```shell
