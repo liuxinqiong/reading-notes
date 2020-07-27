@@ -1,10 +1,10 @@
 fabric.js 是可以简化 canvas 编写的 js 库，提供 canvas 缺少的对象模型，以及一个SVG解析器，一个交互层，以及一整套其他必不可少的工具。
 
 基本步骤
-1. 创建fabric的canvas对象
-2. 创建fabric的各种对象，包括：rect，circle，line，image等
-3. 将创建好的对象添加到canvas
-4. 可以对每一个fabric对象使用动画，克隆，修改属性，事件监听，碰撞检测等。修改属性需及时渲染canvas才能展示出效果
+1. 创建 fabric 的 canvas 对象
+2. 创建 fabric 的各种对象，包括：rect，circle，line，image等
+3. 将创建好的对象添加到 canvas
+4. 可以对每一个 fabric 对象使用动画，克隆，修改属性，事件监听，碰撞检测等。修改属性需及时渲染 canvas 才能展示出效果
 
 fabric.Canvas：用来管理内部所有的对象
 * 传入元素 id，返回对应实例
@@ -26,11 +26,11 @@ fabric.Canvas：用来管理内部所有的对象
 * getCenter().top/left 获取中心坐标
 * setCursor() 设置手势图标
 * dispose() 释放
-* getSelectionContext()获取选中的context
-* getSelectionElement()获取选中的元素
+* getSelectionContext() 获取选中的 context
+* getSelectionElement() 获取选中的元素
 * getActiveObject() 获取选中的对象
 * getActiveObjects() 获取选中的多个对象
-* discardActiveObject()取消当前选中对象
+* discardActiveObject() 取消当前选中对象
 
 7 种基础形状
 * fabric.Line：直线
@@ -61,15 +61,15 @@ left 和 top 是每种 Object 都有的属性，至于它到底指图形中哪�
 图像
 * fabric.Image：指定 IMG 元素来创建实例
 * fabric.Image.fromURL：通过 URL 来创建
-* fabric.Image.filters 图片滤镜
+* fabric.Image.filters：图片滤镜
 
 路径与 Group
 * fabric.Path 创建更复杂，丰富的形状
-* 对于更复杂的图形，可能需要使用像 fabric.loadSVGFromString 或 fabric.loadSVGFromURL 方法来加载整个 SVG 文件,然后让 Fabric 的 SVG 解析器完成对所有 SVG 元素的遍历和创建相应的 Path 对象的工作。
+* 对于更复杂的图形，可能需要使用像 fabric.loadSVGFromString 或 fabric.loadSVGFromURL 方法来加载整个 SVG 文件，然后让 Fabric 的 SVG 解析器完成对所有 SVG 元素的遍历和创建相应的 Path 对象的工作。
 
 动画：这个无敌强
 * object.animate(key, value, options)
-* options 可以指定from、duration、onChange、onComplete 、easing
+* options 可以指定from、duration、onChange、onComplete、easing
 
 进阶函数
 * fabric.util.cos
@@ -103,7 +103,7 @@ left 和 top 是每种 Object 都有的属性，至于它到底指图形中哪�
 * before:selection:cleared/selection:created/selection:cleared
 * object:added/object:modified/object:selected/object:moving/object:scaling/object:rotate/object:removed
 * after:render
-* Fabric将进一步提升事件系统，并允许您将侦听器直接附加到canvas画布中的对象上，书写省略 object 即可
+* Fabric 将进一步提升事件系统，并允许您将侦听器直接附加到 canvas 画布中的对象上，书写省略 object 即可
 
 ## 资料
 * [fabric.js和高级画板](https://blog.csdn.net/sufu1065/article/details/80116758)

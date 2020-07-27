@@ -18,7 +18,7 @@ headers
 * 瓦片服务：http://shangetu{s}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46&udt=20200604
 * 支持的子域名：subdomains: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-
+当前自定义地图参数设置
 ```js
 [
     {

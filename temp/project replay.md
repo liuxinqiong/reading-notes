@@ -7,6 +7,6 @@
   * Redux Action payload 类型定义
 4. useSelector 性能相关 - reselect 库存在的意义
 5. useEffect dep 中对象的局部选择
-6. redux-saga 错误
+6. redux-saga 错误导致应用奔溃
 7. dispatch 是同步的吗？怎么知道已经完成
-8. 在 OOP 冲突吗
+8. 与 OOP 冲突吗
