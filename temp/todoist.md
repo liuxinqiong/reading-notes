@@ -7,18 +7,29 @@ TODO LIST
 * 请求竞态控制
 * 权限控制组件
 * 左右侧面板隐藏
-* 建筑面板
-  * 能否通过 form 一键实现禁用
-  * 优化手动处理表单项数据异常问题
-  * 日照高级设置折叠功能
-* 数值输入框优化
-  * 滚动操作
-  * 空白重置
 * 选取相同：楼型、生成和绘制分开
 
 紧急
 * 镜像日照增加间距检测项
 * 表单一开始就开启校验
-* 属性区修改
-  * 架空层和女儿层不能自动被关闭
 * 楼型替换
+* 首页：焦距和阴影问题
+* 关闭 source-map + 监控
+
+mouseEvent.stopImmediatePropagation();
+
+umijs
+
+运行时配置
+* patchRoutes：动态修改路由，请求服务端根据响应动态更新路由
+* render：复写 render 函数，比如用于渲染之前做权限校验
+* onRouteChange：初始加载和路由切换时有一些事情，比如埋点统计
+
+plugin：@umijs/plugin-qiankun
+
+编译提速
+* 配置 externals
+* 减少补丁尺寸
+* 调整 splitChunks 策略，减少整体尺寸
+* 调整 SourceMap 生成方式
+* 替换压缩器为 esbuild - 实验性特性
