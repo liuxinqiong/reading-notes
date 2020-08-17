@@ -33,3 +33,27 @@ plugin：@umijs/plugin-qiankun
 * 调整 splitChunks 策略，减少整体尺寸
 * 调整 SourceMap 生成方式
 * 替换压缩器为 esbuild - 实验性特性
+
+WebSocket 连接自动关闭？
+
+FormList 表单校验？
+
+相机切换
+* 球坐标
+
+React 不缓存：可以给元素添加 key，当 key 发生变化时，则不缓存
+
+nginx 代理静态资源后，错误提示 ERR_CONTENT_LENGTH_MISMATCH
+* 原因：nginx 会缓存大文件到 proxy_temp 目录中，主进程在读取缓存的时候由于权限问题而无法访问
+* 解决：通过 sudo chmod -R 777 /usr/local/var/run/nginx/* 打开权限即可
+
+three.js 截图
+* preserveDrawingBuffer
+* premultipliedAlpha
+* https://threejsfundamentals.org/threejs/lessons/threejs-tips.html
+* 竟然和大小相关
+
+stomp
+* http://jmesnil.net/stomp-websocket/doc/
+* https://www.npmjs.com/package/@stomp/stompjs
+* https://stomp-js.github.io/api-docs/latest/classes/Client.html
