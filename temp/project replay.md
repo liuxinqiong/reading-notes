@@ -9,4 +9,43 @@
 5. useEffect dep 中对象的局部选择
 6. redux-saga 错误导致应用奔溃
 7. dispatch 是同步的吗？怎么知道已经完成
+  * dispatch 本身是同步修改 store 中的值
 8. 与 OOP 冲突吗
+
+项目复盘
+* Three
+  * renderOrder 属性的作用和效果
+  * ShapeGeometry vs ExtrudeGeometry
+  * GridObjectSnap
+* jsts
+  * jsts.geom
+    * Geometry
+      * getCentroid 获取中心点
+      * getEnvelope 获取外接矩形
+        * computeEnvelopeInternal 获取图形的最大最小的 x/y 值
+      * buffer 指定形状向内外 buffer 出一个新形状
+      * union 并集
+      * difference 差集
+      * intersection 交集
+      * equalsExact 是否完全相等
+      * contains 某图形是否包含指定图形
+      * getNumGeometries|getGeometryN
+      * isCCW：判断图形是不是逆时针
+    * GeometryFactory
+    * Point
+      * isWithinDistance
+  * jsts.io
+    * GeoJSONReader vs GeoJSONWriter
+  * jsts.algorithm
+    * Angle
+    * Orientation
+  * jsts.operation
+    * distance
+      * DistanceOp
+  * jsts.simplify
+    * DouglasPeuckerSimplifier：曲线近似表示为一系列点，并减少点的数量的一种算法。它的优点是具有平移和旋转不变性，给定曲线与阈值后，抽样结果一定
+* frontend
+  * atob btoa
+  * Uint8Array
+  * window.Blob
+  * URL.createObjectURL

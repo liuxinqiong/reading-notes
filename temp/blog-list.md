@@ -11,9 +11,11 @@ object.traverse(child => {
 })
 ```
 8. useEffect 非预期的方式执行
+  * 通过 previous value 进行值比较，限定需要关心的值范围
+  * 使用 ref 避过
 9. antd/es vs antd/lib：https://github.com/ant-design/ant-design/issues/20847
 
-http://zhangchen915.com/index.php/archives/715/
+泛型高级用法：http://zhangchen915.com/index.php/archives/715/
 
 如何设置一个对象泛型、箭头函数如何添加函数泛型声明、声明一个联合声明（函数声明和普通对象声明）的注意事项
 ```ts

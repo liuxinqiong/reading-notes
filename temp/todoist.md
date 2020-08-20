@@ -14,7 +14,6 @@ TODO LIST
 * 表单一开始就开启校验
 * 楼型替换
 * 首页：焦距和阴影问题
-* 关闭 source-map + 监控
 
 mouseEvent.stopImmediatePropagation();
 
@@ -57,3 +56,4 @@ stomp
 * http://jmesnil.net/stomp-websocket/doc/
 * https://www.npmjs.com/package/@stomp/stompjs
 * https://stomp-js.github.io/api-docs/latest/classes/Client.html
+* https://stomp-js.github.io/guide/stompjs/using-stompjs-v5.html
