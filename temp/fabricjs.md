@@ -1,8 +1,8 @@
-fabric.js 是可以简化 canvas 编写的 js 库，提供 canvas 缺少的对象模型，以及一个SVG解析器，一个交互层，以及一整套其他必不可少的工具。
+fabric.js 是可以简化 canvas 编写的 js 库，提供 canvas 缺少的对象模型，以及一个 SVG 解析器，一个交互层，以及一整套其他必不可少的工具。
 
 基本步骤
 1. 创建 fabric 的 canvas 对象
-2. 创建 fabric 的各种对象，包括：rect，circle，line，image等
+2. 创建 fabric 的各种对象，包括：rect，circle，line，image 等
 3. 将创建好的对象添加到 canvas
 4. 可以对每一个 fabric 对象使用动画，克隆，修改属性，事件监听，碰撞检测等。修改属性需及时渲染 canvas 才能展示出效果
 
@@ -43,7 +43,7 @@ fabric.Canvas：用来管理内部所有的对象
 
 大多数对象从根 fabric.Object 继承
 
-操作对象：set 赋值，支持 k-v、对象形式，支持链式调用。get 获取，支持传入 key 形式和 getXXX 形式。
+操作对象：set 赋值，支持 K-V、对象形式，支持链式调用。get 获取，支持传入 key 形式和 getXXX 形式。
 * 改变定位：top，left
 * 尺寸：width，height
 * 渲染：fill, opacity, stroke, strokeWidth
@@ -59,7 +59,7 @@ left 和 top 是每种 Object 都有的属性，至于它到底指图形中哪�
 * selectable 是否可以选中
 
 图像
-* fabric.Image：指定 IMG 元素来创建实例
+* fabric.Image：指定 img 元素来创建实例
 * fabric.Image.fromURL：通过 URL 来创建
 * fabric.Image.filters：图片滤镜
 
@@ -69,7 +69,7 @@ left 和 top 是每种 Object 都有的属性，至于它到底指图形中哪�
 
 动画：这个无敌强
 * object.animate(key, value, options)
-* options 可以指定from、duration、onChange、onComplete、easing
+* options 可以指定 from、duration、onChange、onComplete、easing
 
 进阶函数
 * fabric.util.cos

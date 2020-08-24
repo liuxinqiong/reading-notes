@@ -1,7 +1,7 @@
 TODO LIST
 * maptalks 升级问题与场景优化
 * frontend_utils 整理（主要是 info 使用 utils）
-* 多 workspace 研究
+* 多 workspace，monorepo 研究
 * ant design 主题定制与变量修改问题
 * MaterialHelper 内存释放问题
 * 请求竞态控制
@@ -33,8 +33,6 @@ plugin：@umijs/plugin-qiankun
 * 调整 SourceMap 生成方式
 * 替换压缩器为 esbuild - 实验性特性
 
-WebSocket 连接自动关闭？
-
 FormList 表单校验？
 
 相机切换
@@ -51,6 +49,8 @@ three.js 截图
 * premultipliedAlpha
 * https://threejsfundamentals.org/threejs/lessons/threejs-tips.html
 * 竟然和大小相关
+
+WebSocket 连接自动关闭？
 
 stomp
 * http://jmesnil.net/stomp-websocket/doc/

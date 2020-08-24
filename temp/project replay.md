@@ -3,14 +3,17 @@
 2. 缺少自己服务于 view 的 service 层，当初觉得 service 层可能没太多必要，跳过了 service 层直接将 api 层作用于 view 了
 3. 类型定义
   * Object3D 的 userData 类型 - 由于 userData 本身在 Object3D 中本身是 any 类型，Three 的一些 getXXX api 返回的均是 Object3D，是不可能返回你想要的实现子类的。因此自己如果想要有类型，你可以封装自己的和业务对象相关的 getXXX 相关函数，
-  * axios 返回值类型定义 - 只能在特定 action 中自行 as 成一个类型，而且这是必须的操作，否则你在使用的时候会导致类型是 any
-  * Redux Action payload 类型定义
+  * axios 返回值类型定义 - 由于使用拦截器动态修改了返回值类型，因此建议在 api 函数中显示声明返回类型
+  * Redux Action payload 类型定义 - 只能在特定 action 中自行 as 成一个类型，而且这是必须的操作，否则你在使用的时候会导致类型是 any
 4. useSelector 性能相关 - reselect 库存在的意义
 5. useEffect dep 中对象的局部选择
+  * usePrevious 自行缩小范围
+  * 完成的 Ref
 6. redux-saga 错误导致应用奔溃
 7. dispatch 是同步的吗？怎么知道已经完成
   * dispatch 本身是同步修改 store 中的值
 8. 与 OOP 冲突吗
+  * 值得好好思考
 
 项目复盘
 * Three
