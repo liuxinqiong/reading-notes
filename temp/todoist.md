@@ -57,3 +57,13 @@ stomp
 * https://www.npmjs.com/package/@stomp/stompjs
 * https://stomp-js.github.io/api-docs/latest/classes/Client.html
 * https://stomp-js.github.io/guide/stompjs/using-stompjs-v5.html
+
+react batch
+* https://stackoverflow.com/questions/53574614/multiple-calls-to-state-updater-from-usestate-in-component-causes-multiple-re-re
+* http://blog.vjeux.com/2013/javascript/react-performance.html
+* https://github.com/facebook/react/issues/14259
+* https://react-redux.js.org/api/batch
+* https://dmitripavlutin.com/react-hooks-stale-closures/#comments
+* https://dmitripavlutin.com/simple-explanation-of-javascript-closures/
+* https://www.jianshu.com/p/cc96b807f996
+* https://codesandbox.io/s/react-hooks-batch-update-tqqq6?file=/src/Test.tsx
