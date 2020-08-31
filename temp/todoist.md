@@ -67,3 +67,14 @@ react batch
 * https://dmitripavlutin.com/simple-explanation-of-javascript-closures/
 * https://www.jianshu.com/p/cc96b807f996
 * https://codesandbox.io/s/react-hooks-batch-update-tqqq6?file=/src/Test.tsx
+
+React 组件测试
+* hooks 测试：@testing-library/react-hooks
+* 组件很小而且仅依赖 props 时，是最容易测试的情况，但事情可能不会那么理想，通常组件还会依赖
+  * redux store
+  * context
+  * even react router
+* https://react-hooks-testing-library.com/usage/advanced-hooks
+* https://jestjs.io/docs/en/asynchronous
+* https://testing-library.com/docs/dom-testing-library/api-async#waitfor
+* https://redux.js.org/recipes/writing-tests
