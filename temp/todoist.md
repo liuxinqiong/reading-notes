@@ -21,14 +21,6 @@ nginx 代理静态资源后，错误提示 ERR_CONTENT_LENGTH_MISMATCH
 * 原因：nginx 会缓存大文件到 proxy_temp 目录中，主进程在读取缓存的时候由于权限问题而无法访问
 * 解决：通过 sudo chmod -R 777 /usr/local/var/run/nginx/* 打开权限即可
 
-WebSocket 连接自动关闭？
-
-stomp
-* http://jmesnil.net/stomp-websocket/doc/
-* https://www.npmjs.com/package/@stomp/stompjs
-* https://stomp-js.github.io/api-docs/latest/classes/Client.html
-* https://stomp-js.github.io/guide/stompjs/using-stompjs-v5.html
-
 react batch
 * https://stackoverflow.com/questions/53574614/multiple-calls-to-state-updater-from-usestate-in-component-causes-multiple-re-re
 * http://blog.vjeux.com/2013/javascript/react-performance.html
@@ -38,14 +30,3 @@ react batch
 * https://dmitripavlutin.com/simple-explanation-of-javascript-closures/
 * https://www.jianshu.com/p/cc96b807f996
 * https://codesandbox.io/s/react-hooks-batch-update-tqqq6?file=/src/Test.tsx
-
-React 组件测试
-* hooks 测试：@testing-library/react-hooks
-* 组件很小而且仅依赖 props 时，是最容易测试的情况，但事情可能不会那么理想，通常组件还会依赖
-  * redux store
-  * context
-  * even react router
-* https://react-hooks-testing-library.com/usage/advanced-hooks
-* https://jestjs.io/docs/en/asynchronous
-* https://testing-library.com/docs/dom-testing-library/api-async#waitfor
-* https://redux.js.org/recipes/writing-tests
