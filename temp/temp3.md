@@ -1,0 +1,4 @@
+## 资料
+* [了不起的 TypeScript 入门](https://juejin.im/post/6844904182843965453)
+* [一文读懂 TypeScript 泛型及应用](https://juejin.im/post/6844904184894980104)
+* [TypeScript 入门教程](https://ts.xcatliu.com/)
