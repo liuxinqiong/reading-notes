@@ -8,7 +8,7 @@
 4. useSelector 性能相关 - reselect 库存在的意义
 5. useEffect dep 中对象的局部选择
   * usePrevious 自行缩小范围
-  * 完成的 Ref
+  * Ref
 6. redux-saga 错误导致应用奔溃
 7. dispatch 是同步的吗？怎么知道已经完成
   * dispatch 本身是同步修改 store 中的值
@@ -20,6 +20,8 @@
   * renderOrder 属性的作用和效果
   * ShapeGeometry vs ExtrudeGeometry
   * GridObjectSnap
+  * depthWrite 属性的作用和效果
+  * 球坐标
 * jsts
   * jsts.geom
     * Geometry

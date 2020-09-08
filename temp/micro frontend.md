@@ -49,3 +49,5 @@
 * 确认中枢仓库
 * 配置收敛、跳转问题
 * 服务注册
+
+umi 集成 qiankun 的插件：@umijs/plugin-qiankun
