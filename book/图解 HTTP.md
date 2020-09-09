@@ -310,7 +310,7 @@ HTTP 通信时，除客户端和服务器以外，还有一些用于通信数据
 
 客户端的缓存：缓存不仅可以存在于缓存服务器内，还可以存在客户端浏览器中。和缓存服务器相同的一点是，当判定缓存过期后，会向源服务器确认资源的有效性。若判断浏览器缓存失效，浏览器会再次请求新资源。
 
-# HTTP首部
+# HTTP 首部
 使用首部字段是为了给浏览器和服务器提供报文主体大小、所使用的语言、认证信息等内容。
 
 HTTP 首部字段是由首部字段名和字段值构成的，中间用冒号 “:” 分隔。另外，字段值对应单个 HTTP 首部字段可以有多个值，中间使用 “,” 进行分割。
@@ -640,7 +640,7 @@ ETag 中有强 ETag 值和弱 ETag 值之分。
 ### Last-Modified
 首部字段 Last-Modified 指明资源最终修改的时间。
 
-## 为Cookie服务的首部字段
+## 为 Cookie 服务的首部字段
 管理服务器与客户端之间状态的 Cookie，虽然没有被编入标准化HTTP/1.1 的 RFC2616 中，但在 Web 网站方面得到了广泛的应用。
 
 Cookie 的工作机制是用户识别及状态管理。
@@ -706,7 +706,7 @@ HTTP缺点
 > SSL 不仅提供加密处理，而且还使用了一种被称为证书的手段，可用于确定方。证书由值得信任的第三方机构颁发，用以证明服务器和客户端是实际存在的。
 
 ## HTTP+ 加密 + 认证 + 完整性保护=HTTPS
-HTTPS 并非是应用层的一种新协议。只是 HTTP 通信接口部分用SSL（Secure Socket Layer）和 TLS（Transport Layer Security）协议代替而已。
+HTTPS 并非是应用层的一种新协议。只是 HTTP 通信接口部分用 SSL（Secure Socket Layer）和 TLS（Transport Layer Security）协议代替而已。
 
 通常，HTTP 直接和 TCP 通信。当使用 SSL 时，则演变成先和 SSL 通信，再由 SSL 和 TCP 通信了。
 
@@ -777,10 +777,10 @@ BASIC 认证使用上不够便捷灵活，且达不到多数 Web 网站期望的
 因为发送给对方的只是响应摘要及由质询码产生的计算结果，所以比起 BASIC 认证，密码泄露的可能性就降低了。
 
 DIGEST 认证概要
-1. 请求需认证的资源时，服务器会随着状态码 401 Authorization Required，返 回带 WWW-Authenticate 首部字段的响应。该字段内包含质问响应方式认证所需的临时质询码（随机数，nonce）。首部字段 WWW-Authenticate 内必须包含 realm 和 nonce 这两个字段的信息。客户端就是依靠向服务器回送这两个值进行认证的。
+1. 请求需认证的资源时，服务器会随着状态码 401 Authorization Required，返回带 WWW-Authenticate 首部字段的响应。该字段内包含质问响应方式认证所需的临时质询码（随机数，nonce）。首部字段 WWW-Authenticate 内必须包含 realm 和 nonce 这两个字段的信息。客户端就是依靠向服务器回送这两个值进行认证的。
 2. 接收到 401 状态码的客户端，返回的响应中包含 DIGEST 认证必须的首部字段 Authorization 信息。首部字段 Authorization 内必须包含 username、realm、nonce、uri 和 response 的字段信息。其中，realm 和 nonce 就是之前从服务器接收到的响应中的字段。
   * username 是 realm 限定范围内可进行认证的用户名。
-  * uri（digest-uri）即 Request-URI 的值，但考虑到经代理转发后Request-URI 的值可能被修改，因此事先会复制一份副本保存在 uri内。
+  * uri（digest-uri）即 Request-URI 的值，但考虑到经代理转发后 Request-URI 的值可能被修改，因此事先会复制一份副本保存在 uri 内。
   * response 也可叫做 Request-Digest，存放经过 MD5 运算后的密码字符串，形成响应码。
 3. 接收到包含首部字段 Authorization 请求的服务器，会确认认证信息的正确性。认证通过后则返回包含 Request-URI 资源的响应。并且这时会在首部字段 Authentication-Info 写入一些认证成功的相关信息。
 
@@ -816,7 +816,7 @@ SSL 客户端认证的认证步骤
 ## Session 管理及 Cookie 应用
 基于表单认证的标准规范尚未有定论，一般会使用 Cookie 来管理 Session（会话）。
 1. 客户端把用户 ID 和密码等登录信息放入报文的实体部分，通常是以 POST 方法把请求发送给服务器。而这时，会使用 HTTPS 通信来进行 HTML 表单画面的显示和用户输入数据的发送。
-2. 服务器会发放用以识别用户的 Session ID。通过验证从客户端发送过来的登录信息进行身份认证，然后把用户的认证状态与Session ID 绑定后记录在服务器端。
+2. 服务器会发放用以识别用户的 Session ID。通过验证从客户端发送过来的登录信息进行身份认证，然后把用户的认证状态与 Session ID 绑定后记录在服务器端。
   * 如果 Session ID 被第三方盗走，对方就可以伪装成你的身份进行恶意操作了。因此必须防止 Session ID 被盗，或被猜出。为了做到这点，Session ID 应使用难以推测的字符串，且服务器端也需要进行有效期的管理，保证其安全性。
   * 为减轻跨站脚本攻击（XSS）造成的损失，建议事先在 Cookie 内加上 httponly 属性。
 3. 客户端接收到从服务器端发来的 Session ID 后，会将其作为 Cookie 保存在本地。下次向服务器发送请求时，浏览器会自动发送 Cookie，所以 Session ID 也随之发送到服务器。服务器端可通过验证接收到的 Session ID 识别用户和其认证状态。
@@ -899,7 +899,7 @@ XML（eXtensible Markup Language，可扩展标记语言）是一种可按应用
 
 更容易地复用数据使得 XML 在互联网上被广泛接受。比如，可用在 2 个不同的应用之间的交换数据格式化。
 
-JSON（JavaScript Object Notation）是一种以JavaScript（ECMAScript）的对象表示法为基础的轻量级数据标记语言。能够处理的数据类型有 false/null/true/ 对象 / 数组 / 数字 / 字符串，这 7 种类型。
+JSON（JavaScript Object Notation）是一种以JavaScript（ECMAScript）的对象表示法为基础的轻量级数据标记语言。能够处理的数据类型有 false/null/true/对象/数组/数字/字符串，这 7 种类型。
 
 JSON 让数据更轻更纯粹，并且 JSON 的字符串形式可被 JavaScript轻易地读入。当初配合 XML 使用的 Ajax 技术也让 JSON 的应用变得更为广泛。另外，其他各种编程语言也提供丰富的库类，以达到轻便
 操作 JSON 的目的。
@@ -942,7 +942,7 @@ JSON 让数据更轻更纯粹，并且 JSON 的字符串形式可被 JavaScript�
 2. 利用脚本窃取用户的 Cookie 值，被害者在不知情的情况下，帮助攻击者发送恶意请求。
 3. 显示伪造的文章或图片。
 
-### SQL注入攻击
+### SQL 注入攻击
 SQL 注入攻击有可能会造成以下等影响。
 * 非法查看或篡改数据库内的数据
 * 规避认证
@@ -953,7 +953,7 @@ OS 命令注入攻击（OS Command Injection）是指通过 Web 应用，执行�
 
 可以从 Web 应用中通过 Shell 来调用操作系统命令。倘若调用 Shell 时存在疏漏，就可以执行插入的非法 OS 命令。
 
-### HTTP首部注入工具
+### HTTP 首部注入工具
 HTTP 首部注入攻击（HTTP Header Injection）是指攻击者通过在响应首部字段内插入换行，添加任意响应首部或主体的一种攻击。
 
 向首部主体内添加内容的攻击称为 HTTP 响应截断攻击（HTTPResponse Splitting Attack）。
@@ -1022,9 +1022,9 @@ Web 应用不必在用户的浏览画面上展现详细的错误消息。对攻�
 ### 会话固定攻击
 对以窃取目标会话 ID 为主动攻击手段的会话劫持而言，会话固定攻击（Session Fixation）攻击会强制用户使用攻击者指定的会话 ID。
 1. 访问登录页面
-2. 服务器发布一个回话ID，此时为未认证状态
-3. 攻击者将2中的URL作为陷进，诱导用户前去认证
-4. 认证后回话ID变为已认证
+2. 服务器发布一个回话 ID，此时为未认证状态
+3. 攻击者将 2 中的URL作为陷进，诱导用户前去认证
+4. 认证后回话 ID 变为已认证
 
 ### 跨站点请求伪造
 跨站点请求伪造（Cross-Site Request Forgeries，CSRF）攻击是指攻击者通过设置好的陷阱，强制对已完成认证的用户进行非预期的个人信息或设定信息等某些状态更新，属于被动攻击。

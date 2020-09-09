@@ -7,21 +7,31 @@
 * CSS 问题
   * flex
   * line-height
-  * BFC
+  * BFC（块级格式化上下文）
   * will-change
+  * 层叠上下文和层叠水平
+  * 盒子模型和布局属性
+  * 响应式设计
 * OOP 问题
   * 怎么理解高内聚，低耦合
   * 怎么理解封装
+  * 怎么提高代码的复用性
+  * 面向对象和面向过程的区别和联系
+  * 封装、抽象、继承、多态的具体表现
 * JavaScript
   * 原型链
   * 闭包
-  * Event Loop
-  * this 的确定
+  * Event Loop：宏任务与微任务
+  * this
   * 递归
-* Redux 的使用原理和场景
+* webpack
+  * 常用配置
+  * 打包优化
 * React
-  * Diff
-  * 性能优化点
+  * Diff 算法
+  * 开发中需要注意的性能优化点
+  * Redux 的使用原理和场景
+  * 谈谈 HOC/Render Props/Hooks
 * SSR 原理和场景，你是怎么实现的
 * 跨域问题出现的原因，为什么通过 Node 可以解决
 * Koa 中间件原理
@@ -32,7 +42,7 @@
 * HTTP
   * 常见状态码
   * JWT 与 传统 Session 的区别
-  * 请求头（浏览器缓存）
+  * 常见请求头（浏览器缓存）
   * Cookie
 * MVC 和 MVVM 的区别
 * 实现四则运算的解释器

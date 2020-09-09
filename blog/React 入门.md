@@ -646,7 +646,7 @@ class Mouse extends React.Component {
 
 ```js
 <Mouse render={mouse => <Cat mouse={mouse} />} />
-// 当你使用Render Props时, 每次传入的render都是一个新的函数, 所以每次浅比较都会导致重新渲染。为了避免这个问题, 你可以将prop定义为一个实例方法
+// 当你使用 Render Props 时, 每次传入的 render 都是一个新的函数, 所以每次浅比较都会导致重新渲染。为了避免这个问题, 你可以将 prop 定义为一个实例方法
 // <Mouse render={this.renderTheCat} />
 ```
 

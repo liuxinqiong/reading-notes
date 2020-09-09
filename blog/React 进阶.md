@@ -277,11 +277,11 @@ immutable.js 存在的意义和使用
   * 对现有项目入侵太严重（新项目使用，老项目值得好好评估）
 
 ## SSR
-SSR的发展：
+SSR 的发展：
 * 全称：server side render
 * 传统服务端渲染，JSP、smaty、jinja2
   * 前后端一体
-  * 后端模板+数据 =>html 给浏览器
+  * 后端模板 + 数据 => html 给浏览器
   * 首屏块，每次获取数据都会刷新页面
 * 浏览器渲染，ajax 获取数据，前端拼接页面
   * 后端仅提供静态资源和接口
@@ -295,7 +295,7 @@ SSR的发展：
   * 页面渲染逻辑就不需要了，只需要做注水操作（事件响应等）
   * React 支持 SSR
 
-React同构API
+React 同构 API
 * RenderToString 和 RenderToStaticMarkUp
 * React16 新出的 RenderToNodeStream，性能更好
   * RenderToString 解析为字符串

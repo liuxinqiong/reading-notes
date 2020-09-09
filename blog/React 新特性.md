@@ -1,6 +1,6 @@
 React 新特性与周边
 
-## 新Context API
+## 新 Context API
 新旧 Context 想解决的问题依旧是相同的："prop drilling"，为跨层级的组件搭建一座桥梁。
 
 旧 Context API 存在的问题
