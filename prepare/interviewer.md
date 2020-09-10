@@ -29,8 +29,10 @@
 * React
   * Diff 算法
   * 开发中需要注意的性能优化点
-  * Redux 的使用原理和场景
+  * Redux 场景
+  * react-redux 原理
   * 谈谈 HOC/Render Props/Hooks
+  * 组件设计能力
 * SSR 原理和场景，你是怎么实现的
 * 跨域问题出现的原因，为什么通过 Node 可以解决
 * nodejs
