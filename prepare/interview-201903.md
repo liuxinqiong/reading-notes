@@ -116,6 +116,7 @@ Function.prototype.bind2 = function(context) {
     var fNOP = function() {}
     var fBound = function() {
         var bindArgs = Array.prototype.slice(arguments)
+        // 构造函数时，bind 的 this 失效
         return self.apply(this instanceof fNOP ? this : context, args.concat(bindArgs))
     }
     fNOP.prototype = this

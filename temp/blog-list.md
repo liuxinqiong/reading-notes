@@ -127,3 +127,9 @@ export type WrappedLoginItemProps = Omit<LoginItemProps, 'type' | 'updateActive'
 ```
 
 mouseEvent.stopImmediatePropagation();
+
+Diff 算法
+* react 技术揭秘：https://react.iamkasong.com/
+* https://zhuanlan.zhihu.com/p/20346379
+* https://github.com/aooy/blog/issues/2
+* http://blog.vjeux.com/2013/javascript/react-performance.html
