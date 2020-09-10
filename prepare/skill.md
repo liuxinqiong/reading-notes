@@ -290,7 +290,7 @@ Child.prototype.constructor = Child
 * Hash：利用 Hash 的改变不会触发页面刷新，可以通过 onhashchange 事件监听到变化，通过 window.location.hash 得到数据，应用场景：嵌 iframe 的多窗口不同源通信。
 * postMessage：H5标准，主要利用 postMessage Api + message 事件。
 * WebSocket：onopen、onmessage、onclose
-* CORS
+* CORS(Cross-origin resource sharing)
 
 #### 前端安全
 CSRF
@@ -435,7 +435,7 @@ DOCTYPE 是用来声明文档类型和 DTD 规范的，一个主要的用途便�
 * beforeDestroy destroy
 
 有看过源码嘛
-* 如果看过直接给面试官将
+* 如果看过直接给面试官讲
 * 没看过，统统回到 vue.js 的源码上来
 
 ![Observer.png](img/Observer.png)
