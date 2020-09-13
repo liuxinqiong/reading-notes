@@ -1,5 +1,6 @@
 [探索 webpack5 新特性 Module federation 在腾讯文档的应用](https://mp.weixin.qq.com/s/iS-prT1xZPV6cpH7MHRRdQ)
 [图解常用的 Git 指令含义](https://mp.weixin.qq.com/s/oKMdlo6jsIcMcZW8nzoAUg)
+[这才是真正的Git——Git内部原理揭秘！](https://mp.weixin.qq.com/s/jN-CGrf7oosutxLEvxvWiw)
 [Service Worker 运用与实践](https://mp.weixin.qq.com/s/vI2bxaFsFSB5rGC4Bkr8vQ)
 [JavaScript 20 年中文版 - 语言诞生](https://mp.weixin.qq.com/s/eRne5EIQGDbE0-JclAzNAA)
 
@@ -9,6 +10,7 @@
 [彻底搞懂 React 源码调度原理（Concurrent模式）](https://mp.weixin.qq.com/s/xHfhMqa5Nsw_5i6MkK2X0A)
 [从 React Hooks 看 React 的本质](https://mp.weixin.qq.com/s/t0CLAb7CCZY-paEJque1RA)
 [React Hooks 的体系设计之四 - 玩坏 ref](https://mp.weixin.qq.com/s/7c6zncb5ZIef9xgaAvt9uw)
+[React Hooks 设计思想](https://mp.weixin.qq.com/s/9Uuy5t-TL9cnCWY_GtQpNQ)
 
 [探索 React 的内在 — Fiber & Algebraic Effects](https://mp.weixin.qq.com/s/7MQp1CrZFwNd4dQ3y2C-UA)
 [探索 React 的内在 - postMessage 和 Scheduler](https://mp.weixin.qq.com/s/x4HvKm6w_nc02CZcOiwTTA)
