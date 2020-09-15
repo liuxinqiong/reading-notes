@@ -38,7 +38,7 @@
   * Redux 场景
   * react-redux 原理
   * 谈谈 HOC/Render Props/Hooks
-  * 组件设计能力
+  * 组件设计能力 - Select 组件
 * nodejs
   * Koa 中间件原理
 * Git
@@ -46,7 +46,7 @@
   * 代码还原
 * HTTP
   * 常见状态码
-  * JWT 与 传统 Session 的区别
+  * JWT 与传统 Session 的区别
   * 常见请求头（浏览器缓存）
   * Cookie
 * 算法题
