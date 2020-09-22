@@ -15,6 +15,10 @@
 8. 与 OOP 冲突吗
   * 值得好好思考
 
+Review Done List
+* Cad
+* Info
+
 项目复盘
 * Three
   * renderOrder 属性的作用和效果
