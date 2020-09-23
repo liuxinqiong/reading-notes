@@ -30,3 +30,10 @@ react batch
 * https://dmitripavlutin.com/simple-explanation-of-javascript-closures/
 * https://www.jianshu.com/p/cc96b807f996
 * https://codesandbox.io/s/react-hooks-batch-update-tqqq6?file=/src/Test.tsx
+
+帮助中心
+* 考虑到不同的子项目
+* 视频、手册、快捷键（写死）
+* 在线客服 udesk + 工单系统
+* 首页展示搜索功能、可配置功能
+* 搜索无结果的引导和随机答案

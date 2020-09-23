@@ -132,3 +132,7 @@ Diff 算法
 * https://zhuanlan.zhihu.com/p/20346379
 * https://github.com/aooy/blog/issues/2
 * http://blog.vjeux.com/2013/javascript/react-performance.html
+
+设备分辨率、物理分辨率
+
+响应式设计
