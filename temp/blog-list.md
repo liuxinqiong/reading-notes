@@ -12,6 +12,7 @@ object.traverse(child => {
   * 通过 previous value 进行值比较，限定需要关心的值范围
   * 使用 ref 避过
 9. antd/es vs antd/lib：https://github.com/ant-design/ant-design/issues/20847
+10. antd Table 组件如果父组件 display: flex 会导致组件不会撑满容器
 
 泛型高级用法：http://zhangchen915.com/index.php/archives/715/
 
