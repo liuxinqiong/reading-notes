@@ -22,7 +22,7 @@ fabric.Canvas：用来管理内部所有的对象
 * clear() 清空
 * renderAll() 重绘
 * requestRenderAll() 请求重新渲染
-* rendercanvas() 重绘画板
+* renderCanvas() 重绘画板
 * getCenter().top/left 获取中心坐标
 * setCursor() 设置手势图标
 * dispose() 释放

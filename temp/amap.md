@@ -9,6 +9,7 @@ AMap.CircleMarker 类与 AMap.Circle 类均为在地图上绘制圆形覆盖物�
 矢量图形的绘制和编辑功能：通过设置 draggable 为 true，可以开启拖动功能
 
 重写了 click 事件，event 对象里可以拿到 AMap.LngLat，AMap.Pixel
+
 屏幕坐标转经纬度？
 
 坐标系转换

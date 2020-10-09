@@ -29,8 +29,8 @@
 相关资料
 * [前端微服务化解决方案](https://alili.tech/archive/ea599f7c/)
 * [微前端的那些事儿](https://microfrontends.cn)
-* 书籍：《前端架构 - 从入门到微前端》
 * [基于 qiankun 的微前端最佳实践（万字长文） - 从 0 到 1 篇](https://juejin.im/post/5ebbd2986fb9a0432f0fff86)
+* 书籍：《前端架构 - 从入门到微前端》
 
 微服务带来的问题，这个问题其实在多部门中同样存在
 * 公共组件管理
