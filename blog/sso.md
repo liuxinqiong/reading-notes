@@ -19,7 +19,7 @@ Cookie 的工作原理
 ## JWT
 上述方式中搭建 redis 可能会比较麻烦，而且也会浪费服务端的内存。有没有办法绕开这个问题呢。于是就有了 JWT 鉴权的方式
 
-基于 token 的鉴权机制类似于http协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。
+基于 token 的鉴权机制类似于 http 协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。
 
 JWT 的构成
 * header
@@ -32,7 +32,7 @@ JWT 的构成
   * base 64 encode 后构成第二部分
 * signature
   * base64 header
-  * payload payload
+  * base64 payload
   * secret
 
 > secret 是保存在服务器端的，JWT 的签发生成也是在服务器端的，secret 就是用来进行 JWT 的签发和 JWT 的验证，目的就是为了防止伪造
@@ -50,11 +50,11 @@ a.com 访问一个需要鉴权的页面
    * 创建 ticket
    * 重定向回 a.com
    * 写 cookie，比如 Set cookie: ssoid=1234;domain=sso.com
-4. a.com 拿到 ticket 后，再次向认证中心去认证，如果是合法的 ticket，认证中心会返回用户信息，同时注册系统 A
+4. a.com 拿到 ticket 后，再次向认证中心 passport.com 去认证，如果是合法的 ticket，认证中心会返回用户信息，同时注册系统 A
   * 建立局部 session
   * 返回对应资源
   * 写 cookie，比如 Set cookie: sessionid=xxx;domain=a.com
-5. 这时候如果用户继续访问另一个受保护资源，由于建立局部 session 的过程中，发过自己的 cookie，到时候浏览器自然会带过来，自然就可以直到用户已经登录了
+5. 这时候如果用户继续访问另一个受保护资源，由于建立局部 session 的过程中，发过自己的 cookie，到时候浏览器自然会带过来，自然就可以知道用户已经登录了
 
 用户已经登录后，访问 B 系统 b.com 呢
 * 系统 B 发现未登录，302 重定向到认证中心
@@ -67,3 +67,16 @@ a.com 访问一个需要鉴权的页面
 * 主要是为了实现单点退出
 * 用户在一个系统退出了，认证中心需要把自己的会话和 cookie 消灭
 * 通知各个子系统，把自己的会话也统统消灭
+
+## 安全性
+了解了上面的内容后，信任关系是通过 ticket 建立，因此如果 ticket 泄露，则无疑于泄露账号和密码了。那么如何保证 ticket 的安全性呢。
+
+传输安全性依赖于 SSL。
+
+传输安全性解决后，ticket 可以安全的到达用户侧，为了减少用户人为不小心泄露了 ticket，减少用户损失，我们还需要其他手段提高安全，比如
+* ticket 只能使用一次，用完失效
+* 设置有效时间，一段时间内没有使用，也自动失效
+* ticket 比如足够随机，像自增这种就很危险了
+
+## 资料
+* [CAS单点登录原理](https://blog.csdn.net/ban_tang/article/details/80015946)
