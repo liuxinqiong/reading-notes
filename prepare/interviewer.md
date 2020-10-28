@@ -11,39 +11,42 @@
 面试大致分类
 * CSS 问题
   * 定位属性的差别
+  * 选择器：+ vs ~
+  * 怎么理解 margin: auto
   * flex 常见属性
-  * line-height 属性值 1.5 和 150% 的区别
   * BFC（块级格式化上下文）
   * 层叠上下文和层叠水平
   * 响应式设计
   * 垂直居中的几种实现
   * 重排与重绘，如何手动触发重绘
-  * 选择器：+ vs ~
-  * 怎么理解 margin: auto
+  * line-height 属性值 1.5 和 150% 的区别
 * OOP 问题
-  * 怎么理解高内聚，低耦合
   * 怎么理解封装
   * 怎么提高代码的复用性
+  * 怎么理解高内聚，低耦合
   * 面向对象和面向过程的区别和联系
   * 封装、抽象、继承、多态的具体表现
 * JavaScript
   * 原型链
   * 闭包
-  * Event Loop：宏任务与微任务
+  * Event Loop
+  * 宏任务与微任务
   * this
   * 递归
   * 内存自动释放
   * 浮点数溢出
+  * async/await 实现原理
+  * 事件捕获与捕获
 * webpack
   * 常用配置
   * 打包优化
 * React
   * Diff 算法
-  * 开发中需要注意的性能优化点
   * Redux 场景
   * react-redux 原理
   * 谈谈 HOC/Render Props/Hooks
   * 组件设计能力 - Select 组件
+  * 开发中需要注意的性能优化点
 * nodejs
   * Koa 中间件原理
 * Git
