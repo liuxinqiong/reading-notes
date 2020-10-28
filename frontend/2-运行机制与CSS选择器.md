@@ -57,7 +57,7 @@ async 的强大之处在于，它是可以嵌套的，我们在定义了一批�
 
 在 ES5 中，改进了命名方式
 * lexical environment：词法环境，当获取变量时使用
-* variable environment：变量环境，当生命变量时使用
+* variable environment：变量环境，当声明变量时使用
 * this value：this 值
 
 > 在 ES2018 中，执行上下文中增加了不少内容，为避免复杂度，这里不讨论
