@@ -31,6 +31,7 @@
 * [微前端的那些事儿](https://microfrontends.cn)
 * [基于 qiankun 的微前端最佳实践（万字长文） - 从 0 到 1 篇](https://juejin.im/post/5ebbd2986fb9a0432f0fff86)
 * 书籍：《前端架构 - 从入门到微前端》
+* [iframe 接班人-微前端框架 qiankun 在中后台系统实践](https://mp.weixin.qq.com/s/duUxw82DizU15vqRrL_iOw)
 
 微服务带来的问题，这个问题其实在多部门中同样存在
 * 公共组件管理
