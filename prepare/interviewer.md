@@ -42,12 +42,16 @@
   * 常用配置
   * 打包优化
 * React
+  * Virtual Dom 的本质
   * Diff 算法
-  * Redux 场景
-  * react-redux 原理
+  * 使用 Redux 场景
+  * 谈谈 react-redux 原理
   * 谈谈 HOC/Render Props/Hooks
   * 组件设计能力 - Select 组件
   * 开发中需要注意的性能优化点
+  * React 15 到 16 后，生命周期的改变内容与原因
+  * React Hooks 的设计动机
+  * setState 到底是同步还是异步的
 * nodejs
   * Koa 中间件原理
 * Git
