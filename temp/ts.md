@@ -18,7 +18,7 @@ symbol：表示独一无二的值
 * 字符串枚举，不支持反向映射
 
 never、unknown、any
-* never：异常了、死循环了
+* never：异常了、死循环了，对应空集，即使是 undefined 或 null 也不能赋值给 never
 * unknown：所有类型都可以分配给 unknown，只能将 unknown 类型的变量赋值给 any 和 unknown
 * any：任何类型
 
@@ -101,10 +101,11 @@ type Diff<T, U> = T extends U ? never : T
 泛型常见使用场景
 * 泛型函数
 * 泛型接口
-  * 有个很好的使用场景：某个属性有多种可能时，可通过泛型传入，从而拥有一个确定的类型
+  * 有个很好的使用场景：**某个属性有多种可能时，可通过泛型传入，从而拥有一个确定的类型**
 * 泛型类
   * 泛型不能应用于类的静态成员
 * 泛型约束
+* 泛型默认值：比如 T = {}，使用泛型时没有在代码中直接指定类型参数，从实际值参数中也无法推测出时，这个默认类型就会起作用。
 
 定义泛型函数类型与泛型约束示例
 ```ts
@@ -122,6 +123,8 @@ function logAdvance<T extends Length>(value: T): T {
     return value;
 }
 ```
+
+> 多个类型参数，泛型不只是能用 T，你能用你想用的任何大写字母，且可同时使用多个，比如针对 keyof 出来的属性，通常用 K 接受
 
 ## 声明合并
 声明合并：多个具有相同名称的声明会合并为一个声明
@@ -244,3 +247,64 @@ export default function(state = initialState, action: Action) {
     }
 }
 ```
+
+自定义 useMergeState hooks
+```ts
+import { useState, useCallback, Dispatch, SetStateAction } from 'react';
+
+function useMergeState<T = {}>(initial: T) {
+  const [state, setState] = useState<T>(initial);
+
+  const mergeSetState = useCallback(
+    <K extends keyof T>(
+      updater: ((prevState: Readonly<T>) => Pick<T, K> | T | null) | (Pick<T, K> | T | null),
+    ) => {
+      setState(prev =>
+        updater instanceof Function ? { ...prev, ...updater(prev) } : { ...prev, ...updater },
+      );
+    },
+    [],
+  );
+
+  return [state, mergeSetState as Dispatch<SetStateAction<Partial<T>>>] as const;
+}
+
+export default useMergeState;
+```
+
+官方工具：Omit、Readonly、Partial、Required 的实现
+```ts
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+}
+
+// 全键可选
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+};
+
+
+type Required<T> = {
+    [P in keyof T]-?: T[P];
+};
+```
+
+## 进阶
+
+### interface 和 type 有什么区别？
+* type 不能被 extends，interface 可以
+* 同名 type 不能被重复定义，interface 会将同名合并成一个类型
+* type 可以使用合并类型 &，使用联合类型 |、定义元组类型、声明函数类型
+* 具体使用哪个，主要看意图。interface 适合用于描述对象，type 定义函数以及复杂类型
+
+### module vs namespace
+
+### infer
+
+## 资料
+* [TypeScript 入门教程](https://ts.xcatliu.com/)
+* [了不起的 TypeScript 入门](https://juejin.im/post/6844904182843965453)
+* [一文读懂 TypeScript 泛型及应用](https://juejin.im/post/6844904184894980104)
+* [React+TypeScript Cheatsheets](https://github.com/typescript-cheatsheets/react)
