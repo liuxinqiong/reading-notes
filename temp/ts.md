@@ -1,6 +1,4 @@
 TypeScript
-* declare module/namespace
-* d.ts 结尾的文件会被 TypeScript 默认导入到全局，但是其中不能使用 import 语法，如果需要引用需要使用三斜杠。
 
 ## 基础类型
 先看看 ES6 提供的基础类型有：boolean/number/string/Array/function/object/symbol/undefined/null
@@ -125,6 +123,47 @@ function logAdvance<T extends Length>(value: T): T {
 ```
 
 > 多个类型参数，泛型不只是能用 T，你能用你想用的任何大写字母，且可同时使用多个，比如针对 keyof 出来的属性，通常用 K 接受
+
+## 声明文件
+什么是声明文件：通常我们会把声明语句放到一个单独的文件，声明文件必需以 .d.ts 为后缀。
+
+通常第三方库会定义好声明文件，我们直接使用实际，推荐使用 @types 统一管理第三方库的声明文件
+
+当一个第三方库没有提供声明文件时，我们就需要自己书写声明文件了。
+
+库的使用场景主要有一下几种
+* 全局变量：通过 script 标签引入第三方库，注入全局变量
+* npm：通过 import 方式引入，符合 ES6 模块规范
+* UMD 库：既可以通过 script 引入，又可以通过 import 导入
+* 直接扩展全局变量：通过 script 标签引入后，改变一个全局变量的结构
+* 在 npm 包或 UMD 库中扩展全局变量：引用 npm 包或 UMD 库后，改变一个全局变量的结构
+* 模块插件：通过 script 或 import 导入后，改变另一个模块的结构
+
+常见语法
+* 声明全局变量：declare var/let/const
+* 声明全局方法：declare function
+* 声明全局类：declare class
+* 声明全局枚举类型：declare enum
+* 声明命名空间：declare namespace
+* 声明全局类型：interface 和 type
+
+> 需要注意的是，声明语句中只能定义类型，切勿在声明语句中定义具体的实现
+
+在我们尝试给一个 npm 包创建声明文件之前，需要先看看它的声明文件是否已经存在。一般来说，npm 包的声明文件可能存在于两个地方：
+* 与该 npm 包绑定在一起。判断依据是 package.json 中有 types 字段，或者有一个 index.d.ts 声明文件。这种模式不需要额外安装其他包，是最为推荐的，所以我们自己创建 npm 包的时候，最好也将声明文件与 npm 包绑定在一起。
+* 发布到 @types 里。我们只需要尝试安装一下对应的 @types 包就知道是否存在该声明文件，安装命令是 npm install @types/foo --save-dev。这种模式一般是由于 npm 包的维护者没有提供声明文件，所以只能由其他人将声明文件发布到 @types 里了。
+
+假如以上两种方式都没有找到对应的声明文件，那么我们就需要自己为它写声明文件了。由于是通过 import 语句导入的模块，所以声明文件存放的位置也有所约束，一般有两种方案：
+* 创建一个 node_modules/@types/foo/index.d.ts 文件，存放 foo 模块的声明文件。这种方式不需要额外的配置，但是 node_modules 目录不稳定，代码也没有被保存到仓库中，无法回溯版本，有不小心被删除的风险，故不太建议用这种方案，一般只用作临时测试。
+* 创建一个 **types** 目录，专门用来管理自己写的声明文件，将 foo 的声明文件放到 types/foo/index.d.ts 中。这种方式需要配置下 tsconfig.json 中的 paths 和 baseUrl 字段。
+
+npm 包的声明文件主要有一下几种语法
+* export 导出变量
+* export namespace 导出（含有子属性的）对象
+* export default ES6 默认导出
+* export = commonjs 导出模块
+
+npm 包的声明文件与全局变量的声明文件有很大区别。**在 npm 包的声明文件中，使用 declare 不再会声明一个全局变量，而只会在当前文件中声明一个局部变量。只有在声明文件中使用 export 导出，然后在使用方 import 导入后，才会应用到这些类型声明**。
 
 ## 声明合并
 声明合并：多个具有相同名称的声明会合并为一个声明
@@ -300,8 +339,36 @@ type Required<T> = {
 * 具体使用哪个，主要看意图。interface 适合用于描述对象，type 定义函数以及复杂类型
 
 ### module vs namespace
+* declare module/namespace
+* d.ts 结尾的文件会被 TypeScript 默认导入到全局，但是其中不能使用 import 语法，如果需要引用需要使用三斜杠。
 
 ### infer
+
+### 函数相关
+
+#### 接口定义函数
+我们也可以使用接口的方式来定义一个函数需要符合的形状
+```ts
+interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+```
+
+#### 函数重载
+使用重载定义多个 reverse 的函数类型
+```ts
+function reverse(x: number): number;
+function reverse(x: string): string;
+function reverse(x: number | string): number | string {
+    if (typeof x === 'number') {
+        return Number(x.toString().split('').reverse().join(''));
+    } else if (typeof x === 'string') {
+        return x.split('').reverse().join('');
+    }
+}
+```
+
+> TypeScript 会优先从最前面的函数定义开始匹配，所以多个函数定义如果有包含关系，需要优先把精确的定义写在前面。
 
 ## 资料
 * [TypeScript 入门教程](https://ts.xcatliu.com/)
