@@ -131,7 +131,7 @@ function logAdvance<T extends Length>(value: T): T {
 
 当一个第三方库没有提供声明文件时，我们就需要自己书写声明文件了。
 
-库的使用场景主要有一下几种
+扩展知识：库的使用场景主要有一下几种
 * 全局变量：通过 script 标签引入第三方库，注入全局变量
 * npm：通过 import 方式引入，符合 ES6 模块规范
 * UMD 库：既可以通过 script 引入，又可以通过 import 导入
@@ -139,12 +139,16 @@ function logAdvance<T extends Length>(value: T): T {
 * 在 npm 包或 UMD 库中扩展全局变量：引用 npm 包或 UMD 库后，改变一个全局变量的结构
 * 模块插件：通过 script 或 import 导入后，改变另一个模块的结构
 
-常见语法
+声明文件主要有一下几种语法
 * 声明全局变量：declare var/let/const
 * 声明全局方法：declare function
 * 声明全局类：declare class
 * 声明全局枚举类型：declare enum
 * 声明命名空间：declare namespace
+  * 虽然 namespace 在模块系统中被淘汰了，但是在声明文件中，declare namespace 还是比较常用的，它用来表示全局变量是一个对象，包含很多子属性。
+  * 由于 d.ts 结尾的文件会被 TypeScript 默认导入到全局，因此暴露在最外层的 interface 或 type 会作为全局类型作用于整个项目中，我们应该尽可能的减少全局变量或全局类型的数量。故最好将他们放到 namespace 下
+  * 注意：在 declare namespace 内部，直接使用 function、const、enum、class 即可，无需 declare
+  * 如果对象拥有更深的层级，namespace 也支持嵌套，内部嵌套的 namespace 也无需 declare
 * 声明全局类型：interface 和 type：注意，不需要 declare 哦
 
 > 需要注意的是，声明语句中只能定义类型，切勿在声明语句中定义具体的实现
@@ -159,10 +163,6 @@ function logAdvance<T extends Length>(value: T): T {
   * 命名空间与函数合并：为函数添加属性和方法
   * 命名空间与枚举合并：为枚举添加属性和方法
 
-虽然 namespace 被淘汰了，但是在声明文件中，declare namespace 还是比较常用的，它用来表示全局变量是一个对象，包含很多子属性。
-
-由于 d.ts 结尾的文件会被 TypeScript 默认导入到全局，因此暴露在最外层的 interface 或 type 会作为全局类型作用于整个项目中，我们应该尽可能的减少全局变量或全局类型的数量。故最好将他们放到 namespace 下
-
 在我们尝试给一个 npm 包创建声明文件之前，需要先看看它的声明文件是否已经存在。一般来说，npm 包的声明文件可能存在于两个地方：
 * 与该 npm 包绑定在一起。判断依据是 package.json 中有 types 字段，或者有一个 index.d.ts 声明文件。这种模式不需要额外安装其他包，是最为推荐的，所以我们自己创建 npm 包的时候，最好也将声明文件与 npm 包绑定在一起。
 * 发布到 @types 里。我们只需要尝试安装一下对应的 @types 包就知道是否存在该声明文件，安装命令是 npm install @types/foo --save-dev。这种模式一般是由于 npm 包的维护者没有提供声明文件，所以只能由其他人将声明文件发布到 @types 里了。
@@ -172,16 +172,32 @@ function logAdvance<T extends Length>(value: T): T {
 * 创建一个 **types** 目录，专门用来管理自己写的声明文件，将 foo 的声明文件放到 types/foo/index.d.ts 中。这种方式需要配置下 tsconfig.json 中的 paths 和 baseUrl 字段。
 
 npm 包的声明文件主要有一下几种语法
-* export 导出变量：与普通 TS 中的语法类似，区别仅仅在于声明文件中禁止定义具体的实现
+* export 导出变量
+  * 与普通 TS 中的语法类似，区别仅仅在于声明文件中禁止定义具体的实现
+  * 支持混用 declare 和 export，使用 declare 先声明多个变量，最后再用 export 一次性导出
 * export namespace 导出（含有子属性的）对象
 * export default ES6 默认导出：注意，只有 function、class 和 interface 可以直接默认导出，其他的变量需要先定义出来，再默认导出
-* export = commonjs 导出模块
+* export =：针对 commonjs 导出模块
+  * 关于 commonjs 模块的导入导出，整体导出使用 `module.exports = foo`，单个导出使用 `exports.bar = bar`，导入同时支持 require 和 import 语法
+  * 对于 commonjs 规范的库，编写声明文件，就需要使用到 `export =` 语法
 
 npm 包的声明文件与全局变量的声明文件有很大区别。**在 npm 包的声明文件中，使用 declare 不再会声明一个全局变量，而只会在当前文件中声明一个局部变量。只有在声明文件中使用 export 导出，然后在使用方 import 导入后，才会应用到这些类型声明**。
 
 对于 npm 包或 UMD 库，如果导入此库之后会扩展全局变量，则需要使用另一种语法在声明文件中扩展全局变量的类型，那就是 `declare global`。
+```ts
+declare global {
+    interface String {
+        preAppendHello(): string;
+    }
+}
+// 注意即使此声明文件不需要导出任何东西，仍然需要导出一个空对象，用来告诉编译器这是一个模块的声明文件，而不是一个全局变量的声明文件。
+export {};
+```
 
-有时通过 import 导入一个模块插件，可以改变另一个原有模块的结构。此时如果原有模块已经有了类型声明文件，而插件模块没有类型声明文件，就会导致类型不完整，缺少插件部分的类型。ts 提供了一个语法 `declare module`，它可以用来扩展原有模块的类型。
+更多声明场景
+* export as namespace：有了 npm 包的声明文件，再基于它添加一条 export as namespace 语句，即可将声明好的一个变量声明为全局变量
+* 直接扩展全局变量：有的第三方库扩展了一个全局变量，可是此全局变量的类型却没有相应的更新过来，就会导致 ts 编译错误，此时就需要扩展全局变量的类型。这里我们可以利用**声明合并**给某声明添加属性或方法
+* 有时通过 import 导入一个模块插件，可以改变另一个原有模块的结构。此时如果原有模块已经有了类型声明文件，而插件模块没有类型声明文件，就会导致类型不完整，缺少插件部分的类型。ts 提供了一个语法 `declare module`，它可以用来扩展原有模块的类型。
 
 声明文件中的依赖
 * 通过 `import` 导入另一个声明文件中的类型
@@ -201,26 +217,26 @@ npm 包的声明文件与全局变量的声明文件有很大区别。**在 npm 
 * 将声明文件和源码放在一起
 * 将声明文件发布到 `@types` 下
 
-优先选择第一种方案。保持声明文件与源码在一起，使用时就不需要额外增加单独的声明文件库的依赖了，而且也能保证声明文件的版本与源码的版本保持一致。
+优先选择第一种方案。保持声明文件与源码在一起，使用时就**不需要额外增加单独的声明文件库的依赖**了，而且也能**保证声明文件的版本与源码的版本保持一致**。
 
 仅当我们在给别人的仓库添加类型声明文件，但原作者不愿意合并 `pull request` 时，才需要使用第二种方案，将声明文件发布到 `@types` 下。
 
 将声明文件和源码放在一起
 * 如果声明文件是通过 tsc 自动生成的，那么无需做任何其他配置，只需要把编译好的文件也发布到 npm 上，使用方就可以获取到类型提示了
 * 如果是手动写的声明文件，那么需要满足以下条件之一，才能被正确的识别
-  * 给 package.json 中的 types 或 typings 字段指定一个类型声明文件地址
-  * 在项目根目录下，编写一个 index.d.ts 文件
-  * 针对入口文件（package.json 中的 main 字段指定的入口文件），编写一个同名不同后缀的 .d.ts 文件
+  * 给 package.json 中的 `types` 或 `typings` 字段指定一个类型声明文件地址
+  * 在项目根目录下，编写一个 `index.d.ts` 文件
+  * 针对入口文件（package.json 中的 `main` 字段指定的入口文件），编写一个同名不同后缀的 .d.ts 文件
 
 具体类型寻找步骤
-1. 查找 package.json 的 types 或 typings 字段
-2. 如果没有，就会在根目录下寻找 index.d.ts 文件，将它视为此库的类型声明文件
-3. 如果没有找到 index.d.ts 文件，那么就会寻找入口文件（package.json 中的 main 字段指定的入口文件）是否存在对应同名不同后缀的 .d.ts 文件
+1. 查找 package.json 的 `types` 或 `typings` 字段
+2. 如果没有，就会在根目录下寻找 `index.d.ts` 文件，将它视为此库的类型声明文件
+3. 如果没有找到 `index.d.ts` 文件，那么就会寻找入口文件（package.json 中的 `main` 字段指定的入口文件）是否存在对应同名不同后缀的 .d.ts 文件
 4. 都不存在的话，就会被认为是一个没有提供类型声明文件的库了
 
 将声明文件发布到 @types 下
-* 与普通 npm 模块不同，@types 是统一由 DefinitelyTyped 管理的。要将声明文件发布到 @types 下，就需要给 DefinitelyTyped 创建一个 pull-request，其中包含了类型声明文件，测试代码，以及 tsconfig.json 等
-* pull-request 需要符合它们的规范，并且通过测试，才能被合并，稍后就会被自动发布到 @types 下。
+* 与普通 npm 模块不同，`@types` 是统一由 DefinitelyTyped 管理的。要将声明文件发布到 `@types` 下，就需要给 DefinitelyTyped 创建一个 pull-request，其中包含了类型声明文件，测试代码，以及 tsconfig.json 等
+* pull-request 需要符合它们的规范，并且通过测试，才能被合并，稍后就会被自动发布到 `@types` 下。
 
 ## 命名空间
 namespace 是 TS 早期时为了解决模块化而创造的关键字，称为 Internal Modules，先与 ES6 提出的 module system。
@@ -434,6 +450,6 @@ function reverse(x: number | string): number | string {
 
 ## 资料
 * [TypeScript 入门教程](https://ts.xcatliu.com/)
+* [React+TypeScript Cheatsheets](https://github.com/typescript-cheatsheets/react)
 * [了不起的 TypeScript 入门](https://juejin.im/post/6844904182843965453)
 * [一文读懂 TypeScript 泛型及应用](https://juejin.im/post/6844904184894980104)
-* [React+TypeScript Cheatsheets](https://github.com/typescript-cheatsheets/react)
