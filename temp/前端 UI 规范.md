@@ -22,6 +22,7 @@ xkui 下 styles 目录结构
 ├── mixins.less        # 常用的工具：比如溢出省略号、清除浮动等
 ├── reset.less         # 用于抹平不同浏览器之间的差异
 ├── variables.less     # 规范定义的变量
+├── global.less        # 汇总了对外输出的全局性样式，目前包括 antd.less/base.less/reset.less
 ```
 
 ## 各项目使用规则
