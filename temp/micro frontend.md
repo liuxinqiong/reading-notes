@@ -17,7 +17,7 @@
   * 每个子应用独立构建，运行时由主应用负责应用管理，加载、启动、卸载、通信机制
   * 优点：真正的独立开发、独立部署
   * 缺点：复杂，需要设计加载、通信机制，无法彻底隔离，需要解决依赖冲突，样式冲突问题
-* Web components
+* Web Components
 
 社区已有方案
 * [single-spa](https://github.com/CanopyTax/single-spa)
