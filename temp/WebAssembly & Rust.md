@@ -1,4 +1,4 @@
-由于 WASM 是静态类型，因此很难直接使用我们熟悉的 JavaScript来直接编写，目前的 WASM 都是通过其他静态语言编译而来。比如 AssemblyScript、C++、Rust、Go，相对来说，使用 Rust 开发在开发效率和便捷性、包体积大小、对 WASM 的支持度相对完善、社区活跃度高等方面有很大的优势。因此了解下使用 Rust 开发 WebAssembly。
+由于 WASM 是静态类型，因此很难直接使用我们熟悉的 JavaScript 来直接编写，目前的 WASM 都是通过其他静态语言编译而来。比如 AssemblyScript、C++、Rust、Go，相对来说，使用 Rust 开发在开发效率和便捷性、包体积大小、对 WASM 的支持度相对完善、社区活跃度高等方面有很大的优势。因此了解下使用 Rust 开发 WebAssembly。
 
 使用 WebAssembly 的原因
 * 关注性能敏感代码：使用 Rust 你根本不需要成为 JS 优化专家，不需要熟悉 JIT 内部实现，不需要魔法也能加速。
