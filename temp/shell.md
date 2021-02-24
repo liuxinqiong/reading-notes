@@ -1,4 +1,4 @@
-shell熟了之后, 主要看几个常用的工具就好了
+shell 熟了之后, 主要看几个常用的工具就好了
 find / fd
 grep / rg
 sed
