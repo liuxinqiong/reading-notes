@@ -309,7 +309,7 @@ element.addEventListener('scroll', function(e) {})
 虽然 window 有这么多相关信息，主要使用的是 innerHeight, innerWidth 和 devicePixelRatio 三个属性，其他了解即可。
 
 元素的布局信息
-* getClientRects：返回一个列表，里面包含元素对应的每一个盒所占据的客户端矩形区域，可以用 x,y,width,height 来获取它的位置和大小
+* getClientRects：返回一个列表，里面包含元素对应的每一个盒所占据的客户端矩形区域，可以用 x、y、width、height、top、left、right、bottom 来获取它的位置和大小
 * getBoundingClientRect：这个 API 更接近我们脑海中的元素盒的概念，返回元素对应的所有盒的包裹的矩形区域，需要注意，这个 API 获取的元素会包括当 overflow 为 visible 时的子元素区域
 
 这两个 api 获取的矩形区域都是相对于视口的坐标，这意味着，这些区域都是受滚动影响的，如果我们需要获取相对坐标，或者包含滚动区域的坐标，需要一点小技巧

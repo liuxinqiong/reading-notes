@@ -1,4 +1,4 @@
-multirepo 劣势
+multi-repo 劣势
 * 代码分散在不同的 repo 中，容易导致大量重复的内容，而且不易于同步迭代
   * Dev environments
   * Build configurations
@@ -16,7 +16,7 @@ multirepo 劣势
   * 操作步骤比较繁琐，而且很多时候并不需要发布 npm 版本，因为可能是临时的
 * 三方依赖版本可能不一致
 
-multirepo 优势：独立部署，提高构建速度（好像 monorepo 也可以？）
+multi-repo 优势：独立部署，提高构建速度（好像 monorepo 也可以？）
 
 > 虽然拆分子仓库、拆分子 NPM 包（For web）是进行项目隔离的天然方案，但当仓库内容出现关联时，没有任何一种调试方式比源码放在一起更高效。
 
@@ -24,7 +24,7 @@ monorepo 优势
 * 单个配置共享：项目相关的配置，比如 lint、test、build、tsconfig 等
 * 统一的地方处理 issue、merge request
 * 跨项目的操作和修改变得容易
-* 代码复用便捷，不同于之前 multirepo 的方式
+* 代码复用便捷，不同于之前 multi-repo 的方式
   * 如果有些代码需要复用，直接新增一个平级的 shared 目录，把代码迁移过去，然后修改 a、b、c 相关的逻辑，直接依赖 shared 这个模块
   * 愿景：packages 下面的模块越来越多，功能越来越独立。业务就是组合这些模块，搭建起来
 
