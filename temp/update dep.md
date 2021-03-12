@@ -124,6 +124,17 @@ type a = Record<string, string>
 
 问题表现为：antd 新版有个小问题，modal 搭配 tooltip 使用，tooltip 存在不消失的情形。暂时给 antd 提交了一个 issue。
 
+## three
+本次升级从 r114 -> r126 版本，可能需要关心的 feature 或 fix 有
+* 移除了 Scene.dispose() 方法：https://github.com/mrdoob/three.js/pull/19972
+* 支持 Texture.dispose() 方法
+* 添加 Object3D.clear() 方法
+* 添加 InstancedMesh.dispose() 方法
+* 废弃了 Geometry 类，改为使用 BufferGeometry：https://discourse.threejs.org/t/facevertexuvs-for-buffergeometry/23040
+* 把 TypeScript 交由 @type 管理
+
+three 有详细的[升级指导](https://github.com/mrdoob/three.js/wiki/Migration-Guide)
+
 ## 历史问题
 总结下几个问题
 * 以下依赖可以删除：当初是因为 react-scripts 存在 bug 而导致的，更新后该问题得到了解决
