@@ -118,3 +118,9 @@ pub fn fib(i: u32) -> u32 {
 
 ## 奇怪的问题
 cargo 命令提示 blocking waiting for file on package cache，如果确定没有多个程序占用，可以通过删除 `~/.cargo/.package-cache` 文件解决
+
+cargo 安装太慢
+
+cargo 安装 wasm-pack 提示系统不支持错误，不知道是不是公司电脑 M1 芯片的原因。
+
+rust-analyzer 不生效，不知道是不是网速问题。
