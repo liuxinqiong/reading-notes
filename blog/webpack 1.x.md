@@ -25,7 +25,7 @@ webpack 是什么
 * 插件系统
 * 模块热更新
 
-如何将css当初模块使用呢，这就是模块需要发挥作用了，我们需要两个 loader
+如何将 css 当初模块使用呢，这就是模块需要发挥作用了，我们需要两个 loader
 * css-loader：支持将 css 作为模块
 * style-loader：将 css 内容插入到对应页面，使之生效
 
@@ -190,7 +190,7 @@ postcss:function(){
 }
 ```
 
-loader处理项目模板文件
+loader 处理项目模板文件
 * 由于现在有很多的模板处理器，关于处理模板的插件，webpack 对应也收录了很多，比如 ejs，handlebars，jsx，html 等
 * 对于一些热门的模板，比如 jsx，已经集成在 babel，因此不需要在额外添加 loader
 * 安装 html-loader

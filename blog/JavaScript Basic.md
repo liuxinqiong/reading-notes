@@ -82,7 +82,6 @@ Person.prototype.__proto__ === Object.prototype; // true
   * 返回这个对象
 
 ## 类数组、对象创建与继承
-
 * 类数组对象
   * 拥有一个 length 属性和若干索引属性的对象
   * 读写，长度，遍历都和数组一样，不同的是数组的 API 不能直接使用，使用 call&apply 数组原型方法
