@@ -19,7 +19,7 @@ WebAssembly 关键概念
 * 表格 Table：可变长类型数组，存储诸如函数引用之类的不透明值并且能够被实例存取。进阶部分
 * 实例化对象 instantiate：第一参数为二进制数据，第二参数为 importObject（用于实现对 WebAssembly 对于 JavaScript 函数的调用，一旦一个模块声明了一个导入，则必须传递一个拥有相应属性的导入对象）
 
-> WebAssembly 只有很小的一个值类型集合，基本上限制在简单数值的范围内。???
+> WebAssembly 只有很小的一个值类型集合，基本上限制在简单数值的范围内。
 
 如何得到 WebAssembly 二进制文件
 * 从 C/C++ 移植：使用 Emscripten 来将它编译到 WebAssembly
@@ -27,7 +27,7 @@ WebAssembly 关键概念
 * 直接编写 WebAssembly 代码
   * WebAssembly 的二进制格式也有文本表示——两者之间 1:1 对应。你可以手工书写或者生成这种格式然后使用工具把它转换为二进制格式。这是一种用来在文本编辑器、浏览器开发者工具等工具中显示的中间形式
   * 二进制格式通常为 `.wasm` 格式，文本格式通常为 `.wat` 格式
-  * [理解WebAssembly文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)
+  * [理解 WebAssembly 文本格式](https://developer.mozilla.org/zh-CN/docs/WebAssembly/Understanding_the_text_format)
 
 加载 WebAssembly 代码
 * 目前 WebAssembly 还没有和 `<script type="module">` 或 ES6 的 import 语句基础，当前没有内置的方式让浏览器为你获取模块
@@ -67,8 +67,25 @@ WebAssembly 关键概念
 ## Rust 简介
 Rust 是 Mozilla 开发的一门静态的支持多种范式的系统编程语言。
 * 惊人的运行速度
-* 能够防止内存错误
+* 防止内存错误
 * 保证线程安全
+
+内存管理模型
+* C 语言的 malloc 和 free（手动管理，bug 制造机）
+* GC：Golang，Java 等语法（自动管理），导致程序性能不可避免的下降
+* 基于生命周期的半自动管理：Rust
+
+如何理解生命周期
+* 在 C 中需要手动调用 free 去释放内存
+* Rust 在编译器期间计算变量的使用范围
+* 当变量不在使用时，编译器自动在源码中插入 free 代码
+
+编译器是傲娇女王
+* Rust 把变量分为可变和不可变，对于不可变的，一旦创建以后，就不能再修改。
+* 所有权：对于任何给定的对象都只有一个绑定与之对应。
+* 借用
+  * 不可变借用，可变借用
+  * 共享不可变，可变不共享：同一时刻，要么只有一个可变 &mut 借用，要么有多个不可变 & 借用，不能同时存在可变和不可变借用。当大家都在读一个东西的时候，是不能写的。当一个人在写的时候，别人是不能读的。
 
 ## 小试牛刀
 安装 Rust 工具链
@@ -88,7 +105,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
 安装 WebAssembly 工具链
-* wasm-pack：用于将 Rust 项目打包成单个 `.wasm` 文件，运行 `curl https://rustWebAssembly.github.io/WebAssembly-pack/installer/init.sh -sSf | sh` 安装。
+* wasm-pack：用于将 Rust 项目打包成单个 `.wasm` 文件，运行 `curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh` 安装。
 * cargo-generate 用于快速生成 WebAssembly 项目的脚手架，运行 cargo install cargo-generate 即可安装。
 
 完成 cargo-generate 的安装后，通过如下方式创建 WebAssembly 项目
@@ -115,12 +132,22 @@ pub fn fib(i: u32) -> u32 {
 ```
 
 运行 `wasm-pack build` 命令，即可编译出 WebAssembly 模块，wasm-pack 会在项目的 pkg 目录下生成 `.wasm` 等文件。
+* xxx.wasm：rust 编译成 wasm 的源代码
+* xxx.js：JavaScript 粘合剂代码，导入 DOM 和 JavaScript 代码至 Rust，同时导出 Rust 函数给 JavaScript
+* xxx.d.ts：用于支持 TypeScript 的声明文件
+* package.json：用户协助我们发包
 
 ## 奇怪的问题
 cargo 命令提示 blocking waiting for file on package cache，如果确定没有多个程序占用，可以通过删除 `~/.cargo/.package-cache` 文件解决
 
-cargo 安装太慢
+cargo 安装太慢，具体见[Rust Crates 源使用帮助](https://mirrors.ustc.edu.cn/help/crates.io-index.html)
+1. 进入当前用户所在目录下的 `.cargo` 目录
+2. 新建 config 文件
+3. 写入替换源的配置如下
+```shell
+[source.crates-io]
+replace-with = 'ustc'
 
-cargo 安装 wasm-pack 提示系统不支持错误，不知道是不是公司电脑 M1 芯片的原因。
-
-rust-analyzer 不生效，不知道是不是网速问题。
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+```
