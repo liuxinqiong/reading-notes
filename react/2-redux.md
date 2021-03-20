@@ -28,7 +28,7 @@ react-redux
 异步 action 与 redux 中间件
 * 异步 action
   * 返回一个函数，参数为 dispatch 和 getState
-  * react-thunk 负责截获
+  * redux-thunk 负责截获
 * 中间件原理
   * 截获 action
   * 发出 action
@@ -37,7 +37,7 @@ react-redux
 * 标准形式存在的问题
   * 所有 Action 放一个文件，会无限扩展
   * Action 和 reducer 分开，实现业务逻辑时需要来回切换
-  * 系统中有那些 Action 不够直观
+  * 系统中有些 Action 不够直观
 * 新的方式：单个 action 和 reducer 放在同一个文件
   * 易于开发：不用在 action 和 reducer 文件间来回切换
   * 易于维护：每个 action 文件都很小，容易理解

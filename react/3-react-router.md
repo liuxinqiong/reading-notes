@@ -19,7 +19,7 @@ React Router 特性
 三种路由实现方式
 * URL 路径
 * hash 路由
-* 内存路由：不会反应在 URL 上，和` react-router-dom` 没关系，从 `react-router` 导入
+* 内存路由：不会反应在 URL 上，和 `react-router-dom` 没关系，从 `react-router` 导入
 
 基于路由配置进行资源组织
 * 实现业务逻辑的松耦合
@@ -29,7 +29,7 @@ React Router 特性
 核心 API
 * Link：普通链接，不会触发浏览器刷新
 * NavLink：类似 Link 但是会添加当前选中状态，activeClassName 属性
-* Prompt：满足条件时提示用户是否理解当前页面，when 和 message 属性
+* Prompt：满足条件时提示用户是否离开当前页面，when 和 message 属性
 * Redirect：重定向当前页面，例如登录判断
 * Route：路由配置核心标记，路径匹配时显示对应组件，exact path component
 * Switch：只显示第一个匹配的组件
@@ -42,6 +42,6 @@ React Router 特性
   * 页面状态尽量通过 URL 参数定义
 * 嵌套路由
   * Route 下 还有 Route 即可
-  * 嵌套路由的 path 必须是包含上一级 path 完整路径
+  * 注意：**嵌套路由的 path 必须是包含上一级 path 完整路径**
 
 路由配置如何抽象集中管理

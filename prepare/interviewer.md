@@ -42,16 +42,21 @@
   * 常用配置
   * 打包优化
 * React
-  * Virtual Dom 的本质
-  * Diff 算法
-  * 使用 Redux 场景
-  * 谈谈 react-redux 原理
-  * 谈谈 HOC/Render Props/Hooks
-  * 组件设计能力 - Select 组件
-  * 开发中需要注意的性能优化点
-  * React 15 到 16 后，生命周期的改变内容与原因
-  * React Hooks 的设计动机
+  * Diff 算法：比如谈谈三个要点
+  * Virtual Dom 的本质是什么？在挂载阶段和更新阶段发挥了什么作用，价值是什么
+  * 使用 Redux 场景以及 react-redux 原理
+  * 通用组件设计过程中需要考虑到哪些点？举个实际例子
+  * React 性能优化思路
+  * 聊聊 React 生命周期，以及 React 15 到 16 后，生命周期的改变内容、原因、目的
+  * 组件逻辑的复用：HOC、Render Props、Hooks 以及 React Hooks 的设计动机，使用 Hooks 的一些感想
   * setState 到底是同步还是异步的
+    * 异步的动机是避免频繁的重渲染
+    * 为什么 setTimeout 可以将 setState 的执行顺序从异步变为同步
+    * 在 React 钩子函数及合成事件中，它表现为异步；而在 setTimeout、setInterval 等函数中，包括在 DOM 原生事件中，它都表现为同步。这种差异，本质上是由 React 事务机制和批量更新机制的工作方式来决定的。
+  * Fiber 双缓存机制
+  * React 实现组件通信的几种方式
+  * Redux 中间件原理
+  * Redux 的设计思想
 * nodejs
   * Koa 中间件原理
 * Git
