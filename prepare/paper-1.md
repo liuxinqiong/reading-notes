@@ -3,7 +3,7 @@
 const isIterable = obj => obj != null && typeof obj[Symbol.iterator] === 'function';
 ```
 
-针对某位面试者
+PART1
 * css
   * BFC
   * Grid 布局
@@ -30,3 +30,30 @@ const isIterable = obj => obj != null && typeof obj[Symbol.iterator] === 'functi
 * 跨域问题出现的原因
 * 对于前端三大框架的看法和优缺点
 * 你还有什么想聊的吗
+
+PART2
+* CSS
+* JS
+* HTTP
+* react -- 精通，多问问
+* 简历
+  * 分享下团队管理相关的工作
+  * 谈谈你工作中常用到的 TS 特性
+  * 哪些性能优化相关的工作
+  * 如何落地公共方法的提取和使用
+  * UI 框架的最佳实践
+
+PART3
+* 你的优势是什么
+  * 哪些规范是很重要的 - 命名规范
+    * 下划线、命名风格
+    * 页面传值
+    * 文档注释  - 自动化、文档化
+    * 组件化开发
+  * 沟通能力、乐于学习
+    * Vue3
+* 通用组件设计需要注意些什么
+* 原生 JS
+  * 闭包
+  * 原型
+  * 函数柯里化
