@@ -66,3 +66,12 @@ PART3
   * 灰度发布组件
   * 聊聊你开发的 VSCode 插件
 * TypeScript
+
+PART4
+* typescript
+* git
+* http
+* react
+* 基础组件库
+* 列表数据量过大，需要解决性能问题
+* 自研组件
