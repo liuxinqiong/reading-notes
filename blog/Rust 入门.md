@@ -51,7 +51,7 @@ Rust 特点
 * 判断（if）
   * 括号可以省略
   * 表达式必须是 bool 值
-  * 是表达式，可以有返回值，比如实现三目表达式功能，let number = if condition { 5 } else { 6 };
+  * 可以有返回值，比如实现三目表达式功能，let number = if condition { 5 } else { 6 };
 * 循环（loop、while、for）
   * loop 表示一直循环，除非使用 break 语句
   * while 可理解为带停止条件的 loop 循环
@@ -94,7 +94,8 @@ fn main() {
         email: String::from("someone@qq.com"),
     };
     // println!("name is {}", user.name);
-    say_hello(&user)
+    // say_hello(&user)
+    user.say_hello();
 }
 ```
 
