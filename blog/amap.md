@@ -16,6 +16,18 @@ AMap.CircleMarker 类与 AMap.Circle 类均为在地图上绘制圆形覆盖物�
 * AMap.Circle 为矢量图形类，随地图的缩放会改变大小
 * AMap.CircleMarker 类则不会随图面缩放而改变。
 
+核心类 Map
+* lngLatToCoords(lnglat)：经纬度转莫卡托坐标（单位：米）
+* coordsToLngLat(coords)：莫卡托坐标（单位：米）转经纬度
+* lngLatToContainer(lnglat)：地图经纬度坐标转为地图容器像素坐标
+* containerToLngLat(pixel)：地图容器坐标转换成经纬度
+* coordToContainer(coord)：莫卡托（单位：米）转成地图容器坐标
+* containerToCoord(pixel)：地图容器坐标转成莫卡托（单位：米）
+* pixelToLngLat(pixel, zoom?)：平面地图像素坐标转换为地图经纬度坐标
+* lngLatToPixel(lnglat, zoom?)：经纬度坐标转换成平面地图像素坐标
+* getResolution()：获取指定位置的地图分辨率，单位：米/像素。 参数 point 有指定值时，返回指定点地图分辨率，point 缺省时，默认返回当前地图中心点位置的分辨率
+* getScale(dpi)：获取当前地图比例尺。表示当前屏幕距离一米代表实际距离多少米
+
 熟悉两个类
 * Overlay | OverlayGroup
 * Layer
