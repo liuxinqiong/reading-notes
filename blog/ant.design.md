@@ -71,3 +71,18 @@ Skeleton 骨架屏
 * 图文信息内容较多的列表/卡片中。
 * 只在第一次加载数据的时候使用。
 * 可以被 Spin 完全代替，但是在可用的场景下可以比 Spin 提供更好的视觉效果和用户体验。
+
+
+带 Search 功能的 Select 和 AutoComplete 区别
+* Search 组件
+  * multiple 和 tags 差别
+  * showSearch 开启搜索功能
+  * searchValue 控制搜索文本
+  * filterOption：指定过滤方式
+  * optionFilterProp：搜索时对应的 options 属性，设置为 children 表示对内嵌内容进行搜索，设置为 label 表示对内容进行搜索
+  * optionLabelProp：回填到选择框的 Option 的属性
+* AutoComplete 组件
+  * 组件很多类似的，出发点不一样
+* 区别
+  * AutoComplete 是一个带提示的文本输入框，用户可以自由输入，关键词是**辅助输入**。
+  * Select 是在限定的可选项中进行选择，关键词是**选择**。
