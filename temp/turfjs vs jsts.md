@@ -1,4 +1,9 @@
-turfjs vs jsts 调研
+turf vs JSTS 调研
+
+JSTS 是一个强大的，复杂的图形处理库，turf 甚至都会对它有所依赖，JSTS 比 turf 更复杂，学习曲线更陡峭。那他们有哪些区别呢
+* api 使用方式：JSTS 的 api 有着浓浓的 Java 风格，turf 更偏向函数式风格
+* 对 geojson 的支持度：turf 的 api 支持直接传递 geojson 且直接在地图上呈现，没有复杂的数据结构和解析工作
+* 模块化：turf 对于按需加载支持度好
 
 大家对于 jsts 的吐槽
 * 难以调试
