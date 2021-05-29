@@ -2,6 +2,7 @@ Rust 回顾需加强的点
 1. trait objects
 2. Option/Result/unwrap/?
 3. 解引用 *
+4. Self
 
 ## trait objects
 Rust 要求 if-else 两个分支的返回值类型必须相同，那能不能让函数返回多种类型呢？首先要明白，Rust 之所以要求函数不能返回多种类型是因为 Rust 需要在编译期确定返回值占用的内存大小，不同类型的返回值其内存大小不一定相同。既然如此，我们可以通过把返回值通过 Box **装箱**，返回一个胖指针，这样就可以确定返回值大小。
@@ -71,5 +72,18 @@ fn check(s: &str) {
 fn main() {
     let a = DemoStruct {name: "test"};
     check(a)
+}
+```
+
+## Self
+直接看一段示例吧
+```rs
+trait T {
+    type Item;  //关联类型
+    const C: i32;  //常量，书里没讲，更没在特性里见过。说明特性可以有常量
+
+    fn new() -> Self;  //实施者的类型
+
+    fn f(&self) -> Self::Item;  //实施时决定
 }
 ```
