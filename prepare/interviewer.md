@@ -8,6 +8,13 @@
 * 项目
 * 向我提问
 
+实践题
+* 实现一个九宫格布局
+* 实现两个 DOM 元素的拖动，当相交时改变背景色
+* 设计模式：观察者模式
+* 绘制矩形的例子：https://app.giraffe.build/v2/scratchpad
+* CSS inline-block：https://codesandbox.io/s/css-inline-block-qqjd1
+
 面试大致分类
 * CSS 问题
   * flex 常见属性
@@ -83,6 +90,8 @@
   * 跨域问题出现的原因，为什么通过 Node 可以解决
   * 对于前端三大框架的看法和优缺点
   * MVC 和 MVVM 的区别
+  * 你觉得 webpack 最大的作用是什么
+  * 链表和数组的区别
 * 开放性
   * 看过什么书
   * 你简历上的项目，有线上地址和开源仓库吗
