@@ -45,24 +45,6 @@ yarn workspace VS lerna：lerna 默认情况下重复安装的依赖包太多，
 
 https://classic.yarnpkg.com/en/docs/workspaces/
 
-npm link 步骤
-```shell
-# 在 b 包里
-npm link # 相当于 npm install b -g
-# 在 a 包里
-npm link b # 代码无须修改，package.json 中引用 b 的包会自动指向本地 b 的打包文件
-```
-
-> 使用 npm link 的方式，所有的小调整都不需要发包就可以验证正确性，尤其是对于不能确定正确的测试性改动，更加具有优越性
-
-package.json 与 package-lock.json
-* package.json 用于标注项目中对各个 npm 包的依赖
-* package-lock.json 用于记录当前状态下实际安装的各个 npm package 的具体来源和版本号
-
-package-lock 出现的原因：通常 package.json 使用的是 ^ 版本控制符，^ 指的是向后兼容，这就导致 npm i 的时候，装得库的版本和之前装得并不一样（有可能版本号会更新一些），而这个时候若是 npm 包开发者没有遵守——”相同的大版本号的包，接口保持兼容“，就会出现兼容性问题。为了解决这个问题，所以才有了 package-lock.json。
-
-如果改了 package.json，且 package.json 和 lock 文件不同，那么执行 npm i 时 npm 会根据 package 中的版本号以及语义含义去下载最新的包，并更新至 lock。如果两者是同一状态，那么执行 npm i 会根据 lock 下载，不会理会 package 实际包的版本是否有新。
-
 Monorepo 集成方案
 * nx：https://nx.dev/latest/react/getting-started/intro
 * rushstack：https://rushstack.io/
