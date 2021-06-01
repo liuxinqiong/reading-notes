@@ -1,0 +1,21 @@
+fabric 比你想象的强呀
+* 文本上下标功能
+* 打组解组功能
+  * toGroup
+  * toActiveSelection
+* 自定义滤镜
+* 自定义控制器 - 删除、编辑、复制
+* 完善的事件机制
+* 完善的动画机制
+  * startValue
+  * endValue
+  * duration
+  * easing
+  * onChange
+  * onComplete
+* 选择（多选、框选）
+  * selectable
+  * setActiveObject
+  * getActiveObject
+  * discardActiveObject
+  * getPointer
