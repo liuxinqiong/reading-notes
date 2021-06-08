@@ -137,8 +137,25 @@ Lerna 命令
 
 这时你使用 lerna bootstrap 安装依赖，发现 package 下的 package.json 声明的依赖根本没有被安装。这是以为 npm7 以下的版本不支持 workspaces 语法，我们将 npmClient 修改为 yarn 试试。这样就符合预期了，相同的依赖会被提取到 root node_modules，自身的依赖在自己的 node_modules
 
+## 踩过的坑
+之前通过 submodule 管理的代码，最终会被放置在主项目的 src 目录下，这样就可以沿用主项目的 webpack 打包和 tsc 的编译能力。通过 monorepo 的方式进行管理后，由于自身没有 package 管理机制，会导致很多问题。如果想通过纯文件的方式进行引用，可以通过如下方式进行修改
+* 禁用 ModuleScopePlugin，将 webpack 的工作范围不在只是 src 目录
+* 扩展 typescript 的 paths 字段，进行别名扩展
+* 扩展 typescript 的 include 字段
+* 修改 webpack 配置，将对应的纯文件目录加入 babelInclude 列表
+* 修改 webpack 配置，增加对应纯文件目录的 alias 配置
+
+更多配置提取至 Root
+* 提取 eslint、prettier、stylelint、editorconfig
+* 提取 script、common deps、environments config
+* 提取 .gitattributes、.gitignore
+* react-app-rewired 要求 config-overrides.js 在根目录下，但我们依旧可以提取公共部分到 Root 下，然后具体 package 引用 Root 文件即可
+
 ## 更多工具
 更多可选的优秀工具
 * Volta：JavaScript 工具管理器，它可以让我们轻松地在项目中锁定 node，npm 和 yarn 的版本。
 * Verdaccio：npm 包本地发布
 * commitlint：检查提交的 commit 信息，它强制约束我们的 commit 信息必须在开头附加指定类型，用于标示本次提交的大致意图，支持的类型关键字有 feat、chore、fix、refactor、style
+
+## 资料
+* [https://mp.weixin.qq.com/s/mV6gvPy-N3NZPEYONV4A0A](https://mp.weixin.qq.com/s/mV6gvPy-N3NZPEYONV4A0A)
