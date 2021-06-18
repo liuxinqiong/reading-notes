@@ -159,3 +159,20 @@ Lerna 命令
 
 ## 资料
 * [https://mp.weixin.qq.com/s/mV6gvPy-N3NZPEYONV4A0A](https://mp.weixin.qq.com/s/mV6gvPy-N3NZPEYONV4A0A)
+
+## frontend_prime
+存在的一些问题
+* 纯文件 packages 之间相互引用，ide 中会提示报错
+  * 解决办法：在 tsconfig.json 的 paths 下依次添加别名可以解决
+* 某些文件首行 eslint 报错："parserOptions.project" has been set for @typescript-eslint/parser.The file does not match your project config.The file must be included in at least one of the projects provided.
+  * 出现的原因如下
+    1. 你使用的 rule 要求有类型信息，但是并没有声明一个 parserOptions.project
+    2. 你声明了 parserOptions.project，但你 linting 的文件并不包含在 project 中，比如一些常见的 xxx.config.js
+  * 解决办法：通过 .eslintignore 中忽略报错文件
+* TypeScript 设置别名导致顶级别名下，必须写完 index，否则提示找不到
+  * 这是由于 paths 的语法导致的，因为别名使用的是 `@config/*` 导致匹配不到 `@config`
+  * 但这个好坑，真要解决的话，好像只能写两个，也就是再写一个 `@config` 专门用于匹配它
+
+还有可能存在的一些问题
+* 更改公共 package，主仓库会自动重新编译吗
+* lerna run script 控制台看不到启动状态了
