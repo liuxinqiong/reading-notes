@@ -137,8 +137,42 @@ Lerna 命令
 
 这时你使用 lerna bootstrap 安装依赖，发现 package 下的 package.json 声明的依赖根本没有被安装。这是以为 npm7 以下的版本不支持 workspaces 语法，我们将 npmClient 修改为 yarn 试试。这样就符合预期了，相同的依赖会被提取到 root node_modules，自身的依赖在自己的 node_modules
 
+## 踩过的坑
+之前通过 submodule 管理的代码，最终会被放置在主项目的 src 目录下，这样就可以沿用主项目的 webpack 打包和 tsc 的编译能力。通过 monorepo 的方式进行管理后，由于自身没有 package 管理机制，会导致很多问题。如果想通过纯文件的方式进行引用，可以通过如下方式进行修改
+* 禁用 ModuleScopePlugin，将 webpack 的工作范围不在只是 src 目录
+* 扩展 typescript 的 paths 字段，进行别名扩展
+* 扩展 typescript 的 include 字段
+* 修改 webpack 配置，将对应的纯文件目录加入 babelInclude 列表
+* 修改 webpack 配置，增加对应纯文件目录的 alias 配置
+
+更多配置提取至 Root
+* 提取 eslint、prettier、stylelint、editorconfig
+* 提取 script、common deps、environments config
+* 提取 .gitattributes、.gitignore
+* react-app-rewired 要求 config-overrides.js 在根目录下，但我们依旧可以提取公共部分到 Root 下，然后具体 package 引用 Root 文件即可
+
 ## 更多工具
 更多可选的优秀工具
 * Volta：JavaScript 工具管理器，它可以让我们轻松地在项目中锁定 node，npm 和 yarn 的版本。
 * Verdaccio：npm 包本地发布
 * commitlint：检查提交的 commit 信息，它强制约束我们的 commit 信息必须在开头附加指定类型，用于标示本次提交的大致意图，支持的类型关键字有 feat、chore、fix、refactor、style
+
+## 资料
+* [https://mp.weixin.qq.com/s/mV6gvPy-N3NZPEYONV4A0A](https://mp.weixin.qq.com/s/mV6gvPy-N3NZPEYONV4A0A)
+
+## frontend_prime
+存在的一些问题
+* 纯文件 packages 之间相互引用，ide 中会提示报错
+  * 解决办法：在 tsconfig.json 的 paths 下依次添加别名可以解决
+* 某些文件首行 eslint 报错："parserOptions.project" has been set for @typescript-eslint/parser.The file does not match your project config.The file must be included in at least one of the projects provided.
+  * 出现的原因如下
+    1. 你使用的 rule 要求有类型信息，但是并没有声明一个 parserOptions.project
+    2. 你声明了 parserOptions.project，但你 linting 的文件并不包含在 project 中，比如一些常见的 xxx.config.js
+  * 解决办法：通过 .eslintignore 中忽略报错文件
+* TypeScript 设置别名导致顶级别名下，必须写完 index，否则提示找不到
+  * 这是由于 paths 的语法导致的，因为别名使用的是 `@config/*` 导致匹配不到 `@config`
+  * 但这个好坑，真要解决的话，好像只能写两个，也就是再写一个 `@config` 专门用于匹配它
+
+还有可能存在的一些问题
+* 更改公共 package，主仓库会自动重新编译吗
+* lerna run script 控制台看不到启动状态了
