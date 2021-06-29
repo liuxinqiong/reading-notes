@@ -20,7 +20,7 @@ fabric 比你想象的强呀
   * discardActiveObject
   * getPointer
 
-彩总标注系统前端设计
+彩总标注系统前端设计：参考网站 https://excalidraw.com/
 
 组合元素的属性编辑交互
 * 显示所有属性的并集
