@@ -11,6 +11,9 @@
 实践题
 * 实现一个九宫格布局
 * 实现两个 DOM 元素的拖动，当相交时改变背景色
+* 实现 React 组件
+  * LayoutResize
+  * DragableList
 * 设计模式：观察者模式
 * 绘制矩形的例子：https://app.giraffe.build/v2/scratchpad
 * CSS inline-block：https://codesandbox.io/s/css-inline-block-qqjd1
