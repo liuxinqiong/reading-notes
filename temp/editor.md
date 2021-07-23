@@ -1,3 +1,6 @@
+XKEditor 优化
+* 参考 oda 设计
+* 参考 fabric 设计
 
 ## 现在
 当前 XKEditor 做了什么？
@@ -15,29 +18,3 @@
 
 
 ## 展望
-
-## 其他
-the usage in three
-* WebGLRenderer
-* Path、Shape
-* BufferGeometry、ExtrudeGeometry、EdgesGeometry、ShapeGeometry、ShapeBufferGeometry、ConeGeometry、CircleBufferGeometry
-* Vector2、Vector3、Color、MathUtils、Plane、Sphere、Spherical、Ray
-* Object3D、Scene、Mesh、Group、Line、LineSegments、Points、Texture
-* Event、EventDispatcher
-* Material、MeshPhongMaterial、LineBasicMaterial、MeshLambertMaterial、LineDashedMaterial、MeshStandardMaterial
-* AmbientLight、DirectionalLight
-* KeyframeTrack、AnimationClip、AnimationMixer、LoopOnce、Clock
-* Raycaster、Intersection
-* Camera、OrthographicCamera、PerspectiveCamera
-* three/examples
-  * BufferGeometryUtils
-  * LineGeometry
-  * Line2
-  * LineMaterial
-  * postprocessing/**
-  * OrbitControls
-  * Sky
-  * CSS2DObject, CSS2DRenderer
-  * SelectionBox
-* OBJExporter、BufferGeometryLoader
-* Float32BufferAttribute、DoubleSide

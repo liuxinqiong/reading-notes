@@ -1,7 +1,3 @@
-
-
-
-
 lerna 基本命令
 ```shell
 lerna init # 在项目根目录下执行该命令，初始化一个 lerna 项目，会创建 package.json、lerna.json、packages 文件夹
