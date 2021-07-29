@@ -167,6 +167,13 @@ JS 模块化发展
   * 需要被 link 的创建，运行 npm link 命令，创建软链到全局
   * 在需要使用 package 的项目中，运行 npm link package_name，实现自身 node_modules 中软链到全局
 
+antd 中提供了 3 中打包方式，分别为
+* es modules，对应 es 文件夹，支持 tree shaking（基于 ES modules）
+* commonjs 对应 lib 文件夹
+* umd（最落后）对应 dist 文件夹，也就是浏览器可以直接引用的方式，不推荐使用，因为无法按需加载
+
+> 如果想生成另外两种模块，commonjs 和 umd，光有 tsc 就不够了，需要使用其他打包工具进行配置，比如 rollup 和 webpack
+
 npm 发布
 * 命令行注册
   * npm whoami
