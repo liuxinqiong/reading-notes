@@ -10,7 +10,7 @@
 * 对象的添加、移除与渲染
 * 捕捉吸附
 
-> Object3DFinder 值得好好关注一哈，做了很多 Editor 可直接对外输出的能力和很多业务能力
+> Object3DFinder 值得好好关注一哈，做了很多 Editor 可直接对外输出的能力以及很多业务能力
 
 ## 愿景
 最终理想的愿景
@@ -105,3 +105,27 @@ oda
   * 关于高亮：setHighlightColor(r, g, b, a)
 * Object：Model、Entity、Block
   * getSelectability()/setSelectability()
+
+## 扫尾工作
+大致工作完成后，还有某些清理工作
+* 目录整理 - components
+  * @/components/components
+  * @/components/hooks
+  * @/components/utils
+  * @/components/config
+  * @/components/models
+  * 指标 Indicator 相关增加上一层分类
+* 可能通用化的组件
+  * AnglePicker
+  * PanelTitle
+  * BasicConditions
+  * ColorPickerPopover
+  * ShortCutPanel
+  * SelectBlockConfirm 通用化？？？
+* 组件优化
+  * 移除 Cad/components/DraggableModal，使用新的替换
+  * 优化 ObjectPropertyModal > ResetInput ？？？
+  * BuildingSingleInfoContextProvider 被多处用到 ？？？
+  * Task 相关组件进行收纳
+  * 移除原 ViewSwitcher，新的 ViewSwitcherPanel => ViewSwitcher
+  * Dev 分享功能无法查看
