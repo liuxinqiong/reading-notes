@@ -110,10 +110,11 @@ oda
 大致工作完成后，还有某些清理工作
 * 目录整理 - components
   * @/components/components
-  * @/components/hooks
-  * @/components/utils
+    * RatioItem 干嘛的？？
   * @/components/config
+  * @/components/hooks
   * @/components/models
+  * @/components/utils
   * 指标 Indicator 相关增加上一层分类
 * 可能通用化的组件
   * AnglePicker
@@ -125,7 +126,15 @@ oda
 * 组件优化
   * 移除 Cad/components/DraggableModal，使用新的替换
   * 优化 ObjectPropertyModal > ResetInput ？？？
-  * BuildingSingleInfoContextProvider 被多处用到 ？？？
+  * BuildingInfoContextProvider 被多处用到 ？？？
   * Task 相关组件进行收纳
   * 移除原 ViewSwitcher，新的 ViewSwitcherPanel => ViewSwitcher
   * Dev 分享功能无法查看
+  * 应用 npm 包
+* 文档补充
+  * LineSegments、LineSegmentGroup、LineSegmentsGroup 区别
+
+## 复盘
+由于我一开始没有明确具体的任务列表，从而导致重构变成
+* 目录移动大会（还有很多剩余）
+* 死代码清理大会
