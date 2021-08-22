@@ -209,7 +209,7 @@ loader 处理图片和其他文件
   * 使用绝对路径，比如 cdn
   * 使用 webpack 提供的 require 函数
 * 指定名称，需要提供参数
-* url-loader（依赖file-loader）
+* url-loader（依赖 file-loader）
   * 处理图片或文件
   * 通过设置 limit 参数，如果文件大小大于 limit，丢给 file-loader 处理，如果小于 limit，图片和文件转成 base64 的编码
 * image-loader

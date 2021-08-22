@@ -6,7 +6,7 @@ Rob Pike's 5 Rules of Programming
 * Rule 5：数据占主导地位，如果你选择了正确的数据结构并且组织得很好，算法几乎总是不言自明的，数据结构，而不是算法，是编程的核心。
 
 Conclusion
-* Premature optimization is the root of all evil.
-* When in doubt, use brute force.
-* KISS design philosophy.
-* Write stupid code that uses smart objects.
+* Premature optimization is the root of all evil. 过早性能优化是万恶之源
+* When in doubt, use brute force. 当陷入困境时，使用最暴力破解
+* KISS design philosophy. KISS 设计原则
+* Write stupid code that uses smart objects. 使用聪明的数据结构，编写愚蠢的代码
