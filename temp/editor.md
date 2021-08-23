@@ -106,6 +106,19 @@ oda
 * Object：Model、Entity、Block
   * getSelectability()/setSelectability()
 
+editor 做了什么
+* 控制是否开启全局选择
+* 控制是否开启编辑功能
+* 控制选取对象
+* 渲染内置的大地天空场景
+* 相交判断
+* 撤销回退
+* 镜头相关：切换、移动
+* 鼠标相关事件代理
+  * mousemove、mouseleave、mousedown、mouseup
+  * drop
+  * click、dblclick
+
 ## 扫尾工作
 大致工作完成后，还有某些清理工作
 * 目录整理 - components
@@ -134,7 +147,70 @@ oda
 * 文档补充
   * LineSegments、LineSegmentGroup、LineSegmentsGroup 区别
 
+### 工具栏优化
+优化工具状态栏切换
+* setEnabled
+* setSelectionEnabled
+* setObjectsForRaycasting
+
+editor.enabled 扮演的角色
+* 链条 editor.enabled、setEnabled、editorEnabledChange
+* 用于某些场合关闭，可复制、可移动、可删除、可移动
+* 会影响到撤销重做
+* setEnabled
+  * 进入关闭，退出时如果是中途没有被操作，则开启
+* editorEnabledChange
+  * LayerContext 获取状态变化
+  * 撤销重做的禁用与否
+
+editor.selectionEnabled 扮演的角色
+* 显示和隐藏红线？？？
+* 用于控制选取功能
+* setSelectionEnabled
+  * 进入关闭，退出时如果是中途没有被操作，则开启
+
+可能存在的问题
+* 如果功能直接进入，要求不能选取，这时候点选取该如何处理呢
+
+使用顶部工具栏的几种情况？
+* 自动调用工具栏功能
+* 通过按钮触发工具栏功能
+
+额外工作：优化掉 PartialPlan 以及 PartialPlanExtra
+
 ## 复盘
 由于我一开始没有明确具体的任务列表，从而导致重构变成
 * 目录移动大会（还有很多剩余）
 * 死代码清理大会
+
+系统整理
+* the usage of three
+* the usage of jsts
+* the usage of fabric
+
+选中态
+* 修改 material 改为修改 material 对应的颜色，然后 original color 存储在 material.userData 中
+* 修改外边框的方式实现，使用 outline 后置处理器
+
+three.js editor 简直就是绝佳的学习资料
+
+局部生成的按钮点击绘制，好像又说的过去了？
+
+后期工作安排
+* ODA 交接给伍杰麟，先从对接单体需求开始
+  * 对位以及空间设置交给单体自行渲染，而不是借用 oda
+* 彩总贴图需求以及后续的存储问题交给戴志陶
+  * 导出时传递用户选择的文件流，以及对应的 scale 系数
+  * 裁剪、填充模式
+* 彩总新增人问题
+* 环境配置问题
+* Dev bug 修复
+* 待完成的技术需求列表
+* 梳理规划的整体设计，接下来的需求分析
+  * 精确编辑
+  * 间距
+  * 绘制建筑
+  * 绘制台地
+  * 评论功能
+  * 指标优化
+* 考察：聂升
