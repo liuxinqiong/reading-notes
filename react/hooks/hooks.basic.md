@@ -151,7 +151,7 @@ const UserProvider = props => {
   );
 };
 
-const Pannel = () => {
+const Panel = () => {
   const { username, handleChangeUsername } = useContext(UserContext); // 3. 使用 Context
   return (
     <div>
@@ -241,7 +241,7 @@ function useBind(init) {
 ```js
 const useDidMount = fn => useEffect(() => fn && fn(), []);
 const useDidUpdate = (fn, conditions) => {
-  const didMoutRef = useRef(false);
+  const didMountRef = useRef(false);
   useEffect(() => {
     if (!didMoutRef.current) {
       didMoutRef.current = true;

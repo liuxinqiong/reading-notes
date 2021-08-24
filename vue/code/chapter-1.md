@@ -7,7 +7,7 @@
 * 类型推断：通过变量的使用上下文来推断出变量类型，然后根据这些推断来检查类型
 * 类型注释：事先注释好我们期待的类型，Flow会基于这些注释来判断
 
-安装flow
+安装 flow
 ```shell
 npm install -g flow-bin
 # 使用
@@ -36,10 +36,10 @@ Vue.js 源码基于 rollup 构建
 > rollup 相比 webpack 更轻量，更适合 JS 库的构建
 
 Runtime Only VS Runtime + Compiler
-* 在使用 Runtime Only 时，通常需要借助如 webpack 的 vue-loader 把.vue 文件编译成 JavaScript，因为是在编译期间做的，所以它只包含运行时的 Vue.js 代码，因此代码体积也会更轻量
+* 在使用 Runtime Only 时，通常需要借助如 webpack 的 vue-loader 把 .vue 文件编译成 JavaScript，因为是在编译期间做的，所以它只包含运行时的 Vue.js 代码，因此代码体积也会更轻量
 * 如果没有对代码做预编译，又使用了 Vue 的 template 属性并传入字符串，则需要在客户端编译模板
 
-在Vue 2.0中，最终渲染都是通过 render 函数，如果写 template 属性，则需要编译成render函数，那么这个编译会发生在运行时，所以需要带有编译器的版本
+在 Vue 2.0 中，最终渲染都是通过 render 函数，如果写 template 属性，则需要编译成render函数，那么这个编译会发生在运行时，所以需要带有编译器的版本
 
 > 编译过程对性能有一定损耗，所以通常我们更推荐使用 Runtime-Only 的 Vue
 

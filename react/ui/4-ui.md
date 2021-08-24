@@ -92,7 +92,7 @@ Menu 组件需求分析
   * MenuProps：activeIndex、mode、onSelect、className……
   * MenuItemProps：index、disabled、className……
 
-React 提供了用于处理 props.children 不透明数据结构的方法
+React 提供了**用于处理 props.children 不透明数据结构的方法**
 * React.Children.map
 * React.Children.foreach
 * React.cloneElement
@@ -114,7 +114,7 @@ React 提供了用于处理 props.children 不透明数据结构的方法
     * Transition
     * CSSTransition
     * TransitionGroup
-  * 本身并没有提供 CSS 动画，而是添加一系列 CSS 类名的变化。通过 force reflow 的方式解决 display:none 问题
+  * 本身并没有提供 CSS 动画，而是添加一系列 CSS 类名的变化。通过 **force reflow** 的方式解决 display:none 问题
   * animation.css 可以用来参考哦
 
 目前的痛点
@@ -128,7 +128,7 @@ React 提供了用于处理 props.children 不透明数据结构的方法
 
 Storybook
 * 安装与编写 stories
-* storybook 插件机制 addons - 插件系统在任何大型系统中都代表一种良好的设计思想
+* storybook 插件机制 addons - **插件系统在任何大型系统中都代表一种良好的设计思想**
   * decoration addon
   * native addon
 * addon-docs
@@ -158,7 +158,7 @@ JS 模块化发展
   4. 通过 module bundler 进行处理（webpack、rollup）
   5. 得到可供浏览器使用的一个或多个文件
 * 创建入口文件
-  1. 通过 package.json 的 `main` 字段确定主要入口文件。但由于 package 最早是服务于 node 环境的，因此 main 字段指定的文件可能时 commonjs 格式文件
+  1. 通过 package.json 的 `main` 字段确定主要入口文件。但由于 package 最早是服务于 node 环境的，因此 main 字段指定的文件可能是 commonjs 格式文件
   2. 为了解决这个问题，webpack 和 rollup 联合推出一个 `module` 字段，用于专门对应 es6 模块的入口文件
   3. 目的：导入所有文件再导出
 * 创建 build-ts 命令，通过 tsc 将实现 ts 转 es
@@ -184,7 +184,7 @@ npm 发布
   * scripts.prepublish
 * npm publish
 * 精简 dependencies
-  * 这时是否区分 dependencies 和 devDependencies 就有实际作用了，用户安装是只会安装 dependencies 内容。
+  * 这时是否区分 dependencies 和 devDependencies 就有实际作用了，用户安装时只会安装 dependencies 内容。
   * dependencies 主要指运行业务逻辑需要用到的第三方库
   * 哪些应该放进 devDependencies 内呢
     * 与核心业务逻辑和最终生成的模块无关的任务，这些任务支撑核心业务的开发过程以及程序开发环境向生产环境的支持过程
