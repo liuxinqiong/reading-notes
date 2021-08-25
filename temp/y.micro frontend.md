@@ -21,18 +21,16 @@
 
 社区已有方案
 * [single-spa](https://github.com/CanopyTax/single-spa)
-* 基于 single-spa 的 [qiankun](https://github.com/umijs/qiankun)
-* phodal/mooa
-* 阿里飞冰：icestark
+* [基于 single-spa 的 qiankun](https://github.com/umijs/qiankun)
 * [micro-frontends](https://github.com/neuland/micro-frontends)
 
 相关资料
 * [前端微服务化解决方案](https://alili.tech/archive/ea599f7c/)
 * [微前端的那些事儿](https://microfrontends.cn)
 * [基于 qiankun 的微前端最佳实践（万字长文） - 从 0 到 1 篇](https://juejin.im/post/5ebbd2986fb9a0432f0fff86)
-* 书籍：《前端架构 - 从入门到微前端》
 * [iframe 接班人-微前端框架 qiankun 在中后台系统实践](https://mp.weixin.qq.com/s/duUxw82DizU15vqRrL_iOw)
 * [EMP微前端解决方案](https://mp.weixin.qq.com/s/l0-uCLFRcBBrs4yTiAvryg)
+* 书籍：《前端架构 - 从入门到微前端》
 
 微服务带来的问题，这个问题其实在多部门中同样存在
 * 公共组件管理
