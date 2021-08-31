@@ -9,6 +9,22 @@ ODA 全称为 OpenDesign alliance，为我司购买的用于读取 CAD 文件（
 * [cloud examples](https://cloud.opendesign.com/docs//examples.html)：简单的例子，能让你有个初步的了解
 * [git websdk](https://gitlab.opendesign.com/oda/websdk)：源码 Git 仓库
 
+learn git from oda
+* 通过 .gitattributes 添加换行符指定，解决不同平台换行不通导致 diff 问题
+* 基于一根（有且只有一根）长期的 develop 开发，每次发版时，基于 develop 创建 release/version 的分支
+* 使用 submodules 的方式管理子模块，通过 branch 字段来指定具体的版本，从而解决版本问题
+
+core repo
+* Visualize
+* Client
+  * jsdoc 自动生成文档
+* Web
+* Web Viewer
+* Server
+* VisualizeJS
+  * rollup
+  * eslint
+
 ## ODA 升级
 这个对于后端而言是一个比较辛苦的事情，但对于前端而言就十分简单了，只需要找到对应版本的 Visualize.js、Visualize.js.wasm 和 OdaViewerPlugin.js 上传到指定的 OSS 地址即可。具体配置见 CadRecognizer/config.ts。
 
