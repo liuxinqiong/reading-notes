@@ -176,3 +176,63 @@ Lerna 命令
 还有可能存在的一些问题
 * 更改公共 package，主仓库会自动重新编译吗
 * lerna run script 控制台看不到启动状态了
+
+https://juejin.cn/post/6844904116477493256
+
+https://github.com/lerna/lerna
+
+lerna：版本控制，包发布
+* 为什么要开启 useWorkspaces 呢，不开启会有啥区别吗
+
+workspaces：依赖管理
+* package.json 中设置 workspaces
+* 为什么需要 workspaces
+  * 工作空间可以相互依赖，总是使用最新的可用代码
+  * 比 link 机制更好，因为它只影响你的工作空间，而不是整个系统
+
+
+
+## 渐进式尝试
+workspaces 的作用
+* 对比未开启 workspaces 的情况
+  * 只会识别根目录的 package.json 进行依赖安装，如果某些子目录也有 package.json 指定依赖，则需要手动进入特定文件夹并执行 install
+  * 由于均是手动进行安装，更不存在依赖提升复用的优化了
+* 开启 workspaces 的情况
+  * 注意：npm 需要 7 的版本才支持 workspaces 字段，如果不是请升级或使用 yarn 进行测试
+  * 设置 workspaces 字段时，需要指定 private 为 true
+  * 在根目录中使用 install 给所有包统一安装依赖
+  * 对于相同的重复依赖，会进行以来提升，减少重复下载。具体逻辑这里不赘述
+* 有 lerna 的话还需要 workspaces 吗？为啥还提供 useWorkspaces 字段呢
+  * bootstrap 默认会便利所有的 packages 进行依赖安装，提供 --hoist 同样支持依赖提升
+
+回答上一个问题时，先来了解下 lerna 具体解决了什么问题
+* 缘由：将大的代码库拆分成独立的版本包对于代码共享十分有用。如果拆分成多个代码库的话，是一件混乱且难以追踪的事情。Lerna 就是这样一个优化 monorepo 管理方式的工具。支持 hoist 参数进行重复依赖优化。
+* 最常用的两个命令：bootstrap 和 publish
+  * bootstrap：本地包做 link 以及安装剩余包
+  * publish：帮助发布有更新的包
+* 其他命令
+  * updated：检查哪些包有更新
+  * import：从外部导入一个已存在的包，包括 git 历史
+  * clean：移除所有 packages 的 node_modules
+  * diff：和上一次版本做比较
+  * init：初始化一个 lerna repo
+* 版本管理模式：fixed or independent
+  * fixed：任何包中的重大更改都会导致所有包都有一个新的主版本。
+  * independent：每个 package 的版本都是独立的
+* 最佳实践
+  * packages/* 的 package 都是叶子节点被认为是最佳实践，虽然不是强制
+  * 大部分 devDependencies 依赖可以被提升到 root 级别
+
+
+yarn workspace <workspace_name> run/add/remove
+
+Lerna 介绍
+* Lerna 是 babel 维护自己的 monorepo，并开源出的一个项目
+* 使用 Lerna 发布，使用 yarn workspaces 管理包的依赖
+
+若开启了 workspace 功能，则 lerna 会将 package.json 中 workspaces 中所设置的项目路径作为 lerna packages 的路径，而不会使用 lerna.json 中的 packages 值。
+
+https://github.com/lerna/lerna/tree/main/commands/publish#readme
+https://github.com/lerna/lerna/blob/main/doc/hoist.md
+
+the difference between lerna use workspace or not
