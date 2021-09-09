@@ -21,6 +21,8 @@ Checkbox 多选框
 
 Cascader 级联选择与 Select 选择器
 
+Select 组件 multiple 和 tags 的区别：之前研究出来过，后面又忘了！！！tags 属性表示用户可以自行输入回车添加新标签。
+
 Input 输入框与 InputNumber 数字输入框
 
 Radio 单选框
