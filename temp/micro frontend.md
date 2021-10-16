@@ -30,20 +30,9 @@
 * [基于 qiankun 的微前端最佳实践（万字长文） - 从 0 到 1 篇](https://juejin.im/post/5ebbd2986fb9a0432f0fff86)
 * [iframe 接班人-微前端框架 qiankun 在中后台系统实践](https://mp.weixin.qq.com/s/duUxw82DizU15vqRrL_iOw)
 * [EMP微前端解决方案](https://mp.weixin.qq.com/s/l0-uCLFRcBBrs4yTiAvryg)
-* 书籍：《前端架构 - 从入门到微前端》
 
-微服务带来的问题，这个问题其实在多部门中同样存在
-* 公共组件管理
-* 公共工具包管理
-
-优雅管理方式
-* npm 私有仓库
-* git submodules
-* 文档管理
-
-> 尽量减少不必要的外部依赖，允许一定冗余
-
-对于子模块，单纯通过环境区别，对于破坏性的更改，会存在问题
+相关书籍
+* 《前端架构 - 从入门到微前端》
 
 讨论细节
 * 确认中枢仓库
