@@ -63,6 +63,9 @@ rollup 配置文件
   * @rollup/plugin-alias
   * @rollup/plugin-replace
   * @rollup/plugin-wasm
+  * rollup-plugin-dts
+  * rollup-plugin-node-polyfills
+  * rollup-plugin-terser
 * external：指定外部导入，从而不会将指定的依赖打包仅最终 js 中
 * output.plugins
   * 和 plugins 的差别在于执行时机不一样，只有在文件的编译等完成了之后才会执行，最典型的场景就是代码压缩
