@@ -10,3 +10,9 @@
 * developer headline
 * blog
 * ...
+
+## Review
+* algo
+* design
+* react
+* visual

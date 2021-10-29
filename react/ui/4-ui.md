@@ -9,8 +9,8 @@
 文件组织
 * 没有标准的答案
 * 常见的两种
-  * 按 features or routes 组织
-  * 按 file type 组织
+  * **按 features or routes 组织**
+  * **按 file type 组织**
 * 注意事项
   * 避免多层嵌套
   * 不要过度思考
@@ -109,7 +109,7 @@ React 提供了**用于处理 props.children 不透明数据结构的方法**
 图标动画
 * CSS Transition + Transform：永远是首选方案，但有些问题解决不了
   * CSS 方案会存在 display:none 动画失效的问题
-* React Transition Group
+* **React Transition Group**
   * 提供 3 个核心组件
     * Transition
     * CSSTransition

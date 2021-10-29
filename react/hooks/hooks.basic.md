@@ -124,7 +124,7 @@ const UserProvider = props => {
 const UserConsumer = UserContext.Consumer;
 
 // 4. 使用 Consumer 包裹组件
-const Pannel = () => (
+const Panel = () => (
   <UserConsumer>
     {({ username, handleChangeUsername }) => (
       <div>
@@ -311,9 +311,9 @@ function Input {
 声明约束：不要在循环，条件或嵌套函数中调用 Hook，这一点和 Hook 的工作原理有关。
 
 设计 Hooks 主要是解决 ClassComponent 的几个问题：
-* 很难复用逻辑（只能用HOC，或者render props），会导致组件树层级很深
+* 很难复用逻辑（只能用 HOC，或者 render props），会导致组件树层级很深
 * 会产生巨大的组件（指很多代码必须写在类里面）
-* 类组件很难理解，比如方法需要bind，this指向不明确
+* 类组件很难理解，比如方法需要 bind，this 指向不明确
 
 ## Hooks 原理
 相信使用过 `useState` 之后对于 React 在一次重新渲染的时候如何获取之前更新过的 `state` 呢？
