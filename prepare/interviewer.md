@@ -14,13 +14,14 @@
 * 实现 React 组件
   * LayoutResize
   * DragableList
-* 设计模式：观察者模式
+* 设计模式：
+  * 观察者模式(TypeScript)：解决了主体对象和观察者之间功能的耦合
 * 绘制矩形的例子：https://app.giraffe.build/v2/scratchpad
 * CSS inline-block：https://codesandbox.io/s/css-inline-block-qqjd1
 
 面试大致分类
 * CSS 问题
-  * flex 常见属性
+  * Flex、Grid
   * 定位属性的差别
   * 响应式设计
   * 选择器：+ vs ~
@@ -40,36 +41,36 @@
   * 面向对象和面向过程的区别和联系
   * 封装、抽象、继承、多态的具体表现
 * JavaScript
-  * 原型链
-  * 闭包
-  * Event Loop
-  * 宏任务与微任务
-  * this
+  * 原型链、闭包、作用域
+  * Event Loop、宏任务与微任务
+  * this、call、apply、bind、new 模拟实现
   * 递归
   * 内存自动释放
   * 浮点数溢出
+    * JS 中没有真正的整数，JS 中所有的数字类型，实际存储都是通过 8 字节 double 浮点型表示的
   * async/await 实现原理
   * 事件捕获与冒泡
-  * 作用域
+    * DOM 的事件操作（监听和触发），都定义在 EventTarget 接口
 * webpack
   * 常用配置
   * 打包优化
 * React
   * Diff 算法：比如谈谈三个要点
-  * Virtual Dom 的本质是什么？在挂载阶段和更新阶段发挥了什么作用，价值是什么
-  * 使用 Redux 场景以及 react-redux 原理
+  * 谈谈你理解的 vdom，Virtual Dom 的本质是什么？在挂载阶段和更新阶段发挥了什么作用，价值是什么
+  * 使用 Redux 场景以及 React-Redux 原理
   * 通用组件设计过程中需要考虑到哪些点？举个实际例子
-  * React 性能优化思路
+  * React 性能优化思路，开发中需要注意的性能优化点
   * 聊聊 React 生命周期，以及 React 15 到 16 后，生命周期的改变内容、原因、目的
   * 组件逻辑的复用：HOC、Render Props、Hooks 以及 React Hooks 的设计动机，使用 Hooks 的一些感想
   * setState 到底是同步还是异步的
     * 异步的动机是避免频繁的重渲染
     * 为什么 setTimeout 可以将 setState 的执行顺序从异步变为同步
     * 在 React 钩子函数及合成事件中，它表现为异步；而在 setTimeout、setInterval 等函数中，包括在 DOM 原生事件中，它都表现为同步。这种差异，本质上是由 React 事务机制和批量更新机制的工作方式来决定的。
-  * Fiber 双缓存机制
+  * Fiber 双缓存机制、调和
   * React 实现组件通信的几种方式
+  * React 事件系统
   * Redux 中间件原理
-  * Redux 的设计思想
+  * Redux 实现原理
 * nodejs
   * Koa 中间件原理
 * Git
@@ -97,14 +98,19 @@
   * 线垂直、平行
   * 点在图形内
   * 坐标变换
+  * matrix
   * 说说你觉得图形学中最重要的几点
 * 其他
   * SSR 原理和场景，你是怎么实现的
   * 跨域问题出现的原因，为什么通过 Node 可以解决
   * 对于前端三大框架的看法和优缺点
   * MVC 和 MVVM 的区别
-  * 你觉得 webpack 最大的作用是什么
+  * 你觉得 Webpack 最大的作用是什么
   * 链表和数组的区别
+  * 开发一个好的 ui 库需要考虑哪些点
+  * 分享下团队管理相关的工作，如何保证成员代码质量
+    * 代码规范
+    * 技术方案
 * 开放性
   * 看过什么书
   * 你简历上的项目，有线上地址和开源仓库吗
