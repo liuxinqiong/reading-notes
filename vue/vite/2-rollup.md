@@ -4,7 +4,7 @@ rollup 介绍
 * Tree Shaking
 
 format
-* umd：进行环境判断，比如有没有 exports 判断是不是 commonjs 环境、通过又没 define 判断是不是处于 amd 环境、通过 global 判断是否通过全局对象加载模块
+* umd：进行环境判断，比如有没有 exports 判断是不是 commonjs 环境、通过有没有 define 判断是不是处于 amd 环境、通过 global 判断是否通过全局对象加载模块
 * cjs：输出 require 语法的代码
 * es：就是 es module
 * iife：自执行函数
@@ -134,7 +134,7 @@ require('esbuild').build({
   * 我们需要通过配置一个个的 plugin 实现转换需求，这事很麻烦，你可以根据所需要的插件组合创建一个自己的 preset 并分享出去
   * 官方插件 @babel/preset-env 做的就是这样一件事，其包含的插件将支持所有最新的 JS(ES2015/ES2016 等)的特性，preset 也是支持参数的
     * useBuiltIns 参数
-      * usage 当使用此选项时，只需要安装 @babel-polyfill 即可，不需要在webpack中引入，也不需要在入口文件中引入(require/import)
+      * usage 当使用此选项时，只需要安装 @babel-polyfill 即可，不需要在 webpack 中引入，也不需要在入口文件中引入(require/import)
       * entry 当使用此选项时，安装完 @babel-polyfill 之后，然后在项目的入口文件中引入
       * false 当使用此选项时，需要安装依赖包，然后加入 webpack.config.js 的 entry 中
     * esmodules 参数：目标浏览器是否支持 es 模块管理
@@ -142,11 +142,11 @@ require('esbuild').build({
       * 将 es 模块转换成另一种模块，比如 amd、umd、commonjs 等
   * @babel/preset-typescript
   * @babel/preset-react
-  * babel 7.4.0 之后，@babel/polyfill 这个包已经废弃了，推荐直接是用 core-js/stable 以及regenerator-runtime/runtime
+  * babel 7.4.0 之后，@babel/polyfill 这个包已经废弃了，推荐直接是用 core-js/stable 以及 regenerator-runtime/runtime
 * transform-runtime：提取一些帮助函数来减小打包的体积，在开发自己的类库时，建议开启 corejs 选项
   * 自动引入 @babel/runtime/regenerator，当你使用了 generator/async 函数(通过 regenerator 选项打开，默认为 true)
   * 提取一些 babel 中的工具函数来达到减小打包体积的作用
-  * 如果开启了 corejs 选项(默认为false)，会自动建立一个沙箱环境，避免和全局引入的 polyfill 产生冲突
+  * 如果开启了 corejs 选项(默认为 false)，会自动建立一个沙箱环境，避免和全局引入的 polyfill 产生冲突
 
 babel.config.json vs .babelrc
 * .babelrc 会在一些情况下，莫名地应用在 node_modules 中
