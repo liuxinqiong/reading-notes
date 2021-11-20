@@ -10,3 +10,14 @@ Conclusion
 * When in doubt, use brute force. 当陷入困境时，使用最暴力破解
 * KISS design philosophy. KISS 设计原则
 * Write stupid code that uses smart objects. 使用聪明的数据结构，编写愚蠢的代码
+
+1994年，X窗口系统开发组的成员 Mike Gancarz 根据自己的经验以及和其他领域使用Unix系统的资深程序员们的讨论结果，写成了 The UNIX Philosophy，提出了9条格言：
+一：小即是美。
+二：让程序只做好一件事。
+三：尽可能早地创建原型。
+四：可移植性比效率更重要。
+五：数据应该保存为文本文件。
+六：尽可能地榨取软件的全部价值。
+七：使用shell脚本来提高效率和可移植性。
+八：避免使用可定制性低下的用户界面。
+九：所有程序都是数据的过滤器。
