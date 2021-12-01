@@ -199,9 +199,9 @@ html|a {
 * :root：表示树的根元素，在选择器是针对完成 html 的文档情况，一般用 html 标签即可选中根元素，但随着 scoped css 和 shadow root 等场景的出现，选择器可以针对某一个子树来选择，这时候就很需要 root 伪类了
 * :empty：表示没有子节点的元素
 * :nth-child 和 nth-last-child 函数型伪类：处理 An + B 型，语法为 :nth-child(An+B)、:nth-child(An+B of S)、:nth-child(even|odd)
-* :first-child 和 :last-child： 表示第一个和最后一个
+* :first-child 和 :last-child 表示第一个和最后一个
 * :only-child 选中唯一一个子元素
-* of-type 系列是一个变形的语法糖，S:nth-of-type(An+B)是:nth-child(An+B of S) 的另一种写法，依次类推还有：nth-last-of-type、first-of-type、last-of-type、only-of-type
+* of-type 系列是一个变形的语法糖，`S:nth-of-type(An+B)` 是 `:nth-child(An+B of S)` 的另一种写法，依次类推还有：nth-last-of-type、first-of-type、last-of-type、only-of-type
 
 链接与行为伪类选择器
 * :any-link 表示任意的链接
