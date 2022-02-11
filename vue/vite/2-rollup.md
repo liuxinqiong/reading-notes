@@ -8,7 +8,7 @@ format
   * 通用定义模块，以 amd，cjs 和 iife 为一体
   * 进行环境判断，比如有没有 exports 判断是不是 commonjs 环境、通过有没有 define 判断是不是处于 amd 环境、通过 global 判断是否通过全局对象加载模块
 * cjs：输出 require 语法的代码
-* esm：就是 es module
+* es：就是 es module
 * iife：自执行函数
 * amd：异步定义模块，用于像 RequireJS 这样的模块加载器
 
