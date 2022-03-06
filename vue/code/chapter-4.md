@@ -32,7 +32,7 @@ cleanupDeps 函数：针对模板中 v-else 情况，之前模板中依赖该属
 
 过程分析
 1. 当对数据对象的访问会触发他们的 getter 方法，那么这些对象什么时候被访问呢？还记得之前我们介绍过 Vue 的 mount 过程是通过 mountComponent 函数，会实例化一个渲染 watcher
-2. 渲染 watcher 构造函数逻辑中会执行 get 函数，get 函数中会执行 updateComponent 函数，updateComponent 会执行 vm_render 函数，这个方法会生成 渲染 VNode，并且在这个过程中会对 vm 上的数据访问，这个时候就触发了数据对象的 getter。
+2. 渲染 watcher 构造函数逻辑中会执行 get 函数，get 函数中会执行 updateComponent 函数，updateComponent 会执行 vm_render 函数，这个方法会生成渲染 VNode，并且在这个过程中会对 vm 上的数据访问，这个时候就触发了数据对象的 getter。
 3. 每个对象值的 getter 都持有一个 dep，在触发 getter 的时候会调用 dep.depend() 方法，也就会执行 Dep.target.addDep(this)。
 
 渲染 watcher、用户 watcher
@@ -53,7 +53,7 @@ flushSchedulerQueue 中有几个关键点
   1. 组件的更新由父到子；因为父组件的创建过程是先于子的，所以 watcher 的创建也是先父后子，执行顺序也应该保持先父后子。
   2. 用户的自定义 watcher 要优先于渲染 watcher 执行；因为用户自定义 watcher 是在渲染 watcher 之前创建的。
   3. 如果一个组件在父组件的 watcher 执行期间被销毁，那么它对应的 watcher 执行都可以被跳过，所以父组件的 watcher 应该先执行。
-* 队列遍历：在对 queue 排序后，接着就是要对它做遍历，拿到对应的 watcher，执行 watcher.run()。这里需要注意一个细节，在遍历的时候每次都会对 queue.length 求值，因为在 watcher.run() 的时候，很可能用户会再次添加新的 watcher，这样会再次执行到 queueWatcher，这时候 flushing 为 true，就会执行到 else 的逻辑，然后就会从后往前找，找到第一个待插入 watcher 的 id 比当前队列中 watcher 的 id 大的位置。把 watcher 按照 id的插入到队列中，因此 queue 的长度发送了变化。
+* 队列遍历：在对 queue 排序后，接着就是要对它做遍历，拿到对应的 watcher，执行 watcher.run()。这里需要注意一个细节，在遍历的时候每次都会对 queue.length 求值，因为在 watcher.run() 的时候，很可能用户会再次添加新的 watcher，这样会再次执行到 queueWatcher，这时候 flushing 为 true，就会执行到 else 的逻辑，然后就会从后往前找，找到第一个待插入 watcher 的 id 比当前队列中 watcher 的 id 大的位置。把 watcher 按照 id 的插入到队列中，因此 queue 的长度发送了变化。
 * 状态恢复：控制流程状态的一些变量恢复到初始值，把 watcher 队列清空。
 
 ## nextTick

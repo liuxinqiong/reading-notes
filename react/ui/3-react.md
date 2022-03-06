@@ -12,8 +12,8 @@ npx 命令
 * 调用项目内部安装模块
 
 React.FunctionComponent<Props> 的作用
-* 扩展 props 的 children 属性
-* 提供静态属性 defaultProps 为 props 提供默认值
+* **扩展 props 的 children 属性**
+* **提供静态属性 defaultProps 为 props 提供默认值**
 * 额外提供简写别名 React.FC
 
 why hooks

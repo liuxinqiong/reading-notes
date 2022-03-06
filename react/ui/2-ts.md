@@ -6,8 +6,8 @@ typescript
 * nvm
 
 interface
-* 对对象形状（shape）进行描述
-* 对类（class）进行抽象
+* 对象形状（shape）进行描述
+* 类（class）进行抽象
 * Duck Typing（鸭子类型）
 
 常量枚举：const enum
