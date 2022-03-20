@@ -43,3 +43,16 @@
 * 路由权限：动态生成路由
 * 视图控制：需要实现一个可以在视图层调用的权限验证方法，输入用户期望的权限，输出是否拥有该权限，将调用这个方法的结果，作为界面上需要验证权限的控件或元素显示与否的依据。
 * 请求控制实际上就是为你使用的 HTTP 库实现一个请求拦截器，对将要发起的请求与用户资源权限进行匹配，拦截越权请求
+
+@okta 鉴权设计
+* @okta/okta-react
+  * LoginCallback 组件
+  * Security 组件
+    * 用户管理需要保护的组件
+  * useOktaAuth hooks：用户获取 oktaAuth 和 authState
+    * oktaAuth：getUser/signInWithRedirect/signOut
+    * authState：accessToken/isAuthenticated
+* @okta/okta-auth-js
+  * OktaAuth 类
+  * toRelativeUrl 函数
+* 自行封装 useAuth：用于获取 user 和 token
