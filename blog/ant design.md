@@ -88,3 +88,101 @@ Skeleton 骨架屏
 * 区别
   * AutoComplete 是一个带提示的文本输入框，用户可以自由输入，关键词是**辅助输入**。
   * Select 是在限定的可选项中进行选择，关键词是**选择**。
+
+## ArcoDesign 调研
+ArcoDesign 使用 CSS 变量来构建暗黑主题。
+
+ArcoDesign 内部 Less 变量和 CSS 变量共存，并且内置了亮色和暗色的色彩算法。
+
+组件中和 antd 不同之处
+* 通用组件
+  * 新增了个 mini 尺寸
+  * 响应式参数支持：xs/sm/md/lg/xl/xxl 等
+  * 有些组件提供 `hoverable` 属性用于控制 hover 时是否有底色反馈
+  * 支持 `bordered` 属性表示是否需要边框
+  * 支持 `triggerElement` 自定义显示触发元素
+  * 渲染方式更加灵活，大部分组件支持 renderProps 方式将渲染暴露出来，比如 `renderXXX` 或 `children func`
+  * wrapClassName and wrapStyle
+* Button
+  * secondary button
+  * mini size
+  * ButtonGroup
+  * 专门的 Link 组件从 Button 中独立出去
+* Space
+  * 支持对齐方式，还挺实用的
+  * wrap 属性设置环绕类型间距
+* Avatar
+  * 支持 AvatarGroup 展示头像组
+  * 还支持设置 trigger 设置交互按钮
+* Card
+  * 支持 Card.Grid 批量展示 Card
+  * 支持 Card.Meta 展示一些元信息
+* Carousel
+  * 针对指示器样式和位置提供了更多的配置项
+  * 切换方向配置
+  * 高级动画效果
+* Image
+  * 支持设置标题和描述，及显示位置设定
+  * 支持设置额外的 actions
+  * Image.PreviewGroup 多图预览
+* Table
+  * 配合 `react-resizable` 可以实现可伸缩列的效果
+  * 配合 `react-sticky` 可以实现表头吸顶的效果
+  * 配合 `react-sortable-hoc` 实现拖拽排序
+* Tabs
+  * 通过 `react-dnd` 可以实现页签的拖拽
+* AutoComplete
+  * 支持 triggerElement 自定义触发元素
+* Form
+  * `normalize` 标准化收集到的值，与之对应，使用 `formatter` 将值格式化转给表单项
+  * 比 antd 新增全局禁用 `disabled` 属性，这很 nice
+  * `getTouchedFields` 获取被操作过的字段
+* InputTag 新增组件
+  * 还支持 dragToSort 属性
+* InputNumber
+  * 增加 mode 属性支持指定为 Button 模式
+  * 支持 hideControl 隐藏右侧按钮
+* Slider
+  * 支持 showInput 显示输入框
+* Upload
+  * `react-easy-crop` 裁剪库
+* Modal
+  * `react-draggable` 实现拖拽
+  * 很聪明的设计，直接通过 modalRender 将 modal 暴露出来，交给 Draggable 组件渲染即可
+* Dropdown
+  * 默认使用 children 作为触发元素
+  * 聪明的设计在于提供了 Dropdown.Button 收敛了一个特殊的场景
+* Menu
+  * mode 为 pop 使用悬浮菜单，popButton 使用按钮组悬浮菜单
+
+一些思考，均实现了一些常见特定业务场景组件，在中后台场景能快速被复用，但前台场景，估计就很难满足设计师的要求了
+* 评论 Comment
+* 描述列表 Descriptions 内部使用表格实现
+* 列表 List，高级特性会被需要
+  * 滚动加载列表
+  * 无限长列表
+* 数值显示 Statistic
+  * 处理数字分隔显示、精度显示、前后缀添加
+  * 倒计时组件，电商网站常用
+  * 时间格式化效果
+
+设计指南
+* 主要目标：体验问题、产品设计指导原则、协作沟通语言
+* 色彩：主色、中性色、功能色和遮罩色
+* 文字：字体、字重、行高、段间距
+* 阴影：不同层级使用阴影的指导原则
+
+提供了一个风格配置平台
+* 本质上是一系列的变量
+* 基础样式：颜色、字体、尺寸、边框、阴影，是设计同学和前端同学约定的一套规范。
+* 组件样式控制：使用暴露出的配置项进行配置
+* 开发者模式：本质上就是样式覆盖的方式解决配置项做不到的需求
+
+总结
+* 新增了大量的 props 配置
+* 解决了一些 antd 组件中不太合理的地方
+* 更明显的 iconOnly Button 组件
+* 新增 ResizeBox 组件
+* 新增 Trigger 组件，用于弹出一个面板，感觉和 Popover 比较类似
+  * alignPoint 出现在鼠标位置很赞
+  * updateOnScroll 滚动时更新位置很赞
