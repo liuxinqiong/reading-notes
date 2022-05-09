@@ -8,7 +8,7 @@
 
 webpack 是什么
 * JS 模块打包工具，将很多模块打包成很小的静态文件
-* 代码分隔允许在应用需要是加载文件
+* 代码分割允许在应用需要时加载文件
 * 模块加载器，模块可以是 CommonJs，AMD，ES6，CSS，Image，JSON，CoffeeScript，less，甚至自定义的文件等
 
 目标
@@ -20,7 +20,7 @@ webpack 是什么
 * 适合大型项目
 
 为什么 webpack 不一样
-* 代码分隔
+* 代码分割
 * 加载器
 * 插件系统
 * 模块热更新
@@ -29,7 +29,7 @@ webpack 是什么
 * css-loader：支持将 css 作为模块
 * style-loader：将 css 内容插入到对应页面，使之生效
 
-loader的使用方式
+loader 的使用方式
 * 直接引用的时候处理，比如 require 的时候，import 的时候，eg：css-loader!./style.css，注意感叹号很重要
 * 每次引用写的时候太麻烦了，可以使用命令行工具，也顺便了解其他命令参数，参数可以写进 npm 脚本中
   * --module-loader 'css=style-loader!css-loader'
@@ -37,7 +37,7 @@ loader的使用方式
   * --progress 显示打包过程
   * --display-modules 显示引入的模块
   * --display-reasons 显示模块打包原因
-  * -- colors 彩色
+  * --colors 彩色
 * 配置文件
 
 配置文件详解
@@ -59,7 +59,7 @@ loader的使用方式
 * 使用示例
 ```js
 new htmlWebpackPlugin({
-    template:'index.html'，
+    template: 'index.html'，
 })
 ```
 * 为什么是指向当前的目录的 index.html 呢，上下文的概念，context 字段，默认是当前配置文件脚本运行的目录
@@ -72,7 +72,7 @@ new htmlWebpackPlugin({
   * 比如 `<%= htmlWebpackPlugin.options.title %>` 读取
   * 主要有两个属性：options 和 files
   * options 配置信息
-  * files 文件信息，可以实现类似于，一部分 js 在 head 引入，一部分在body引入的功能，但是需要关闭自动 inject，设置 inject 为 false 即可
+  * files 文件信息，可以实现类似于，一部分 js 在 head 引入，一部分在 body 引入的功能，但是需要关闭自动 inject，设置 inject 为 false 即可
 * 实现多页
   * 我们直接 plugins 数组中创建多个 htmlWebpackPlugin 即可
   * 如果我们不想创建多个模板页面，如何支持一个模板生成多个页面呢
@@ -93,11 +93,11 @@ loader 常见使用场景
 
 loader 处理 es6
 ```js
-module:{
-    loaders:[
+module: {
+    loaders: [
         {
-            test:/\.js$/,
-            loader:'babel-loader'
+            test: /\.js$/,
+            loader: 'babel-loader'
         }
     ]
 }
@@ -108,7 +108,7 @@ module:{
 npm install -save-dev babel-loader babel-core
 ```
 
-使用 babel-loader，通常我们还会有个`.babelrc`，指定babel的一些配置，比如
+使用 babel-loader，通常我们还会有个 `.babelrc`，指定 babel 的一些配置，比如
 ```js
 {
     presets:['latest'] // 指定支持哪些语法，比如es2015 es2016 es2017，latest 囊括三者
@@ -152,7 +152,7 @@ var path = require('path');
 ```
 
 loader 处理 css
-* 安装 style-loader,css-loader
+* 安装 style-loader、css-loader
 * postcss-loader
   * 需要安装
   * 在 css-loader 处理之前，sass-loader 后面，帮助我们后处理 css 的
@@ -164,24 +164,24 @@ loader 处理 css
   * 不需要加 importLoaders，自身处理了
 * 实例
 ```js
-module:{
-    loaders:[
+module: {
+    loaders: [
         {
-            test:/\.css$/,
-            loader:'style-loader!css-loader?importLoaders=1!postcss-loader'
+            test: /\.css$/,
+            loader: 'style-loader!css-loader?importLoaders=1!postcss-loader'
         },
         {
-            test:/\.less$/,
-            loader:'style-loader!css-loader!postcss-loader!less-loader'
+            test: /\.less$/,
+            loader: 'style-loader!css-loader!postcss-loader!less-loader'
         },
         {
-            test:/\.scss$/,
-            loader:'style-loader!css-loader!postcss-loader!sass-loader'
+            test: /\.scss$/,
+            loader: 'style-loader!css-loader!postcss-loader!sass-loader'
         }
     ]
 },
-// module同级，添加postcss配置
-postcss:function(){
+// module 同级，添加 postcss 配置
+postcss: function(){
     return [
         require('autoprefixer')({
             browsers:['last 5 versions']
@@ -197,8 +197,8 @@ loader 处理项目模板文件
 * 实例
 ```js
 {
-    test:/\.html$/,
-    loader:'html-loader'
+    test: /\.html$/,
+    loader: 'html-loader'
 }
 ```
 
@@ -219,10 +219,14 @@ loader 处理图片和其他文件
 * 实例
 ```js
 {
-    test:/\.(png|jpg|gif|svg))$/i,
-    loaders:[
+    test: /\.(png|jpg|gif|svg))$/i,
+    loaders: [
         'url-loader?limit=20000&name=assets/[name]-[hash:5].[ext]',
         'image-webpack'
     ]
 }
 ```
+
+loader vs plugin
+* loader 文件加载器，用于预处理文件
+* plugin 插件，针对的是 loader 结束之后，参与打包的整个环节，基于事件机制，用于增加功能
