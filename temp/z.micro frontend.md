@@ -40,3 +40,5 @@
 * 服务注册
 
 umi 集成 qiankun 的插件：@umijs/plugin-qiankun
+
+https://www.syncfusion.com/blogs/post/micro-frontend-why-and-how.aspx
