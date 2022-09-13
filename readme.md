@@ -1,4 +1,4 @@
-# Reading-notes
+# reading-notes
 
 > to record daily reading notes.
 
@@ -7,7 +7,6 @@
 * a little supervision purpose
 
 ## Reference
-* developer headline
 * blog
 * ...
 
