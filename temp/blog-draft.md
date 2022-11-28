@@ -1,4 +1,4 @@
-ShaderMaterial 了解
+了解 ShaderMaterial 自定义着色器
 
 three.js 中提供的 ShaderMaterial 给了开发者通过 GLSL 编写内置 materials 之外的效果。
 
