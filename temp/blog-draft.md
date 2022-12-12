@@ -90,7 +90,7 @@ void main() {
 }
 ```
 
-TODO: 实现特定像素大小的线
+TODO: 实现特定像素大小的线，参考 LineMaterial resolution 实现
 
 ## 扩展
 取样器 sampler2D
