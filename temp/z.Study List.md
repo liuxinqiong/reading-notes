@@ -16,4 +16,7 @@ lsof: list open files
 ln -s source target
 ls -al [| grep ] 查看软连接地址
 echo $PATH
-whereis nodejs
+
+whereis 和 which
+* whereis 命令用于查找文件。该指令会在特定目录中查找符合条件的文件。这些文件应属于原始代码、二进制文件，或是帮助文件
+* which 命令用于查找文件。which 指令会在环境变量 $PATH 设置的目录里查找符合条件的文件
