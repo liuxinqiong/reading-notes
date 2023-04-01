@@ -105,7 +105,7 @@ function App() {
 > 在 Await 组件内部，如果不使用 render props，也可以在组件内直接使用 useAsyncValue 和 useAsyncError。
 
 ## action 机制
-它们为应用程序提供了一种通过简单的 HTML 和 HTTP 语义执行数据更新的方法，而 React Router抽 象了异步 UI 和重新验证的复杂性。
+它们为应用程序提供了一种通过简单的 HTML 和 HTTP 语义执行数据更新的方法，而 React Router 抽象了异步 UI 和重新验证的复杂性。
 ```js
 async function action({ params, request }) {
     const data = await request.formData();
@@ -142,7 +142,7 @@ fetcher.submit(data, {
   * idle 空闲
   * submitting：fetcher.submit() 使正在执行 action
   * loading：fetcher.load() 调用或是 revalidate
-* Form：和 Form 组件类型，但不会触发导航
+* Form：和 Form 组件类似，但不会触发导航
 * load：从 router loader 加载数据
 * data：loader 或 action 返回的数据
 * formData：当正在处理时，formData 为提交的值，否则为空，可用于实现乐观更新
