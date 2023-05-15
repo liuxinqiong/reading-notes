@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="demo">TEST</button>
+    <div id="test"></div>
+    <script type="text/template" id="dom_script">
+        <div id="tag_cloud">
+            {%
+                for(var i = 0, len = tagCloud.length; i < len; i++) {
+                    var ctx = tagCloud[i];%}
+                    <a href="#" class="tag_item {% if(ctx["is_selected"]) { %} selected {% } %}" title="{%=ctx["title"] %}">{%= ctx["text"] %}</a>
+                {% } %}
+        </div>
+    </script>
+    <script src="AMD.js"></script>
+    <script>
+        // F.module(['lib/event','lib/dom'], function(events, dom) {
+        //     console.log(events, dom)
+        //     events.on('demo', 'click', function() {
+        //         console.log('clicked')
+        //         dom.html('demo','success')
+        //     })
+        // })
+        var data = {
+            tagCloud: [
+                {is_selected: true, title: "这是一本设计模式书", text:"设计模式"},
+                {is_selected: true, title: "这是一本HTML书", text:"HTML"},
+                {is_selected: true, title: "这是一本CSS书", text:"CSS"},
+                {is_selected: true, title: "这是一本JavaScript书", text:"JavaScript"},
+            ]
+        }
+        F.module(['lib/template','lib/dom'], function(template, dom) {
+            var str = template('dom_script', data)
+            dom.html('test', str)
+        })
+    </script>
+</body>
+</html>
