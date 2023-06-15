@@ -23,22 +23,22 @@ Suspense 完整支持
 * 通过嵌套 Suspense 避免某个部分特别耗时的部分造成全局等待
 * 当内容重新出现时，会重新执行 Layout effects
 
-自动批量更新（automatic batching）
-* 在 React 17 和更早版本中，封装了事件响应的批量更新，但这在异步中是不生效的
-* 在 React 18 中，如果你使用的是新版 Root API，所有的更新都会被自动批量更新
-* 如果在一些挑剔的情况，你不希望批量更新，你可以使用 ReactDOM.flushSync()
-
 startTransition API
 * 区分紧急更新和非紧急但重更新，有助于保持当前网页的响应性，并能够在同一时间做大量非阻塞的 UI 更新。
 * 紧急更新：直观的交互，如输入、悬停、点击
 * 非紧急更新，可以使用 startTransition 包裹，ui 状态从 A 状态切换到 B 状态。被 startTransition 回调包裹的 setState 触发的渲染被标记为不紧急的渲染，这些渲染可能被其他紧急渲染所抢占
 
+自动批量更新（automatic batching）
+* 在 React 17 和更早版本中，封装了事件响应的批量更新，但这在异步中是不生效的
+* 在 React 18 中，如果你使用的是新版 Root API，所有的更新都会被自动批量更新
+* 如果在一些挑剔的情况，你不希望批量更新，你可以使用 ReactDOM.flushSync()
+
 新增 hooks
-* useId：调用组件内返回唯一的 id
+* useId：支持同一个组件在客户端和服务端生成相同的唯一的 ID，避免 hydration 的不兼容。
 * useTransition：允许你非阻塞式的更新状态，通过 isPending 可判断 transition 是否在进行中。搭配 Suspense 使用，还可以避免 fallback 的显示
-* useDeferredValue 返回一个延迟响应的值。例如一个过滤列表的场景，可以针对列表使用 useDeferredValue 传入输入框对应的值，在与 Suspense 集成时，如果值的更新挂起了 UI，则不会看见 fallback，而是看见旧值。也可用于做性能优化，由于是延迟响应的值，通过 memo 配合，可以延迟一部分 UI 的渲染
+* useDeferredValue 返回一个延迟响应的值。例如一个过滤列表的场景，可以针对列表使用 useDeferredValue 传入输入框对应的值，在与 Suspense 集成时，如果值的更新挂起了 UI，则不会看见 fallback，而是看见旧值。也可用于做性能优化，由于是延迟响应的值，通过 memo 配合，可以延迟一部分 UI 的渲染。是 startTransition 一个使用场景的封装而已
 * useSyncExternalStore：用于订阅外部存储，用于将外部状态同步到组件内，大部分情况下推荐下 useState、useReducer 实现，该 api 在集成已存在的非 React code 时十分有用
-* useInsertionEffect：useEffect 另一个版本，为 CSS-in-JS 库提供的钩子，发生在 DOM 修改之前
+* useInsertionEffect：useEffect 另一个版本，为 CSS-in-JS 库提供的钩子，这个 Hook 执行时机在 DOM 生成之后，Layout Effect 执行之前
 * 新的 startTransition 与 useDeferredValue API，本质上都是允许你将 UI 的一部分标记为较低的更新优先级。
 
 React18 在严格模式中又新增一个行为，以确保它与可重用状态兼容，每当组件**第一次挂载**时，这个新的检查将自动卸载和重新挂载每个组件，在第二次挂载时恢复以前的状态。为什么 React 需要可重用状态
@@ -55,3 +55,35 @@ React18 在严格模式中又新增一个行为，以确保它与可重用状态
 * 在并发模式中，React 可能会开始渲染一个更新，在中间暂停，然后继续。它甚至可能完全放弃正在进行的渲染。React 保证即使渲染中断，UI 也会显示一致。意味着 UI 可以立即响应用户输入，即使它是在一个大的渲染任务中，从而创建一个流畅的用户体验。
 
 从长远来看，我们希望你添加并发到你的应用程序的主要方式是使用一个支持并发的库或框架。在大多数情况下，您不会直接与并发 api 交互。
+
+## 流式 SSR
+在传统的 SSR 模式中，上述流程是串行执行的，如果其中有一步比较慢，都会影响整体的渲染速度。
+
+而在 React 18 中，基于全新的 Suspense，支持了流式 SSR，也就是允许服务端一点一点的返回页面。
+
+## Server Component
+Server Component 的本质就是由服务端生成 React 组件，返回一个 DSL 给客户端，客户端解析 DSL 并渲染该组件。
+
+Server Component 带来的优势有
+* 零客户端体积，运行在服务端的组件只会返回最终的 DSL 信息，而不包含其他任何依赖。
+* 组件拥有完整的服务端能力，可以访问任何服务端 API
+* 组件支持实时更新
+
+局限性
+* 不能有状态，更适合用在纯展示的组件
+* 不能访问浏览器的 API
+* props 必须能被反序列化
+
+## OffScreen
+OffScreen 支持只保存组件的状态，而删除组件的 UI 部分。可以很方便的实现预渲染，或者 Keep Alive。
+
+为了支持这个能力，React 要求我们的组件对多次安装和销毁具有弹性，要求组件支持 state 不变的情况下，组件多次卸载和重载。
+
+为了方便排查这类问题，在 React 18 的 Strict Mode 中，新增了 double effect，在开发模式下，每次组件初始化时，会自动执行一次卸载，重载。
+
+## 说明
+### 移除了 IE 支持
+在此版本中，React 将放弃对 Internet Explorer 的支持。我们进行此更改是因为 React 18 中引入的新功能是基于现代浏览器开发的，部分能力在 IE 上是不支持的，比如 microtasks。
+
+如果您需要支持 Internet Explorer，我们建议您继续使用 React 17。
+
