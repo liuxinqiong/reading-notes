@@ -35,3 +35,6 @@ vscode 扩展
   * npm IntelliSense
   * path IntelliSense
   * Code Runner：直接右键选中执行
+* 其他
+  * Bookmarks 方便源码阅读打标签
+  * Import Cost 显示导入模块大小
