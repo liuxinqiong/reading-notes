@@ -87,3 +87,24 @@ OffScreen 支持只保存组件的状态，而删除组件的 UI 部分。可以
 
 如果您需要支持 Internet Explorer，我们建议您继续使用 React 17。
 
+## draft
+React 18 新特性
+* createRoot
+  * render
+  * unmount
+* 自动批处理
+* Concurrent
+  * 并发是指具备同时处理多个任务的能力，但不是在同时处理多个，而是有可能交替的进行处理，按照任何的优先级，每次处理一个任务
+* Transition Api
+  * startTransition 标记非紧急更新
+  * useTransition isPending 获取状态
+* Suspense
+  * 两个用途：动态加载组件、等待异步数据加载
+  * 让你组件在渲染之前进入一个特殊的等待状态
+
+wrapPromise 工作机制
+* 接受 promise 作为参数
+* 当 promise resolved 时，返回 resolved value
+* 当 promise rejected 时，throw 对应的 reject value
+* 当 promise pending 时，promise 对应 promise 对象
+* 提供 read 方法，读取 promise 状态

@@ -18,5 +18,26 @@ interface
 * 泛型约束
 * 应用场景：函数、类和接口
 * 类型别名一个常用的使用场景：联合类型
-* 声明文件
-  * declare
+
+声明文件
+* 后缀名格式：.d.ts，在 vscode 中默认打开时全局生效
+* 特殊关键字：declare
+* 默认全局作用域，通过 export 关键字转为模块作用域
+
+使用 interface 描述一个函数，且函数本身带带方法
+```ts
+interface ICalculator {
+  (operator: 'plus' | 'minis', numbers: number[]): number;
+  plus: (numbers: number[]) => number;
+  minis: (numbers: number[]) => number;
+}
+```
+
+配置文件
+* tsconfig.json
+* include 比 files 更强大，直接 glob pattern
+* compileOptions
+  * outDir
+  * module 指定输出 module 类型
+  * target 指定输出版本，如 es5
+  * declaration 是否输出声明文件
