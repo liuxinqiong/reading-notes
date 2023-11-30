@@ -97,3 +97,4 @@ RUM - Real User Monitoring 真实用户数据检测：网站插入一段脚本�
 * [2020前端性能优化清单之四](https://mp.weixin.qq.com/s/i5fNnTnmfAx7CufC00oaKQ)
 * [2020前端性能优化清单之五](https://mp.weixin.qq.com/s/VDARTCShm0KivV_ouYvVGA)
 * [2020前端性能优化清单之六](https://mp.weixin.qq.com/s/GHUMw2RFK-sXklJTPqoMdg)
+* [Web页面全链路性能优化指南](https://mp.weixin.qq.com/s/IZEjbVbBmPlMGRw0fpyl_Q)
