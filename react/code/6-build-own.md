@@ -1,4 +1,6 @@
 ## React.js
+来源：[build your own react](https://pomb.us/build-your-own-react/)
+
 大致内容
 * React.createElement function
 * ReactDOM.render function
