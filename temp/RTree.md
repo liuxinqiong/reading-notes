@@ -71,3 +71,8 @@ GIS 所表现的地理数据多维性使得传统的 B 树索引并不适用，�
 资料集合
 * [深入理解空间搜索算法 ——数百万数据中的瞬时搜索](https://www.cnblogs.com/arxive/p/8138586.html)
 * [A dive into spatial search algorithms](https://blog.mapbox.com/a-dive-into-spatial-search-algorithms-ebd0c5e39d2a)
+
+jsts index
+* kdtree
+* quadtree
+* strtree
