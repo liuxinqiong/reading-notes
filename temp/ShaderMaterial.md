@@ -17,7 +17,7 @@ RawShaderMaterial vs ShaderMaterial
 着色器语言基础
 * GPU 的渲染流程中，顶点着色器代码先执行处理顶点，得到一系列片元，然后再执行片元着色器代码处理片元。
 * 数据类型
-  * 基本类型：int/float/bool
+  * 基本类型：int/uint/float/double/bool
   * 引用类型：vec2/vec3/vec4/mat2/mat3/mat4
 * 常量 const
 * 结构体 struct
