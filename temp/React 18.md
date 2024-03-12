@@ -41,6 +41,11 @@ startTransition API
 * useInsertionEffect：useEffect 另一个版本，为 CSS-in-JS 库提供的钩子，这个 Hook 执行时机在 DOM 生成之后，Layout Effect 执行之前
 * 新的 startTransition 与 useDeferredValue API，本质上都是允许你将 UI 的一部分标记为较低的更新优先级。
 
+Strict Mode 在开发环境下表现
+* 组件将额外渲染一次，以发现由于不纯渲染导致的问题
+* 组件将额外执行一次 effects，以发现由于没有 cleanup 导致的问题
+* 检查过期 api 的使用
+
 React18 在严格模式中又新增一个行为，以确保它与可重用状态兼容，每当组件**第一次挂载**时，这个新的检查将自动卸载和重新挂载每个组件，在第二次挂载时恢复以前的状态。为什么 React 需要可重用状态
 * 帮助你发现一些 effect 需要进行 cleanup 工作。总结就是：如果重新挂载破坏了应用程序的逻辑，这通常会发现现有的错误
 * 想要添加的多个特性都有一个约束，需要组件具有弹性，可以多次“安装”和“卸载”。这在 Fast Refresh 中也有所体现，如果你的组件因为偶尔的重新运行 effects 而奔溃，则导致它不能和 Fast Refresh 工作的很好
