@@ -154,4 +154,4 @@ three.js 颜色空间
 * 工作颜色空间：渲染、插值和许多其他操作必须在开放域线性工作色彩空间中执行，其中 RGB 分量与物理照明成比例。在 three.js 中，工作颜色空间是 Linear-sRGB。
 * 输入颜色空间：输出到显示设备、图像或视频可能涉及从开放域 Linear-sRGB 工作色彩空间到另一个色彩空间的转换。这种转换可以在主渲染通道(WebGLRenderer.outputColorSpace)中执行，也可以在后期处理期间执行。自定义着色器必须实现自己的输出颜色空间转换。
 
-关于色彩系统的重要破坏性更新：https://discourse.threejs.org/t/updates-to-color-management-in-three-js-r152/50791
+[关于色彩系统的重要破坏性更新](https://discourse.threejs.org/t/updates-to-color-management-in-three-js-r152/50791)

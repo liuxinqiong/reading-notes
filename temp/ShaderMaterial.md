@@ -19,6 +19,7 @@ RawShaderMaterial vs ShaderMaterial
 * 数据类型
   * 基本类型：int/uint/float/double/bool
   * 引用类型：vec2/vec3/vec4/mat2/mat3/mat4
+  * 纹理类型：sampler2D、samplerCube
 * 常量 const
 * 结构体 struct
 * 舍弃片元 discard
