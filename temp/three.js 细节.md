@@ -1,14 +1,6 @@
 three.js 对底层 WebGL 的高级封装的同时，保留底层开发的特性，仍然可以使用点、面、法向量、UV 构造几何体，以及编写着色脚本来创造自己想要的特殊材质。
 
-有趣的做法
-* 把光源也绑定到摄像机上，这样光源就会随着摄像机移动
-* 三维建模软件组成：本质上是一个 Group，组合多个 3D 对象层级，对象定义自己的 BufferGeometry 和 Materials 材质
-* 通过 CanvasTexture 运行时生成纹理
-* 通过 RenderTarget 根据 three api 动态生成纹理。渲染目标大体上指的是可以被渲染的纹理，当它被渲染之后，你可以像使用其他纹理一样使用它
-* 判断用户是点击还是拖动，除了判断按下和松开的距离外，我们可以也判断时间间隔，如果大于 200ms，则认为是拖动，可能效果更好
-
-理解相机原理：通过一些矩阵变换，将 near 至 far 之间物体，投影到 near 平面上，即为最终呈现到屏幕上的元素
-
+## 自定义几何体
 自定义缓冲几何体
 * 理解 BufferGeometry.attributes 的 position、normal、uv 和 color 属性
   * 顶点的组成部分：position、normal、uv、color，一个简单的顶点是所有组成部分的集合
@@ -16,28 +8,16 @@ three.js 对底层 WebGL 的高级封装的同时，保留底层开发的特性�
   * 比如方块的 Geometry，看起来在角的地方共用顶点，但是实际不是，因为 normal 和 uv 等通常不同
 * 理解 BufferGeometry.index 属性
 
-> uv 表示纹理坐标，因为 xyz 已经被顶点坐标使用，所以使用 uvw 表示纹理坐标，表示贴图映射到模型表面的依据，把表面的点与平面上的像素对应起来，通常通过 0-1 表示，其中 u 表示水平，v 表示垂直，w 表示垂直于显示器表面，一般情况只是在表面贴图，就涉及不到 w，所以常称为 uv
-
-贴图原理
-* 纹理坐标系统 [0, 1]，WebGL 坐标系统 [-0.5, 0.5]，维护好顶点坐标对应的纹理坐标，其余色值是通过光栅化自动生成的
-* 一个几何体对象不同三角形可以对应不同材质，通过 groups 设置
-* 通过 texture.offset 设置纹理偏移
-* 通过 texture.repeat 设置重复次数
-
-Group 和 Object3D 有区别吗
-* 几乎没有任何区别，Group 继承自 Object3D，设置 type 为 Group 仅此而已
-* 相比 Object3D 而言只是更语义化
-
-研究相关问题
+研究内置 Geometry 实现
 * 分析 BoxGeometry 是如何默认支持六面贴图的
   * 本质上是依次生成六个面
   * 生成一个面的步骤为
     * 计算每个面的四个顶点坐标、法向量以及 uv 坐标
     * 计算 index 数组，指定每三个顶点构成一个三角面
-    * 通过 addGroup(groupStart, groupCount, materialIndex) 设置该面使用的索引下标，表示从 start 到 start+count 之间顶点构成的所有三角面使用该材质
+    * 通过 addGroup(start, count, materialIndex) 设置该面使用的索引下标，表示从 start 到 start+count 之间顶点构成的所有三角面使用该材质
 * 理解 PlaneGeometry、CircleGeometry 的贴图原理
   * PlaneGeometry 没有调用 addGroup，因此仅能运用一个 Material
-  * CircleGeometry 有调用 addGroup，那么圆形应用方形贴图会是什么效果呢？TODO
+  * CircleGeometry 没有调用 addGroup，那么圆形应用方形贴图会是什么效果呢？
 * ShapeGeometry 的贴图原理
   * 当传入的 shapes 为数组时，针对每个 shape 定义 addGroup，否则不指定
   * 内部调用 ShapeUtils.triangulateShape 对轮廓和 holes 进行三角化得到面
@@ -49,23 +29,102 @@ Group 和 Object3D 有区别吗
   * 底面：底面逻辑差不多，计算顶点、法向量、uv 坐标，计算 index，设置 materialIndex，top 为 1，bottom 为 2
 * 分析 ExtrudeGeometry 的贴图原理，UVGenerator 工作原理
   * 相比其他规则图形而言，ExtrudeGeometry 要复杂很多
-  * 遍历所有给定的 shapes 计算 position 和 uv 信息，通过调用 computeVertexNormals 计算方向量
+  * 遍历所有给定的 shapes 计算 position 和 uv 信息，通过调用 computeVertexNormals 计算法向量
   * 如果自定义了 UVGenerator 则使用传入的生成器，否则使用内置的 WorldUVGenerator
   * 对给定的 Shape 进行采样处理，逆时针转换，然后三角化
   * uvGen 签名
      * generateTopUV
      * generateSideWallUV
 
-注意性能优化
-* 应用 merge geometry 后，对于一整个 mesh，我们只能应用一个材质，因此只能使用一种颜色，某些场景下可以通过顶点着色法解决
-* 大量物体的动画
-  * 使用 Morphtargets 给每个顶点提供多个值，以及使用他们变形或 lerp 的方法
-  * 通过设置 BufferGeometry 的 morphAttributes 来设置多个值，不同的是 position、color 等属性是一个 attribute 数组
-  * 通过改变 mesh 的 morphTargetInfluences 属性来应用突变
+> 注意应用 merge geometry 后，对于一整个 mesh，我们只能应用一个材质，因此只能使用一种颜色，某些场景下可以通过顶点着色法解决
 
-有趣的例子：https://threejs.org/manual/#zh/load-gltf
-* 如何一步一步矫正模型
-* 如何让物体根据轨迹动起来
+贴图原理
+* 纹理坐标系统 [0, 1]，WebGL 坐标系统 [-0.5, 0.5]，维护好顶点坐标对应的纹理坐标，其余色值是通过光栅化自动生成的
+* 一个几何体对象不同三角形可以对应不同材质，通过 groups 设置
+* 通过 texture.offset 设置纹理偏移
+* 通过 texture.repeat 设置重复次数
+
+> uv 表示纹理坐标，因为 xyz 已经被顶点坐标使用，所以使用 uvw 表示纹理坐标，表示贴图映射到模型表面的依据，把表面的点与平面上的像素对应起来，通常通过 0-1 表示，其中 u 表示水平，v 表示垂直，w 表示垂直于显示器表面，一般情况只是在表面贴图，就涉及不到 w，所以常称为 uv。
+
+## Matrix
+任何 3D 物体 Object3D 都有三个关联的矩阵：
+* Object3D.matrix: 存储物体的本地变换矩阵。 这是对象相对于其父对象的变换矩阵。
+* Object3D.matrixWorld: 对象的全局或世界变换矩阵。如果对象没有父对象，那么这与存储在矩阵 matrix 中的本地变换矩阵相同。
+* Object3D.modelViewMatrix: 表示对象相对于摄像机坐标系的变换矩阵，一个对象的 modelViewMatrix 是物体世界变换矩阵乘以摄像机相对于世界空间变换矩阵的逆矩阵，用于计算物体在相机空间的位置。
+
+摄像机 Cameras 有三个额外的四维矩阵:
+* Camera.matrixWorldInverse: 视矩阵 - 摄像机世界坐标变换的逆矩阵。
+* Camera.projectionMatrix: 投影变换矩阵，表示将场景中的信息投影到裁剪空间。
+* Camera.projectionMatrixInverse: 投影变换矩阵的逆矩阵。
+
+Object3D 相关基础
+* updateMatrix 根据最新的 position/rotation/scale 计算新的矩阵
+* updateMatrixWorld：更新自身及其后代的 matrixWorld
+* updateWorldMatrix：更新自身世界矩阵，支持参数往上更新父元素世界矩阵，往下更新子元素世界矩阵
+
+关于 object.normalMatrix
+* 法向量矩阵：模型矩阵的逆转置矩阵，不过它非常特殊，是一个 3x3 的矩阵（mat3）
+* 将顶点法向量从对象空间变换到视图空间，以便在片元着色器中进行光照计算
+* 思考为什么 normal 不能和 vertex 一样进行视图空间转换呢。[具体说明](http://www.lighthouse3d.com/tutorials/glsl-12-tutorial/the-normal-matrix/)
+```js
+// this.setFromMatrix4( matrix4 ).invert().transpose();
+object.normalMatrix.getNormalMatrix( object.modelViewMatrix );
+```
+
+> 对于正交矩阵，转置矩阵等于逆矩阵。那么什么是正交矩阵呢，正交矩阵是一个矩阵，所有行（列）都是单位长度，并且相互垂直。这意味着当两个向量乘以这样一个矩阵时，它们之间的夹角经过正交矩阵变换后与变换前相同。简单地说，变换保留了向量之间的角度关系，因此变换后的法线仍然垂直于切线，此外，它还保留了向量的长度。什么时候我们能确定 M 是正交的，当我们把几何运算限制在旋转和平移的时候。
+
+相关矩阵定义：转置矩阵、逆矩阵、单位矩阵
+* 转置矩阵：行列互换得到的新矩阵
+* 逆矩阵：逆变换
+* 单位矩阵
+
+## Frustum
+Frustum 数学对象，是实现 frustumCulled 字段的基础，用于进行渲染优化，跳过不在视窗内的物体。
+
+从矩阵中还原出 Frustum。
+```js
+const frustum = new THREE.Frustum();
+const viewProjection = new THREE.Matrix4();
+viewProjection.multiplyMatrices(
+    camera.projectionMatrix, camera.matrixWorldInverse);
+frustum.setFromProjectionMatrix(viewProjection);
+const inFrustum = frustum.contains(someMesh));
+```
+
+## meshline vs line2
+meshline vs line2
+* meshline 是社区方案，目前处于不维护状态，line2 属于官方内置示例
+* meshline 针对锐角会出现一头细一头粗的情况，line2 表现良好
+* 三维视角下，都存在正面不是维持向上问题
+* line2 设置透明度后，顶点重叠部分效果不好（之前也正是因为该原因不支持透明度）
+
+## 颜色空间
+我们如何确定一个颜色
+* 为什么是三原色？因为人类对色彩的感知结果位于一个三维的线性空间中。最少需要三种颜色的光才能有足够的表达能力来表现各种颜色
+* 为什么选 RGB 作为三原色？因为色彩空间不是真正数学意义上的线性空间，从工程角度考虑，以 RGB 作为三原色，能让显示器能够显示更多的颜色
+* 对于 RGB 色彩空间来说，关键点在于两个：1. 如何选择三个作为基底的颜色；2. 如何定义白色。一旦选好这两个关键参数，那么从 CIE XYZ 空间到设备的 RGB 空间的转换就完全确定了
+* 不同的 RGB 空间所能表示的颜色范围是不一样的，并且我们可以推断出，即使是同样的 RGB 分量，在不同的 RGB 空间中所代表的颜色也是不一样的。所以我们在描述一个 RGB 颜色的时候，不仅需要描述它的 RGB 三个分量，还要说明是在哪个空间，这就是 ICC 文件的作用
+* 常见的网络环境下图片的色彩空间是 sRGB，有很多浏览器不能正确地解析图片自带的色彩空间说明，默认按照 sRGB 来进行解析。
+
+three.js 颜色空间
+* 颜色空间由基色、白点、转换函数
+* 常用空间 sRGB 和 Linear-sRGB，两者都使用相同的基色和白点，因此具有相同的颜色范围，都使用 RGB 颜色模型，它们仅在传输函数上有所不同
+  * Linear-sRGB 相对于物理光强度是线性的。
+  * sRGB 使用非线性 sRGB 传递函数，更接近于人眼感知光的方式和普通显示设备的灵敏度
+* 这种区别很重要。光照计算和其他渲染操作通常必须在线性色彩空间中进行。然而，线性颜色存储在图像或帧缓冲区中的效率较低，并且在由人类观察者观看时看起来不正确。因此，输入纹理和最终渲染的图像通常会使用非线性的 sRGB 色彩空间。
+
+颜色空间中三个角色
+* 输入颜色空间：纹理、三维模型等资源都会有关联的颜色空间，不是 Linear-sRGB 颜色空间的必须被转换，在开启了 ColorManagement 后，某些转换(对于 sRGB 中的十六进制和 CSS 颜色)可以自动进行
+* 工作颜色空间：渲染、插值和许多其他操作必须在开放域线性工作色彩空间中执行，其中 RGB 分量与物理照明成比例。在 three.js 中，工作颜色空间是 Linear-sRGB。
+* 输入颜色空间：输出到显示设备、图像或视频可能涉及从开放域 Linear-sRGB 工作色彩空间到另一个色彩空间的转换。这种转换可以在主渲染通道(WebGLRenderer.outputColorSpace)中执行，也可以在后期处理期间执行。自定义着色器必须实现自己的输出颜色空间转换。
+
+[关于色彩系统的重要破坏性更新](https://discourse.threejs.org/t/updates-to-color-management-in-three-js-r152/50791)
+
+## 其他场景
+大量物体的动画
+* 使用 Morphtargets 给每个顶点提供多个值，以及使用他们变形或 lerp 的方法
+* 通过设置 BufferGeometry 的 morphAttributes 来设置多个值，不同的是 position、color 等属性是一个 attribute 数组
+* 通过改变 mesh 的 morphTargetInfluences 属性来应用突变
 
 天空盒
 * 使用 CubeTextureLoader 加载天空盒的六张图
@@ -80,17 +139,17 @@ Group 和 Object3D 有区别吗
 
 > 浏览器限制了 WebGL 上下文(WebGL contexts)的数量。通常浏览器将其限制为 8 个，一旦超出这个数量，最先创建的 WebGL 上下文就会被自动弃用。
 
-数学库：Frustum 视窗体
-```js
-const frustum = new THREE.Frustum();
-const viewProjection = new THREE.Matrix4();
-viewProjection.multiplyMatrices(
-    camera.projectionMatrix, camera.matrixWorldInverse);
-frustum.setFromProjectionMatrix(viewProjection);
-const inFrustum = frustum.contains(someMesh));
-```
+有趣的做法
+* 把光源也绑定到摄像机上，这样光源就会随着摄像机移动
+* 三维建模软件组成：本质上是一个 Group，组合多个 3D 对象层级，对象定义自己的 BufferGeometry 和 Materials 材质
+* 通过 CanvasTexture 运行时生成纹理
+* 通过 RenderTarget 根据 three api 动态生成纹理。渲染目标大体上指的是可以被渲染的纹理，当它被渲染之后，你可以像使用其他纹理一样使用它
+* 判断用户是点击还是拖动，除了判断按下和松开的距离外，我们可以也判断时间间隔，如果大于 200ms，则认为是拖动，可能效果更好
 
-GPU 拾取：概念简单，使用复杂，为了完成 GPU 拾取，对每个对象使用唯一的颜色进行离屏渲染，然后检查鼠标位置关联的像素颜色，通过颜色告诉我们哪个对象被选中。这里演示了 [GPU 拾取的简单例子](https://threejs.org/manual/#zh/picking)
+WebGLRenderTarget（离屏渲染）
+* renderer.render 方法如果指定了 WebGLRenderTarget，则渲染图像结果保存到该对象，不会显示在 canvas 上
+* renderer.render 方法如果没有指定渲染目标，渲染结果会直接显示到 canvas 画布上
+* 自身的 texture 属性可以获得 WebGL 渲染器的渲染结果，可以作为材质对象属性 map 的值
 
 后期处理
 * 在结果被输出到 canvas 之前，我们也可以通过另外的一个 RenderTarget 并应用一些后置效果。这被称为 PostProcessing，因为它发生在主场景渲染过程之后。
@@ -99,59 +158,14 @@ GPU 拾取：概念简单，使用复杂，为了完成 GPU 拾取，对每个�
 * 对于几乎所有的后期处理 EffectComposer，RenderPass 都是必需的。因为它是初始输入。
 * 自定义后期处理：ShaderPass
 
-注意：raycaster 只会与有 geometry 对象做相交判断，因此 group 做相交会得到它的 children
+关于 GPU 拾取
+* 概念简单，使用复杂，为了完成 GPU 拾取，对每个对象使用唯一的颜色进行离屏渲染，然后检查鼠标位置关联的像素颜色，通过颜色告诉我们哪个对象被选中。这里演示了 [GPU 拾取的简单例子](https://threejs.org/manual/#zh/picking)
+* 注意：raycaster 只会与有 geometry 对象做相交判断，因此 group 做相交会得到它的 children
+
+有趣的例子：[模型加载](https://threejs.org/manual/#zh/load-gltf)
+* 如何一步一步矫正模型
+* 如何让物体根据轨迹动起来
 
 这两个示例好强
 * [Voxel(Minecraft Like) Geometry](https://threejs.org/manual/#zh/voxel-geometry)
 * [Start making a Game](https://threejs.org/manual/#zh/game)
-
-任何 3D 物体 Object3D 都有三个关联的矩阵：
-* Object3D.matrix: 存储物体的本地变换矩阵。 这是对象相对于其父对象的变换矩阵。
-* Object3D.matrixWorld: 对象的全局或世界变换矩阵。如果对象没有父对象，那么这与存储在矩阵 matrix 中的本地变换矩阵相同。
-* Object3D.modelViewMatrix: 表示对象相对于摄像机坐标系的变换矩阵，一个对象的 modelViewMatrix 是物体世界变换矩阵乘以摄像机相对于世界空间变换矩阵的逆矩阵。实践证明，针对 Group 和 Object3D，该矩阵总为单位矩阵，但 Mesh 符合预期，猜测有 geometry 的对象才会有预期值。
-
-摄像机 Cameras 有三个额外的四维矩阵:
-* Camera.matrixWorldInverse: 视矩阵 - 摄像机世界坐标变换的逆矩阵。
-* Camera.projectionMatrix: 投影变换矩阵，表示将场景中的信息投影到裁剪空间。
-* Camera.projectionMatrixInverse: 投影变换矩阵的逆矩阵。
-
-three.js 前乘、后乘
-* A.multiply(B) = A * B
-* A.premultiply(B) = B * A
-
-相关定义：转置矩阵、逆矩阵、单位矩阵
-* 转置矩阵：行列互换得到的新矩阵
-* 逆矩阵：逆变换
-* 单位矩阵
-
-透视投影矩阵推演
-* 视图变换矩阵通过 position、up、lookAt 确定
-* 问题：XYZ 平面问题，将 camera.up 设置为 z 轴后，总感觉有些奇怪的问题，需求目标：基于 z 旋转，基于 xy 绘制和坐标拾取
-
-## meshline vs line2
-meshline vs line2
-* meshline 是社区方案，目前处于不维护状态，line2 属于官方内置示例
-* meshline 虚线绘制过于紧密，line2 表现良好
-* 三维视角下，都存在正面不是维持向上问题
-* line2 设置透明度后，顶点重叠部分效果不好（之前也正是因为该原因不支持透明度）
-
-我们如何确定一个颜色
-* 为什么是三原色？因为人类对色彩的感知结果位于一个三维的线性空间中。最少需要三种颜色的光才能有足够的表达能力来表现各种颜色
-* 为什么选 RGB 作为三原色？因为色彩空间不是真正数学意义上的线性空间，从工程角度考虑，以 RGB 作为三原色，能让显示器能够显示更多的颜色
-* 对于 RGB 色彩空间来说，关键点在于两个：1. 如何选择三个作为基底的颜色；2. 如何定义白色。一旦选好这两个关键参数，那么从 CIE XYZ 空间到设备的 RGB 空间的转换就完全确定了
-* 不同的 RGB 空间所能表示的颜色范围是不一样的，并且我们可以推断出，即使是同样的 RGB 分量，在不同的 RGB 空间中所代表的颜色也是不一样的。所以我们在描述一个 RGB 颜色的时候，不仅需要描述它的 RGB 三个分量，还要说明是在哪个空间，这就是 ICC 文件的作用
-* 常见的网络环境下图片的色彩空间是 sRGB，有很多浏览器不能正确地解析图片自带的色彩空间说明，默认按照 sRGB 来进行解析。
-
-three.js 颜色空间
-* 颜色空间由基色、白点、转换函数
-* 常用空间 sRGB 和 Linear-sRGB，两者都使用相同的基色和白点，因此具有相同的颜色范围，都使用 RGB 颜色模型，它们仅在传输函数上有所不同
-  * Linear-sRGB 相对于物理光强度是线性的。
-  * sRGB 使用非线性 sRGB 传递函数，更接近于人眼感知光的方式和普通显示设备的灵敏度
-* 这种区别很重要。光照计算和其他渲染操作通常必须在线性色彩空间中进行。然而，线性颜色存储在图像或帧缓冲区中的效率较低，并且在由人类观察者观看时看起来不正确。因此，输入纹理和最终渲染的图像通常会使用非线性的sRGB色彩空间。
-
-颜色空间中三个角色
-* 输入颜色空间：纹理、三维模型等资源都会有关联的颜色空间，不是 Linear-sRGB 颜色空间的必须被转换，在开启了 ColorManagement 后，某些转换(对于sRGB中的十六进制和CSS颜色)可以自动进行
-* 工作颜色空间：渲染、插值和许多其他操作必须在开放域线性工作色彩空间中执行，其中 RGB 分量与物理照明成比例。在 three.js 中，工作颜色空间是 Linear-sRGB。
-* 输入颜色空间：输出到显示设备、图像或视频可能涉及从开放域 Linear-sRGB 工作色彩空间到另一个色彩空间的转换。这种转换可以在主渲染通道(WebGLRenderer.outputColorSpace)中执行，也可以在后期处理期间执行。自定义着色器必须实现自己的输出颜色空间转换。
-
-[关于色彩系统的重要破坏性更新](https://discourse.threejs.org/t/updates-to-color-management-in-three-js-r152/50791)

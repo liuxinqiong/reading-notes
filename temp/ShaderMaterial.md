@@ -16,18 +16,17 @@ RawShaderMaterial vs ShaderMaterial
 ## 语言基础
 着色器语言基础
 * GPU 的渲染流程中，顶点着色器代码先执行处理顶点，得到一系列片元，然后再执行片元着色器代码处理片元。
+* 常量 const、结构体 struct
 * 数据类型
   * 基本类型：int/uint/float/double/bool
   * 引用类型：vec2/vec3/vec4/mat2/mat3/mat4
   * 纹理类型：sampler2D、samplerCube
-* 常量 const
-* 结构体 struct
 * 舍弃片元 discard
 * 支持数组类型，但仅支持一维数组
 * 预处理
   * #define 宏定义
   * #include 一个着色器文件中引入另一个着色器文件
-  * #ifdef/#endif 约束作用代码范围
+  * #ifdef/#ifndef/#endif 约束作用代码范围
   * #if/#endif
 
 ## 变量类型
@@ -48,7 +47,7 @@ WebGL 内置变量-顶点着色器
 
 WebGL 内置变量-片元着色器
 * gl_FragColor：vec4(r, g, b, a) 片元颜色值，`逐片元`概念，所有片元可以使用同一个颜色值，也可能不是同一个颜色值，可以通过特定算法计算或者纹理像素采样
-* gl_FragCoord：只读，片元的像素坐标，当前渲染的像素在画布内的坐标，左上角是[0,0]，右下角是[width,height]
+* gl_FragCoord：只读，片元的像素坐标，当前渲染的像素在画布内的坐标，左上角是 [0,0]，右下角是 [width,height]
 * gl_PointCoord：vec2(x, y) 点渲染模式对应点像素坐标
   * 点渲染模式中会将顶点渲染为一个方形区域
   * 点精灵的二维空间坐标范围在 (0.0, 0.0) 到 (1.0, 1.0) 之间，仅用于点图元和点精灵开启的情况下
@@ -69,7 +68,7 @@ WebGL 内置变量-片元着色器
 * 通用函数 abs/min/max/mod/sign/floor/ceil/clamp
   * mix 线性内插：mix(colorA, colorB, weight)，两种颜色混合，其中 weight 代表 B 的权重，1-weight 代表 A 的权重。
   * step 步进函数：step(a, b)，当 b>a 时返回 1，当 a>b 时返回 0
-  * smoothstep(edge0, edge1, x) 当 edge0 < x < edge1 时，smoothstep()在 0 和 1 之间执行平滑埃尔米特插值。
+  * smoothstep(edge0, edge1, x) 当 edge0 < x < edge1 时，smoothstep() 在 0 和 1 之间执行平滑埃尔米特插值。
   * fract 取小数部分
   * lerp(a, b, x)：当 x=0 时返回 a，当 x=1 时返回 b，否则返回 ab 的差值
 * 几何函数 length/distance/dot/cross/normalize/reflect/faceforward
@@ -118,12 +117,6 @@ void main() {
 如果要在画布上绘制多个相同图形，不必一一绘制每一个图形，要我们有一些数学手段可以运用。
 * 可以扩大 st 或 d 的值，然后对它取小数部分
 * 这是两种不同的重复效果
-
-TODO
-* 理解 uniform 传递 resolution 的作用
-* 理解 sizeAttenuation 实现原理
-  * false 所有粒子都将拥有一样的尺寸，无论距离多远
-  * true 粒子大小将取决于相机远近
 
 入门教程
 * [充分理解WebGL（一）](https://juejin.cn/post/7098256201661546532)
@@ -175,8 +168,6 @@ void main() {
 }
 ```
 
-TODO: 实现特定像素大小的线，参考 LineMaterial resolution 实现
-
 SpriteMaterial 中 sizeAttenuation 实现原理
 ```js
 void main() {
@@ -214,7 +205,6 @@ void main() {
 }
 ```
 
-
 有意思：由于 step 返回值总是为 0 和 1，因此可以通过加、减、乘实现位运算，smoothstep 会出现中间值，此处不考虑。下面例子就是使用减法，实现组合 Circle 的方式绘制一张脸
 ```js
 float Circle(vec2 uv, vec2 o, float r, float blur) {
@@ -231,8 +221,6 @@ float Face(vec2 uv, vec2 o) {
 
 总结常用函数：fract、mix、step、smoothstep、伪随机
 
-TODO：深入理解 normalMatrix
-
 ## 扩展
 取样器 sampler2D
 * 该关键字声明一种取样器类型变量，简单说该变量对应纹理图片的像素数据，需要使用 uniform 关键字进行修饰
@@ -241,7 +229,9 @@ TODO：深入理解 normalMatrix
   * 参数2：uv 纹理贴图的 UV 坐标
   * 参数3：k 可选参数，添加偏差
 
-WebGLRenderTarget（离屏渲染）
-* renderer.render 方法如果指定了 WebGLRenderTarget，则渲染图像结果保存到该对象，不会显示在 canvas 上
-* renderer.render 方法如果没有指定渲染目标，渲染结果会直接显示到 canvas 画布上
-* 自身的 texture 属性可以获得 WebGL 渲染器的渲染结果，可以作为材质对象属性 map 的值
+TODO
+* 理解 uniform 传递 resolution 的作用
+* 理解 sizeAttenuation 实现原理
+  * false 所有粒子都将拥有一样的尺寸，无论距离多远，参考 LineMaterial resolution 实现
+  * true 粒子大小将取决于相机远近
+
