@@ -10,7 +10,7 @@ RawShaderMaterial vs ShaderMaterial
 * ShaderMaterial 会自动内置的 attributes 和 uniforms，因此可以省略部分声明
 
 #include 机制
-* 开始以为是 glsl 语法，实际上是 three.js 尝试引入的模块机制
+* 最初以为是 glsl 语法，实际上是 three.js 尝试引入的模块机制
 * 在 WebGLProgram 模块中对 #include 指令进行解析，配合 ShaderChunk 对象进行解析
 
 ## 语言基础
@@ -20,7 +20,7 @@ RawShaderMaterial vs ShaderMaterial
 * 数据类型
   * 基本类型：int/uint/float/double/bool
   * 引用类型：vec2/vec3/vec4/mat2/mat3/mat4
-  * 纹理类型：sampler2D、samplerCube
+  * 纹理类型：sampler2D/samplerCube
 * 舍弃片元 discard
 * 支持数组类型，但仅支持一维数组
 * 预处理
@@ -57,7 +57,7 @@ WebGL 内置变量-片元着色器
 
 容易搞混的坐标系
 * uv：左下角是 [0, 0]，右上角是 [1, 1]
-* FragCoord：左上角是 [0,0]，右下角是 [width, height]
+* FragCoord：左上角是 [0, 0]，右下角是 [width, height]
 * PointCoord：左上角是 [0, 0]，右下角是 [1.0, 1.0]
 
 ## 内置函数
@@ -70,7 +70,7 @@ WebGL 内置变量-片元着色器
   * step 步进函数：step(a, b)，当 b>a 时返回 1，当 a>b 时返回 0
   * smoothstep(edge0, edge1, x) 当 edge0 < x < edge1 时，smoothstep() 在 0 和 1 之间执行平滑埃尔米特插值。
   * fract 取小数部分
-  * lerp(a, b, x)：当 x=0 时返回 a，当 x=1 时返回 b，否则返回 ab 的差值
+  * lerp(a, b, x)：当 x=0 时返回 a，当 x=1 时返回 b，否则返回 ab 的插值
 * 几何函数 length/distance/dot/cross/normalize/reflect/faceforward
   * reflect：返回一个向量相对于某个法向量的反射向量
 * 矢量函数 lessThan/lessThanEqual/greaterThan/greaterThanEqual/equal/notEqual/any/all/not
@@ -96,31 +96,36 @@ void main() {
   vec2 st = gl_FragCoord.xy / resolution;
   vec2 center = vec2(0.5);
   float d = length(st - center);
-  FragColor.rgb = (smoothstep(d - 0.015, d, 0.2) - smoothstep(d, d + 0.015, 0.18)) * vec3(1.0);
-  FragColor.a = 1.0;
+  gl_FragColor.rgb = (smoothstep(d - 0.015, d, 0.2) - smoothstep(d, d + 0.015, 0.18)) * vec3(1.0);
+  gl_FragColor.a = 1.0;
 }
 ```
 
 ## 相关技巧
 距离场构图法，最核心的思路是要定义一个形状的距离场，通俗来说，就是定义整个画布空间中每个像素点的距离值。
+* 三角形绘制：定义点到三角形的距离为点到三角形三条边距离中最短的一条边的距离。
+* 如果要绘制一条连续曲线，我们可以取相邻的三个点 A、B、C 采样，计算 P 点到这三个点构成的两条线段 AB 和 AC 的距离，取距离短的作为 P 到曲线的距离。
 
-如果要绘制一条连续曲线，我们可以取相邻的三个点 A、B、C 采样，计算 P 点到这三个点构成的两条线段 AB 和 AC 的距离，取距离短的作为 P 到曲线的距离。
+具体场景的技巧
+* 归一：通过 `gl_FragCoord.xy / resolution` 可以将坐标值“归一”（即将值限制到 0~1 区间，这是一种在写着色器的时候经常使用的数学技巧）
+* 扩大：通过 `st = mix(vec2(-10, -10), vec2(10, 10), st);` 来扩大坐标系的区间，将坐标系从 `(0,0),(1,1)` 扩大到了 `(-10,-10),(10,10)`，这也是一种常用的数学技巧，可以牢记。
+* 网格：将 uv 拉升 n 倍后取小数部分，处理后的 uv 会变成每个网格内的局部坐标，这个被广泛使用。
+* 重复：如果要在画布上绘制多个相同图形，不必一一绘制每一个图形，要我们有一些数学手段可以运用。可以扩大 st 或 d 的值，然后对它取小数部分，这是两种不同的重复效果
 
-通过 `st = mix(vec2(-10, -10), vec2(10, 10), st);` 来扩大坐标系的区间，将坐标系从 `(0,0),(1,1)` 扩大到了 `(-10,-10),(10,10)`，这也是一种常用的数学技巧，可以牢记。
+随机：对于着色器而言，没有现成的随机函数，需要通过人工来构建随机函数
 
-通过 `gl_FragCoord.xy / resolution` 可以将坐标值“归一”（即将值限制到 0~1 区间，这是一种在写着色器的时候经常使用的数学技巧）
-
-网格技巧：将 uv 拉升 n 倍后取小数部分，处理后的 uv 会变成每个网格内的局部坐标，这个被广泛使用。
-
-三角形绘制：定义点到三角形的距离为点到三角形三条边距离中最短的一条边的距离。
-
-如果要在画布上绘制多个相同图形，不必一一绘制每一个图形，要我们有一些数学手段可以运用。
-* 可以扩大 st 或 d 的值，然后对它取小数部分
-* 这是两种不同的重复效果
-
-入门教程
-* [充分理解WebGL（一）](https://juejin.cn/post/7098256201661546532)
-* [基于three.js实现一个粒子系统](https://juejin.cn/post/6844904161574649870)
+shader 中常用的伪随机函数
+```js
+highp float random(vec2 co)
+{
+    highp float a = 12.9898;
+    highp float b = 78.233;
+    highp float c = 43758.5453;
+    highp float dt= dot(co.xy ,vec2(a,b));
+    highp float sn= mod(dt,3.14);
+    return fract(sin(sn) * c);
+}
+```
 
 ## 简单示例
 通常物体走的固有变换是
@@ -138,7 +143,14 @@ void main() {
 }
 ```
 
-纹理采样
+取样器 sampler2D
+* 该关键字声明一种取样器类型变量，简单说该变量对应纹理图片的像素数据，需要使用 uniform 关键字进行修饰
+* 提供内置函数 texture2D 可以从纹理图像提取像素值，赋值给内置变量 gl.FragColor
+  * 参数1：sampler
+  * 参数2：uv 纹理贴图的 UV 坐标
+  * 参数3：k 可选参数，添加偏差
+
+纹理采样示例
 ```js
 // 接收插值后的纹理坐标
 varying vec2 v_TexCoord;
@@ -146,7 +158,7 @@ varying vec2 v_TexCoord;
 uniform sampler2D u_Sampler;
 void main() {
   // 采集纹素，逐片元赋值像素值
-  gl_FragColor = texture2D(u_Sampler,v _TexCoord);
+  gl_FragColor = texture2D(u_Sampler, v_TexCoord);
 }
 ```
 
@@ -167,6 +179,25 @@ void main() {
   }
 }
 ```
+
+有意思：由于 step 返回值总是为 0 和 1，因此可以通过加、减、乘实现位运算，smoothstep 会出现中间值，此处不考虑。下面例子就是使用减法，实现组合 Circle 的方式绘制一张脸
+```js
+float Circle(vec2 uv, vec2 o, float r, float blur) {
+  return smoothstep(r, r - blur, distance(uv, o));
+}
+
+float Face(vec2 uv, vec2 o) {
+  float c = Circle(uv, vec2(.0, .0), 0.5, 0.01);
+  c -= Circle(uv, vec2(-.2, -.2), 0.2, 0.01);
+  c -= Circle(uv, vec2(.2, .2), 0.2, 0.01);
+  return c;
+}
+```
+
+## 深入理解 sizeAttenuation
+理解 sizeAttenuation 实现原理
+* false 所有粒子都将拥有一样的尺寸，无论距离多远，参考 LineMaterial resolution 实现
+* true 粒子大小将取决于相机远近
 
 SpriteMaterial 中 sizeAttenuation 实现原理
 ```js
@@ -190,8 +221,6 @@ void main() {
 }
 ```
 
-关键代码 `scale *= - mvPosition.z;` 为什么是合理的？注意，一个是 ifdef 一个是 ifndef。
-
 对比 PointsMaterial 实现
 ```js
 void main() {
@@ -205,33 +234,13 @@ void main() {
 }
 ```
 
-有意思：由于 step 返回值总是为 0 和 1，因此可以通过加、减、乘实现位运算，smoothstep 会出现中间值，此处不考虑。下面例子就是使用减法，实现组合 Circle 的方式绘制一张脸
-```js
-float Circle(vec2 uv, vec2 o, float r, float blur) {
-  return smoothstep(r, r - blur, distance(uv, o));
-}
+两者实现上的差别
+* 关键代码 `scale *= - mvPosition.z;` 为什么是合理的？需要注意，一个是 ifdef 一个是 ifndef。
+* PointsMaterial 作用在点上，因此通过控制 PointSize 即可
+* Sprite 本质上还是基于面，因此执行的是顶点转换逻辑
 
-float Face(vec2 uv, vec2 o) {
-  float c = Circle(uv, vec2(.0, .0), 0.5, 0.01);
-  c -= Circle(uv, vec2(-.2, -.2), 0.2, 0.01);
-  c -= Circle(uv, vec2(.2, .2), 0.2, 0.01);
-  return c;
-}
-```
-
-总结常用函数：fract、mix、step、smoothstep、伪随机
-
-## 扩展
-取样器 sampler2D
-* 该关键字声明一种取样器类型变量，简单说该变量对应纹理图片的像素数据，需要使用 uniform 关键字进行修饰
-* 提供内置函数 texture2D 可以从纹理图像提取像素值，赋值给内置变量 gl.FragColor
-  * 参数1：sampler
-  * 参数2：uv 纹理贴图的 UV 坐标
-  * 参数3：k 可选参数，添加偏差
-
-TODO
-* 理解 uniform 传递 resolution 的作用
-* 理解 sizeAttenuation 实现原理
-  * false 所有粒子都将拥有一样的尺寸，无论距离多远，参考 LineMaterial resolution 实现
-  * true 粒子大小将取决于相机远近
-
+## 资料
+* 基础系列，推荐全部阅读，如
+  * 渲染原理：[充分理解WebGL（一）](https://juejin.cn/post/7098256201661546532)
+  * 距离场进行基础图形绘制：[充分理解WebGL（三）](https://juejin.cn/post/7103437998640857119)
+* 一个自定义 shader 小例子：[基于three.js实现一个粒子系统](https://juejin.cn/post/6844904161574649870)
