@@ -134,9 +134,11 @@ Storybook
 * addon-docs
   * export default 组件竟然导致 docs 自动生成文档生效，好坑
 
-表单组件
+Input & AutoComplete 组件
 
 Upload 组件
+
+Form 组件
 
 JS 模块化发展
 * 什么是模块化
@@ -206,3 +208,37 @@ npm 发布
   * CD 持续交付
     * 频繁的将软件的新版本交付给质量团队或者用户
     * 代码通过评审以后，自动部署到生产环境
+
+Rollup 打包多种格式
+* Rollup 是第一个支持 treeshaking 的打包工具，webpack 后续才借鉴过来
+
+Rollup 和 Webpack 简单对比
+
+Webpack：适用于大型 SPA 项目的模块化构建，也就是常说的 Web 应用
+* 通过 loader 处理各种各样的静态组员
+* 通过各种 plugin 对整体文件进行一些处理
+* code-splitting 将公共文件进行提取
+* 提供 webpack-dev-server，进行本地开发
+* 支持 HMR 模块热替换
+
+Rollup：设计之初就是面向 esm 的，构建出建构扁平、性能初衷的类库
+* 因此默认是不支持 cjs 的，需要通过 commonjs 插件进行处理
+* @rollup/plugin-node-resolve 使用 node 解析规则导入第三方模块
+
+> 一个简单原则：构建 App 应用时 webpack 比较合适，构建类库（纯js项目），rollup 比较合适
+
+webpack 优势
+* 强大的生态插件
+* 面向开发应用的特性：HMR、按需加载、公共模块提取
+* 简化 web 开发缓解：图标自动转 base64、资源的缓存（chunkId）
+
+rollup 的优势
+* 构建出高性能的模块文件
+* 编译出的代码可读性更好，内容更小，执行效率更高
+* 配置比较简单
+
+常见的 js 模块代码格式
+* esm：现代模块化解决方案
+* commonjs：适用于 node
+* umd：通用模块定义：以 amd、cjs、iife 为一体
+* iife：自执行，适合用作 script 标签
