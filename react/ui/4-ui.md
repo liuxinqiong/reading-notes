@@ -137,8 +137,17 @@ Storybook
 Input & AutoComplete 组件
 
 Upload 组件
+* 拖动上传：onDragover/onDragleave/onDrop
+* jest mock 模块后的类型问题，使用断言，eg: const mockedAxios = axios as jest.Mocked<typeof axios>
+
+fetch 的缺点
+* 只对网络请求报错，对400，500都当做成功的请求
+* 默认不会带 cookie
+* 不支持 abort，不支持超时控制
+* 没有办法原生监测请求的进度
 
 Form 组件
+* 主要需求：自定义 ui、验证时机、验证规则
 
 JS 模块化发展
 * 什么是模块化
