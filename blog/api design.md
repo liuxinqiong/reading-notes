@@ -35,9 +35,10 @@ API 潜在的修改及分类
 ## RESTful
 基础约定
 * 接口路径以 /api 或 /[version]/api 开头
+* 接口路径以 /api/aa-bb/cc-dd 方式命名
 * 接口路径使用资源名词而非动词，动作应由 HTTP Method 体现，**资源组可以进行逻辑嵌套**
 * 接口路径中的资源使用复数而非单数
-* 接口设计面向开放接口，而非单纯前端业务
+* 接口设计面向开放接口，而非单纯前端业务，例如使用 /api/tasks 而不是 /api/task-select-options
 * 规范使用 HTTP 方法
   * GET 获取数据
   * POST 创建数据
@@ -58,13 +59,14 @@ API 潜在的修改及分类
   * message
   * data
   * 分页：data.items, data.total
+* 请求和响应字段采用 aa_bb_cc 方式命名
 * 时间字段以 ISO 8601 格式返回 ：YYYY-MM-DDTHH:MM:SSZ
 * 常见业务字段约定
   * 名称 name
   * 状态 status
   * 创建时间 created_at
   * 更新事件 updated_at
-  * 空数组使用 []，而不是 null
+* 空数组使用 []，而不是 null
 
 具体接口
 * 创建完成后直接返回 id
@@ -72,9 +74,11 @@ API 潜在的修改及分类
 * 分页使用 page 和 per_page
 * 普通筛选使用键值对，多列模糊查询使用 keyword，枚举筛选使用数据合并拼接，如 status=pending,complete，区间使用 xxx_lt 和 xxx_gt 关键词
 * 尽可能返回所有关联数据展开详情，便于客户端显示
+* 可枚举字段使用有语义英文而非无语义数字
 * 合理自然嵌套结构而不是平铺
 * 删除接口应酌情提供批量删除
 * 统一提供单文件上传接口（/api/files），支持上传所有类型文件
 * 统一提供多文件上传接口（/api/multiple-files），支持上传所有类型文件
 * 文件路径至少补全至根路径，而不是交由前端去拼接
+* 对于使用到文件的接口使用文件 id 或地址而非 FormData
 * 涉及到用户隐私的应对相关字段做加密处理
