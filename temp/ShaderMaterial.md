@@ -19,7 +19,7 @@ RawShaderMaterial vs ShaderMaterial
 * 常量 const、结构体 struct
 * 数据类型
   * 基本类型：int/uint/float/double/bool
-  * 引用类型：vec2/vec3/vec4/mat2/mat3/mat4
+  * 引用类型：vecN/matN
   * 纹理类型：sampler2D/samplerCube
 * 舍弃片元 discard
 * 支持数组类型，但仅支持一维数组
@@ -72,6 +72,7 @@ WebGL 内置变量-片元着色器
   * fract 取小数部分
   * lerp(a, b, x)：当 x=0 时返回 a，当 x=1 时返回 b，否则返回 ab 的插值
 * 几何函数 length/distance/dot/cross/normalize/reflect/faceforward
+  * length(x) 向量 x 的长度
   * reflect：返回一个向量相对于某个法向量的反射向量
 * 矢量函数 lessThan/lessThanEqual/greaterThan/greaterThanEqual/equal/notEqual/any/all/not
 * 矩阵函数 matrixCmpMult 逐元素乘法
@@ -80,6 +81,10 @@ WebGL 内置变量-片元着色器
 * 纹理查询函数
   * texture2D 在二维纹理中获取纹素
   * textureCube 从立方体纹理中获取纹素
+
+在编写 shader 程序时，不建议直接使用条件分支语句（如 if-else 结构），而是建议使用宏（预处理器指令）或内置函数来实现类似的逻辑控制。
+* 内置函数是经过硬件加速
+* GPU会同时执行if-else的两个分支，然后根据条件的结果选择正确的结果
 
 长宽适配。在分辨率长宽不等的情况下，将坐标系映射为等边，映射后原先较长的一边其自变量会变大。举例：将一个正方形图贴在一个长方形上，此时图会被拉升，进行适配后则可以维持图片比例不变。
 ```js
@@ -244,3 +249,4 @@ void main() {
   * 渲染原理：[充分理解WebGL（一）](https://juejin.cn/post/7098256201661546532)
   * 距离场进行基础图形绘制：[充分理解WebGL（三）](https://juejin.cn/post/7103437998640857119)
 * 一个自定义 shader 小例子：[基于three.js实现一个粒子系统](https://juejin.cn/post/6844904161574649870)
+* [50个基本图案练习](https://juejin.cn/post/7158628520623603748?searchId=20240712143155EDEF0372489BC740F0CA)
