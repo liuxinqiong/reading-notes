@@ -709,3 +709,265 @@ public class Demo {
 实际上，**相比线程级的锁，进程级的锁更容易引发死锁**。这是因为两个进程对应的程序有可能是两个不同的程序员开发的，甚至有可能是两个不同的团队开发的。一个团队并不不知道另一个团队所开发的程序，到底都用了哪些锁，以及如何使用的这些锁，因此，协调好统一的加锁顺序是比较困难的。这也是我在过往的开发中经常遇到的死锁的情况。
 
 ## CAS
+CAS 指的是先检查后更新这类复合操作，英文翻译有多种：Compare And Set、Compare And Swap 或 Check And Set。
+
+X86 提供的 CAS 指令为 cmpxchg 指令。
+
+在单核计算机上，cmpxchg 指令是原子操作。尽管 cmpxchg 指令包含很多细分操作，看似是非原子的复合操作，但是，指令是 CPU 执行的最小单元，指令执行的过程不可中断。当多个线程共用一个 CPU 来交替执行指令时，只有当前线程执行完正在执行的指令（比如 cmpxchg 指令）之后，操作系统才可以调度 CPU 执行其他线程，其他线程是看不到 cmpxchg 指令执行的中间状态的。因此，cmxchg 在单核计算机上是原子操作。
+
+不过，在多核计算机上，cmpxchg 指令是非原子操作。在多核计算机上，多个线程可以并行运行在多个 CPU 上，也就是说，多个线程可以并行执行 cmpxchg 指令，同时对同一个内存变量进行 CAS 操作，因此，cmpxchg 就不再是原子操作了。在多核计算机中，为了保证 cmpxchg 指令的原子性，我们需要在 cmpxchg 指令前加 LOCK 前缀，如下所示。
+```shell
+LOCK cmpxchg [目标操作数], [源操作数]
+```
+
+前面我们讲过很多锁，比如偏向锁、轻量级锁、自旋锁等等，这里我们再介绍另外两种锁：悲观锁和乐观锁，它们属于抽象的概念，并不是具体实现。乐观锁指的是我们乐观的认为代码不大可能存在资源竞争，大部分情况都不需要加锁。悲观锁指的是我们悲观的认为代码很有可能会出现资源竞争，绝大部分情况都需要加锁。**synchronized 或 Lock 可以用来实现悲观锁，自旋+CAS 可以用来实现乐观锁**。
+
+悲观锁和乐观锁各有利弊。基于 synchornized 或 Lock 实现的悲观锁，等待资源而阻塞线程会导致内核态到用户态的上下文切换，带来性能损耗，但是，处于阻塞状态的线程不会被分配CPU时间片，不会浪费CPU资源。基于自旋+CAS实现的乐观锁，循环执行CAS，不需要阻塞线程，没有内核态到用户态的上下文切换带来的性能损耗，但是，线程一直处于运行状态，白白浪费CPU资源。因此，如果多线程竞争资源不激烈，那么，使用乐观锁来竞争资源更合适，如果多线程竞争资源比较激烈，那么，使用悲观锁来竞争资源更合适。
+
+## 原子类
+自旋+CAS可以替代锁用于资源竞争不激烈的场景。不过，相对于锁来说，自旋+CAS的代码实现比较复杂。我们需要先创建Unsafe对象，然后获取待更新变量的偏移位置，最后调用Unsafe对象的CAS方法来更新变量。为了方便开发，JUC提供了各种原子类，封装了对各种类型数据的自旋+CAS操作。
+
+原子类主要依赖自旋+CAS来实现。原子类中的每个操作都是原子操作。在多线程环境下，执行原子类中的操作不会出现线程安全问题。根据处理的数据类型，原子类可以粗略地分为4类：基本类型原子类、引用类型原子类、数组类型原子类、对象属性原子类。
+
+相对于 AtomicReference，AtomicStampedReference 增加了版本戳，主要是用来解决 CAS 的 ABA 问题。对于什么是 ABA 问题，我们举例解释一下。
+
+实际上，引起执行结果出错的原因，就是CAS的ABA问题。线程1执行removeAtHead()函数，设置oldHead=A、nextNode=B，在执行CAS之前，线程2将head从A变为B、C，最后又变为A。尽管head仍为A，但链表的整体结构发生了变化。随后，当线程1执行CAS时，检查当前的head跟oldHead相等，仍然是A，错以为期间没有其他线程执行过addAtHead()和removeAtHead()函数，于是，成功执行CAS。
+
+## 累加器
+对于如下代码，如何将其改造成线程安全的
+```java
+public class Counter {
+  private long sum;
+
+  public long get() {
+    return sum;
+  }
+
+  public void add(long value) {
+    sum += value;
+  }
+}
+```
+
+为了让以上代码线程安全，我们只需要对add()函数进行处理。
+* 第一种线程安全的实现方式是：对add()函数加锁，但是加锁会影响程序本身的性能。
+* 第二种线程安全的实现方式是：使用自旋+CAS的方式，这样可以避免加锁，在低并发的情况下，这种实现方式的性能远优于加锁，但是，从零实现自旋+CAS，需要用到Unsafe类，风险比较大且编程复杂。
+* 第三种线程安全的实现方式是：直接使用封装了自旋+CAS的原子类，相对于第二种实现方式，编程实现简单了许多。
+
+这三种实现方式对应的代码如下所示。
+```java
+// 线程安全实现方式一：加锁
+public void add_lock(long value) {
+  synchronized (this) {
+    sum += value;
+  }
+}
+
+// 线程安全实现方式二：自旋+CAS
+private static final Unsafe unsafe = Unsafe.getUnsafe();
+private static final long sumOffset;
+static {
+  try {
+    sumOffset = unsafe.objectFieldOffset
+      (Counter.class.getDeclaredField("sum"));
+  } catch (Exception ex) { throw new Error(ex); }
+}
+
+public void add_cas(long value) {
+  boolean succeeded = false;
+  while (!succeeded) {
+    long oldValue = sum;
+    succeeded = unsafe.compareAndSwapLong(
+        this, sumOffset, oldValue, oldValue+value);
+  }
+}
+
+// 线程安全实现方式三：原子类
+private AtomicLong atomicSum = new AtomicLong(); //替代sum成员变量
+public void add_atomic(int value) {
+  atomicSum.addAndGet(value);
+}
+```
+
+实际上，除了以上三种解决方法之外，针对累加这种特殊的业务场景，JUC还提供了专门的LongAdder累加器，它比AtomicLong原子类性能更高。在高并发的情况下，多线程同时执行add()函数，AtomicLong会因为大量线程不断自旋而性能下降，LongAdder却可以持续保持高性能。那么，如此高性能，LongAdder是如何做到的呢？
+
+LongAdder的使用方法非常简单，但其底层实现原理却比较复杂。为了实现高性能累加，LongAdder的底层实现原理涉及**数据分片、哈希优化、去伪共享、非精确求和**等各种优化手段。接下来，我们就一一讲解一下这些优化手段。
+
+## ThreadLocal
+对于无锁编程，我们已经讲解了**CAS、原子类、累加器**，本节，我们讲解无锁编程中的最后一个知识点：**ThreadLocal**。我们知道，**共享变量是代码存在线程安全的根本原因之一**。在某些特殊的业务场景下，我们可以使用ThreadLocal线程局部变量替代共享变量，以实现在不需要加锁的情况下达到线程安全。
+
+在Java中，我们可以将变量粗略的划分为两类：类的成员变量和函数内局部变量。**对于类的成员变量，当多个线程使用同一个对象时，对象中的成员变量就是共享变量，其作用域范围为多个线程均可见。多个线程竞争访问成员变量，就有可能存在线程安全问题**。对于函数内局部变量，每个线程在执行函数时，会在自己的栈上存储私有的局部变量，因此，函数内局部变量的作用域范围为单线程内可见。不仅如此，函数内局部变量仅限函数内可见，不同的函数之间不可以共享局部变量。
+
+如果我们希望多个函数共享局部变量，那么，我们需要通过参数传递的方式来实现。
+```java
+public class UserController {
+  private static final Logger logger =  LoggerFactory.getLogger(UserController.class);
+  private UserService userService = new UserService();
+
+  public long login(String username, String password) {
+    // 创建traceId
+    String traceId = "[" + System.currentTimeMillis() + "]";
+    // 所有的日志都带有traceId
+    logger.info(traceId + " login username=" + username);
+    //...省略校验逻辑...
+    return userService.login(username, password, traceId);//传递traceId
+  }
+}
+```
+
+上述代码存在的问题很明显，我们需要在每个函数中都定义traceId参数，导致非业务代码和业务代码耦合在一起。为了解决这个问题，JUC便提供了ThreadLocal，其作用域范围介于类的成员变量和函数内局部变量之间，它既是线程私有的，又可以多函数共享，这样既可以避免线程安全问题，又能避免变量在函数之间不停传递。
+
+## 条件变量
+互斥和同步是多线程要解决的两个核心问题。互斥依靠互斥锁来解决。同步依靠同步工具来解决，其中包括条件变量、信号量、CountDownLatch、CyclicBarrier等。
+
+自旋并不会让线程进入阻塞状态。如果队列一直为空，那么线程将一直执行while循环，白白浪费CPU资源，甚至会让CPU使用率达到100%。为了减少对CPU资源的浪费，我们可以在while循环中调用sleep()函数，让线程睡眠一小段时间。如果在dequeue()函数执行sleep()函数的过程中队列变为非空，那么，dequeue()函数需要等待sleep()函数执行结束之后，才能返回数据。这就会导致程序响应不及时，性能下降。
+
+那么，有没有什么方法既可以解决自旋浪费CPU资源问题，又能解决睡眠导致的响应不及时问题呢？答案是有的，那就是使用本节要讲的条件变量。条件变量是多线程中用来实现等待通知机制的常用方法。
+
+粗略地讲，锁可以分为两种，一种是Java提供的synchronized内置锁，另一种是JUC提供的Lock锁。同理，条件变量也有两种，一种是Java提供的内置条件变量，使用Object类上的wait()、notify()等来实现，一种是JUC提供的条件变量，使用Condition接口上的await()、signal()等来实现。两种条件变量的使用方式和实现原理基本一致。
+
+## 信号量、锁寸器和栅栏
+信号量是并发编程中的一个重要概念。信号量用来限制临界区和共享资源的并发访问。互斥锁限制临界区和共享资源同时只能被一个线程访问。信号量限制临界区和共享资源同时只能被N个线程访问。因此，**信号量也可以看做是一种共享锁**，其底层也是基于AQS实现的。
+
+CountDownLatch中文名称叫作锁存器，CountDownLatch的作用有点类似Thread类中的join()函数，用于一个线程等待其他多个线程的事件发生。对于join()函数来说，这里的事件指的是线程结束。对于CountDownLatch来说，这里的事件可以根据业务来定义。除此之外，使用join()需要知道被等待的线程是谁，而使用CountDownLatch则不需要。因此，CountDownLatch相对于join()函数来说，更加通用。
+
+CyclicBarrier的中文名为栅栏，非常形象地解释了CyclicBarrier的作用，用于多个线程互相等待，互相等待的线程都就位之后，再同时开始执行。我们举个例子解释一下，如下代码所示。我们创建了一个parties为10的CyclicBarrier对象，用于10个线程之间互相等待。尽管这10个线程启动（执行start()函数）的时间不同，但每个线程启动之后，都会调用await()函数，将parties减一，然后检查parties是否为0。如果parties不为0，则当前线程阻塞等待。如果parties为0，则当前线程唤醒所有调用了await()函数的线程。
+
+## 并发容器
+为了方便开发，Java提供了很多容器，比如ArrayList、HashMap、TreeSet等，底层对数组、哈希表、红黑树等常用的数据结构进行了封装。在开发时，我们直接使用这些现成的容器即可，不需要重新从零去开发。对于这些封装了常用数据结构的容器，在多线程环境下，我们如何来保证它们的线程安全性呢？
+
+依靠程序员自己去编写代码来维护容器的线程安全性，比如对操作加锁，一来耗费开发时间，二来性能没有保证。为了解决这个问题，JUC针对常用的容器对应开发了高性能的并发容器。在多线程编程中，我们直接使用这些现成的并发容器即可。
+
+Java 容器分为 5 类
+* List：ArrayList、 LinkedList 、 Vector（废弃）
+* Stack：Stack（废弃）
+* Queue：ArrayDeque、 LinkedList、 PriorityQueue
+* Set：HashSet、 LinkedHashSet、TreeSet
+* Map：HashMap、 LinkedHashMap、 TreeMap、HashTable（废弃）
+
+为了更符合程序员的开发习惯，JCF将非线程安全容器和线程安全容器（也就是并发容器）分开来设计。在非多线程环境下，我们使用没有加锁的非线程安全容器，性能更高。例如，替代Vector，JCF设计了非线程安全的ArrayList。在多线程环境下，我们使用Collections工具类提供的并发方法（如synchronizedList()），将非线程安全容器（如List）转换为线程安全容器（如SynchronizedList）。
+
+Java并发容器的底层实现原理非常简单，跟Vector、Stack、HashTable类似，都是通过对函数加锁来解决线程安全问题。我们拿SynchronizedList举例讲解，其源码如下所示。所有的函数都使用synchronized加了锁。实际上，我们可以使用ReentrantReadWriteLock替代synchronized来提高代码的并发性能。
+```java
+public static <T> List<T> synchronizedList(List<T> list) {
+    return (list instanceof RandomAccess ?
+            new SynchronizedRandomAccessList<>(list) :
+            new SynchronizedList<>(list));
+}
+
+static class SynchronizedList<E>
+    extends SynchronizedCollection<E> implements List<E> {
+    final List<E> list;
+
+    SynchronizedList(List<E> list) {
+        super(list);
+        this.list = list;
+    }
+
+    SynchronizedList(List<E> list, Object mutex) {
+        super(list, mutex);
+        this.list = list;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        synchronized (mutex) {return list.equals(o);}
+    }
+    public int hashCode() {
+        synchronized (mutex) {return list.hashCode();}
+    }
+    public E get(int index) {
+        synchronized (mutex) {return list.get(index);}
+    }
+    public E set(int index, E element) {
+        synchronized (mutex) {return list.set(index, element);}
+    }
+    public void add(int index, E element) {
+        synchronized (mutex) {list.add(index, element);}
+    }
+    public E remove(int index) {
+        synchronized (mutex) {return list.remove(index);}
+    }
+    //...省略其他方法...
+}
+```
+
+在上述并发容器的代码实现中，每个函数都加了锁，锁粒度大导致并发性能不高。于是，JUC便实现了一套更高性能的并发容器。JUC并发容器之所以比Java并发容器性能更高，是因为JUC利用分段加锁、写时复制、无锁编程等技术对并发容器做了全新的实现，并非像Java并发容器那样只是对原有Java容器简单加锁。当然，从代码实现复杂度上，JUC并发容器的代码实现要比Java并发容器的代码实现要复杂得多。
+
+## 写时复制
+写时复制是一个比较通用的技术，可以应用于很多技术场景中。当应用于并发容器中时，写时复制指的是，当对容器进行写操作（这里的写可以理解为“增、删、改”）时，为了避免读写操作同时进行而导致的线程安全问题，我们将原始容器中的数据复制一份放入新创建的容器，然后对新创建的容器进行写操作中，而读操作继续在原始容器上进行。这样读写操作之间便不会存在数据访问冲突，也就不存在线程安全问题。当写操作执行完成之后，新创建的容器替代原始容器，原始容器便废弃。
+
+## 阻塞等待
+阻塞并发队列具有两个特点，第一个是线程安全，也就是名称中“并发”的含义，第二个是支持读阻塞或写阻塞，也就是名称中“阻塞”的含义。读阻塞指的是，当从队列中读取数据时，如果队列已空，那么读操作阻塞，直到队列有新数据写入，读操作才成功返回。写阻塞指的是，当往队列中写入数据时，如果队列已满，那么写操作阻塞，直到队列重新腾出空位置，写入操作才成功返回。
+
+JUC提供的阻塞并发队列有很多，比如ArrayBlockingQueue、LinkedBlockingQueue、LinkedBlockingDeque、PriorityBlockingQueue、DelayQueue、SynchronousQueue、LinkedTransferQueue。接下来，我们讲解一下这些阻塞并发容器的用法和实现原理。
+
+## 分段加锁
+HashMap是在开发中经常用到的容器，但是，它不是线程安全的，只能应用于单线程环境下。在多线程环境下，Java提供了线程安全的HashTable、SynchronizedMap，但是，两者因为采用粗粒度锁来实现，并发性能不佳。于是，JUC便开发了ConcurrentHashMap，利用分段加锁等技术来提高并发性能。
+
+实际上，HashTable和SynchronziedMap在本质上是一样的，都是采用简单粗暴的方式（即所有的函数都进行加锁）来解决线程安全问题，因此，并发性能欠佳。Java之所以废弃HashTable，引入SynchronizedMap，主要是为了让JCF框架的类结构更加清晰，将线程安全容器和非线程安全容器分离，使线程安全容器通过统一的方式（Collections的synchronizedXXX()方法）来创建。
+
+对于ConcurrentHashMap，我们又可以分为JDK7版本的ConcurrentHashMap和JDK8版本的ConcurrentHashMap。这两个版本的ConcurrentHashMap的实现方式有比较大的区别，比如，JDK8版本的ConcurrentHashMap的分段加锁粒度更小、并发度更高，扩容方式有所不同，size()函数实现更加高效等等。在本节中，我们仅对JDK8版本的ConcurrentHashMap的实现原理做讲解。对于JDK7版本的ConcurrentHashMap的实现原理，留给你自己来分析。
+
+实际上，ConcurrentHashMap提高并发度的核心方法就是分段加锁。在HashTable或SynchronziedMap中，table数组上只有一把锁，所有的读写操作都争抢这一把锁。而在ConcurrentHashMap中，table数组被分段加锁，如果table数组的大小为n，那么就对应存在n把锁。table数组中的每一个链表独享一把锁，不同链表之间的操作可以多线程并行执行，互不影响，以此来提高ConcurrentHashMap的并发性能。
+
+## 线程状态
+线程在执行synchronized阻塞等待锁时，对应的线程状态为BLOCKED，而线程在执行Lock锁的lock()函数阻塞等待锁时，对应的线程状态为WAITING。同样是阻塞等待锁，为什么对应的线程状态却是不同的呢？带着这个问题，我们来开始本节的学习。
+
+不同操作系统定义的线程状态略有不同，拿 Linux 举例，其定义的线程状态如下所示
+* NEW：新创建的线程在没有调用 start 函数前，处于 NEW 状态
+* READY：线程一切就绪，等待操作系统调度，也就是等待 CPU 时间片
+* RUNNING：线程正在使用 CPU 时间片执行程序
+* WAITING：：线程在等待I/O读写完成、等待获取锁、等待时钟定时到期（调用sleep()函数）等等，总之，等待其他事件发生之后，线程才能被调度使用CPU，此时，线程的状态就是WAITING状态。也就是说，只要线程不占用CPU，并且不等待CPU（非READY），那么线程就处于WAITING状态。
+* TERMINATED：线程终止状态
+
+尽管Java线程是基于内核线程模型实现的，即一个Java用户线程对应一个操作系统内核线程，但是，Java线程没有直接使用操作系统定义的线程状态，一方面是因为Java是跨平台语言，不同操作系统定义的线程状态不同，另一方面是因为应用层关注的线程状态，跟操作系统关注的线程状态是不同的，Java线程定义的状态能更清晰表示程序在应用层的执行情况。Java定义的线程状态如下所示。
+* NEW：Java线程中NEW状态的含义，跟操作系统线程中NEW状态的含义相同。
+* RUNNABLE：在应用层，我们不需要关注程序是正在等待CPU时间片，还是正在使用CPU时间这些操作系统才需要关注的细节，我们只需要知道程序正在执行就可以了，因此，Java并没有区分READY和RUNNING这两种线程状态，这两种线程状态统称为RUNNABLE。实际上，除了包含READY和RUNNING之外，RUNNABLE还包含操作系统线程状态中的部分WAITING状态。待会我们再专门解释这一点。
+* WAITING：这里的WAITING状态跟操作系统线程中的WAITING状态不同。只有执行一些跟线程有关的特殊函数时，线程才会进入WAITING状态。这些特殊函数就包含Object.wait()、Thread.join()、Unsafe.park()。
+* TIMED_WAITING：跟上面的WAITING状态类似，也是只有当执行一些跟线程有关的特殊函数时，线程才会进入TIMED_WAITING状态。这些特殊函数就包括Object.wait(long timeout)、Thread.join(long timeout)、Unsafe.parkNanos(long timeout)、Thread.sleep(long timeout)，这些函数均带有超时时间。
+* BLOCKED：只有两种情况会使线程进入BLOCKED状态，一种情况是线程执行synchronized语句，阻塞等待获取锁，另一种情况是线程执行Object.wait()后被notify()或notifyAll()唤醒，再次阻塞等待获取锁。
+* TERMINATED：Java线程中TERMINATED状态的含义，跟操作系统线程中TERMINATED状态的含义相同。
+
+## 线程中断
+如何安全的提前终止线程，避免突然终止业务逻辑而导致的数据不一致，资源得不到回收等问题。
+
+基于标志终止线程：自己定义标志变量
+
+基于中断终止线程：直接使用线程内部提供的中断标志位即可
+
+基于中断异常终止线程：当我们通过interrupt()向某个线程发起中断请求时，如果这个线程正在执行阻塞函数，那么，它将无法响应中断请求（比如Thread.sleep()），也就无法及时终止线程。对于这个问题，该如何解决呢？实际上，大部分阻塞函数在设计实现时都已经考虑到了这个问题。当阻塞函数接受到中断请求之后，会停止执行并抛出InterruptedException异常，我们可以基于中断异常来终止线程，
+
+我们知道，操作系统中也有中断，那么，本节所讲的Java中断和操作系统中断有什么区别和联系呢？
+
+从上述对Java中断的讲解，我们可以发现，Java中断完全由Java语言独立实现，并不依赖操作系统中断。Java中断和操作系统中断是两回事。Java中断用来中断线程，操作系统中断用来中断CPU。不过，从功能上来讲，它们都是用来打断某个正在执行的任务，并且在实现原理上也大同小异。
+
+前面已经讲解过Java中断的实现原理了，现在我们再来看下操作系统中断的实现原理。CPU在执行指令的过程中，每当一个CPU周期执行完成之后，就会去中断寄存器中检查是否有中断请求，如果有中断请求，那么，CPU根据中断请求编号，在事先设置好的中断向量表中，查找对应的中断处理程序入口地址，然后，跳转去执行对应的中断处理程序。一般来讲，常用的操作系统中断有：I/O中断（响应鼠标、键盘、磁盘等I/O设备的输入）、时钟中断、异常（比如缺页异常）、系统调用中断等等。有关操作系统中断更详细的讲解，你可以查阅操作系统相关的书籍。
+
+## 线程池
+在很多框架和系统（比如Tomcat、Dubbo RPC等）中，线程的创建和管理基本上都是由线程池负责的。在使用这些框架和系统时，我们常常需要设置线程池参数，比如线程池大小。线程池参数设置的是否合理直接影响了硬件资源的利用率和系统的运行性能。线程池到底开多大才合适呢？
+
+线程池是池化技术的一种，常见的池化技术还有数据库连接池、对象池等，池化技术用来避免资源的频繁创建和销毁，以此提高资源的复用率。
+
+当我们需要使用线程池执行任务时，我们只需要将待执行的任务，封装成Runnable对象，传递给execute()函数即可。execute()函数全权负责任务的执行。实际上，线程池在创建时并不会事先把所有的线程创建好。线程池中的线程是在有任务需要执行时才创建。当任务到来时，线程池可能处于不同的状态，进而对应不同的处理方式，如下所示。
+1. 检查核心线程池是否已满，如果未满，则创建核心线程执行任务。
+2. 如果核心线程池已满，那么再检查等待队列是否已满，如果等待队列未满，则将任务放入等待队列。
+3. 如果等待队列已满，则再检查非核心线程池是否已满，如果未满，则创建非核心线程执行任务。
+4. 如果核心线程池、非核心线程池、等待队列都满，则按照拒绝策略对任务进行处理。
+
+线程池大小应该设置为多少是开发和面试中经常遇到的一个问题。**对于CPU密集型程序，对应的线程池不需要太大，跟可用CPU核数相当或稍大即可。这样便可以充分的利用CPU资源。对于I/O密集型程序，因为程序的大部分时间都在执行I/O操作，所以，CPU利用率很低。为了提高CPU的利用率，我们可以将线程池适当开大点，以便多个线程轮流使用CPU**。那么，既非CPU密集又非I/O密集的程序，对应的线程池大小又该如何设置呢？有没有具体的计算机公式可以给出线程池大小的确切值呢？
+
+从理论上来讲，确实存在这样的计算公式。假设通过监控统计，我们得知线程池所执行的任务的平均CPU耗时为cpu_time毫秒，平均I/O耗时（确切的讲应该为非CPU耗时，但是，大部分非CPU耗时一般都花费在I/O上，因此，这里就直接使用I/O耗时代指非CPU耗时）为io_time毫秒，那么，线程池大小的计算公式如下所示。以下是针对单核CPU的计算公式，如果CPU核有N个，那么，我们只需要在计算结果上乘以N，便是最终线程池的大小。除此之外，以下公式计算得出的线程池大小指的是CPU利用率100%时对应的线程池大小。
+```shell
+pool_size = (cpu_time + io_time) / cpu_time
+```
+
+实际上，上述计算公式的合理性还有两个前提，一是没有瓶颈操作，即各个操作不会随着线程的增加而性能降低；二是没有瓶颈资源，即各个资源的数量满足所有线程的需求。
+
+我们拿Redis举例解释瓶颈操作。尽管Redis执行命令这一任务是I/O密集型的，根据上述公式，理应将线程池开大点才能充分利用CPU资源，但是，在Redis执行命令的过程中，I/O操作是瓶颈操作。尽管我们可以将线程池开的很大，让CPU利用率高达100%，但命令的执行都阻塞在I/O操作上，整体的执行效率并不会提高。这时，我们就要重点关注I/O的利用率，而非CPU的利用率。如果单线程执行命令就可以让I/O负荷达到100%，我们又何必使用多线程呢？
+
+我们拿数据库连接举例解释瓶颈资源。如果任务的执行依赖数据库，数据库连接通过数据库连接池来管理，假设数据库连接池的大小为N，那么，当线程数大于N时，数据库连接就成了瓶颈资源，多出来的线程需要等待数据库连接，整体的执行效率也不会提高。对于存在瓶颈资源的任务来说，在计算或者估计线程池大小时，我们不能再以CPU利用率100%为目标，而是以充分利用瓶颈资源为目标。也就是说，线程池大小应该设置为跟数据库连接池大小相当才算合理。
+
+## 线程执行框架
+实际上，上一节中讲到的ThreadPoolExecutor、Executors隶属于线程执行框架。线程执行框架提供了一系列类，封装了线程创建、关闭、执行、管理等代码逻辑，这样做一方面实现了业务逻辑与非业务逻辑的解耦，另一方面方便代码复用，开发者不再需要编写创建线程、启动线程等代码逻辑。如何获取在一个线程中获取另一个线程的运行结果？
